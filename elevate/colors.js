@@ -1,46 +1,48 @@
 // colors.js
-
 module.exports = {
-    // ====================================================================================
-    // Custom Colors
-    // ====================================================================================
-    colors: {
-      // Base Color Palette
-      color: {
-        primary: {
-          100: '#E6F0FF', // Lightest shade
-          200: '#B3D1FF',
-          300: '#80B3FF',
-          400: '#4D94FF',
-          500: '#1A75FF', // Main primary color
-        },
-        secondary: {
-          100: '#FFF0E6', // Lightest shade
-          200: '#FFD1B3',
-          300: '#FFB380',
-          400: '#FF944D',
-          500: '#FF751A', // Main secondary color
-        },
-        // Add more color categories as needed
-      },
-      // Brand Colors
-      brand: {
-        accent: {
-          light: '#FFD700', // Light accent color
-          dark: '#B8860B',  // Dark accent color
-        },
-        // Add more brand colors as needed
-      },
-      // Theme Colors (Light and Dark Modes)
-      theme: {
-        light: {
-          background: '#FFFFFF',
-          text: '#333333',
-        },
-        dark: {
-          background: '#1A1A1A',
-          text: '#F0F0F0',
-        },
-      },
-    },
-  };
+  // ====================================================================================
+  // Custom Colors with EWDS Naming Convention
+  // ====================================================================================
+  colors: {
+
+    // Color Format: c-[category]-shade
+
+    // Primary Colors (c-p-)
+    'c-p-100': '#0D47A1', // Dark Blue
+    'c-p-200': '#1565C0',
+    'c-p-300': '#1976D2',
+    'c-p-400': '#1E88E5',
+    'c-p-500': '#2196F3', // Main primary color (Bright Blue)
+
+    // Secondary Colors (c-s-)
+    'c-s-100': '#B71C1C', // Dark Red
+    'c-s-200': '#C62828',
+    'c-s-300': '#D32F2F',
+    'c-s-400': '#E53935',
+    'c-s-500': '#F44336', // Main secondary color (Bright Red)
+
+    // Success Colors (c-success-)
+    'c-success-100': '#1B5E20', // Dark Green
+    'c-success-200': '#2E7D32',
+    'c-success-300': '#388E3C',
+    'c-success-400': '#43A047',
+    'c-success-500': '#4CAF50', // Main success color (Bright Green)
+
+    // Warning Colors (c-warning-)
+    'c-warning-100': '#FF6F00', // Dark Orange
+    'c-warning-200': '#FF8F00',
+    'c-warning-300': '#FFA000',
+    'c-warning-400': '#FFB300',
+    'c-warning-500': '#FFC107', // Main warning color (Bright Amber)
+
+    // Brand Colors (c-b-)
+    'c-bl': '#FFEB3B', // Brand light (Bright Yellow)
+    'c-bd': '#F57C00', // Brand dark (Deep Orange)
+
+    // Theme Colors (c-t-)
+    'c-tl-bg': '#FFFFFF', // Theme light background (White)
+    'c-tl-txt': '#212121', // Theme light text (Dark Grey)
+    'c-td-bg': '#212121', // Theme dark background (Dark Grey)
+    'c-td-txt': '#FFFFFF', // Theme dark text (White)
+  },
+};

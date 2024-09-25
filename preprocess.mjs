@@ -56,6 +56,10 @@ function transformClassAttribute(classValue) {
         // Handle margin/padding shorthand
         if ((cls.startsWith('m-') || cls.startsWith('p-')) && cls.includes('.')) {
           return expandMarginPaddingShorthand(cls, currentPrefix);
+        }
+        // Handle grid shorthand
+        else if (cls.startsWith('g-') && cls.includes('.')) {
+          return expandGridShorthand(cls, currentPrefix);
         } else {
           // Add class with current prefix
           return `${currentPrefix}${cls}`;
@@ -92,8 +96,8 @@ function expandMarginPaddingShorthand(cls, prefix) {
   }
 
   const propertyMap = {
-    m: 'm',  // Margin
-    p: 'p',  // Padding
+    m: 'm', // Margin
+    p: 'p', // Padding
   };
 
   const directions = ['t', 'r', 'b', 'l']; // top, right, bottom, left
@@ -104,6 +108,35 @@ function expandMarginPaddingShorthand(cls, prefix) {
     const direction = directions[index];
     return `${prefix}${propertyMap[property]}${direction}-${value}`;
   });
+}
+
+function expandGridShorthand(cls, prefix) {
+  const [_, valuesStr] = cls.split('-');
+  const values = valuesStr.split('.');
+
+  let cols, rows, gap;
+
+  if (values.length === 2) {
+    [cols, rows] = values;
+    gap = null;
+  } else if (values.length === 3) {
+    [cols, rows, gap] = values;
+  } else {
+    // If not 2 or 3 values, return the class as is
+    return `${prefix}${cls}`;
+  }
+
+  const gridClasses = [
+    `${prefix}grid`,
+    `${prefix}grid-cols-${cols}`,
+    `${prefix}grid-rows-${rows}`,
+  ];
+
+  if (gap) {
+    gridClasses.push(`${prefix}gap-${gap}`);
+  }
+
+  return gridClasses;
 }
 
 // Process all HTML files in the 'src' directory

@@ -1,84 +1,50 @@
 // spacing.js
 
 module.exports = {
-    // ====================================================================================
-    // Spacing Scale (based on a 4pt system)
-    // ====================================================================================
-    // This custom spacing scale uses keys like 'a1', 'b1', etc., to represent different
-    // spacing values in rem units. This helps maintain consistent spacing throughout the
-    // project.
-  
-    spacing: {
-      // ----------------------------------
-      // Group A Spacing (Smallest Sizes)
-      // ----------------------------------
-      'a1': '0.25rem',  // 4pt
-      'a2': '0.5rem',   // 8pt
-      'a3': '0.75rem',  // 12pt
-      'a4': '1rem',     // 16pt
-  
-      // -------------------------
-      // Group B Spacing
-      // -------------------------
-      'b1': '1.25rem',  // 20pt
-      'b2': '1.5rem',   // 24pt
-      'b3': '1.75rem',  // 28pt
-      'b4': '2rem',     // 32pt
-  
-      // -------------------------
-      // Group C Spacing
-      // -------------------------
-      'c1': '2.25rem',  // 36pt
-      'c2': '2.5rem',   // 40pt
-      'c3': '2.75rem',  // 44pt
-      'c4': '3rem',     // 48pt
-      'c5': '3.5rem',   // 56pt
-      'c6': '4rem',     // 64pt
-  
-      // -------------------------
-      // Group D Spacing
-      // -------------------------
-      'd1': '4.5rem',   // 72pt
-      'd2': '5rem',     // 80pt
-      'd3': '5.5rem',   // 88pt
-      'd4': '5.75rem',  // 92pt
-      'd5': '6rem',     // 96pt
-      'd6': '7rem',     // 112pt
-      'd7': '7.5rem',   // 120pt
-      'd8': '8rem',     // 128pt
-      'd9': '9rem',     // 144pt
-  
-      // -------------------------
-      // Group E Spacing
-      // -------------------------
-      'e1': '10rem',    // 160pt
-      'e2': '12rem',    // 192pt
-      'e3': '16rem',    // 256pt
-  
-      // -------------------------
-      // Group F Spacing
-      // -------------------------
-      'f1': '20rem',    // 320pt
-      'f2': '24rem',    // 384pt
-      'f3': '28rem',    // 448pt
-      'f4': '32rem',    // 512pt
-  
-      // -------------------------
-      // Group G Spacing
-      // -------------------------
-      'g1': '36rem',    // 576pt
-      'g2': '40rem',    // 640pt
-      'g3': '48rem',    // 768pt
-      'g4': '56rem',    // 896pt
-      'g5': '60rem',    // 960pt
-      'g6': '64rem',    // 1024pt
-  
-      // -------------------------
-      // Group H Spacing (Largest Sizes)
-      // -------------------------
-      'h1': '72rem',    // 1152pt
-      'h2': '80rem',    // 1280pt
-      'h3': '90rem',    // 1440pt
-      'h4': '120rem',   // 1920pt
-    },
-  };
+  spacing: {
+    // Detail: For fine adjustments and component construction (0.25rem - 3.5rem)
+    'd1': '0.25rem',  // 4pt (a1)
+    'd2': '0.5rem',   // 8pt (a2)
+    'd3': '0.75rem',  // 12pt (a3)
+    'd4': '1rem',     // 16pt (a4)
+    'd5': '1.25rem',  // 20pt (b1)
+    'd6': '1.5rem',   // 24pt (b2)
+    'd7': '1.75rem',  // 28pt (b3)
+    'd8': '2rem',     // 32pt (b4)
+    'd9': '2.25rem',  // 36pt (c1)
+    'd10': '2.5rem',  // 40pt (c2)
+    'd11': '2.75rem', // 44pt (c3)
+    'd12': '3rem',    // 48pt (c4)
+    'd13': '3.5rem',  // 56pt (c5)
+
+    // Layout: For general page layout and larger component spacing (4rem - 20rem)
+    'l1': '4rem',     // 64pt (c6)
+    'l2': '4.5rem',   // 72pt (d1)
+    'l3': '5rem',     // 80pt (d2)
+    'l4': '5.5rem',   // 88pt (d3)
+    'l5': '6rem',     // 96pt (d5)
+    'l6': '7rem',     // 112pt (d6)
+    'l7': '7.5rem',   // 120pt (d7)
+    'l8': '8rem',     // 128pt (d8)
+    'l9': '9rem',     // 144pt (d9)
+    'l10': '10rem',   // 160pt (e1)
+    'l11': '12rem',   // 192pt (e2)
+    'l12': '16rem',   // 256pt (e3)
+    'l13': '20rem',   // 320pt (f1)
+
+    // Structure: For major page sections and full-page layouts (24rem - 120rem)
+    's1': '24rem',    // 384pt (f2)
+    's2': '28rem',    // 448pt (f3)
+    's3': '32rem',    // 512pt (f4)
+    's4': '36rem',    // 576pt (g1)
+    's5': '40rem',    // 640pt (g2)
+    's6': '48rem',    // 768pt (g3)
+    's7': '56rem',    // 896pt (g4)
+    's8': '60rem',    // 960pt (g5)
+    's9': '64rem',    // 1024pt (g6)
+    's10': '72rem',   // 1152pt (h1)
+    's11': '80rem',   // 1280pt (h2)
+    's12': '90rem',   // 1440pt (h3)
+    's13': '120rem',  // 1920pt (h4)
+  },
+};

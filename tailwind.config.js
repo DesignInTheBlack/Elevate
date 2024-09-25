@@ -3,9 +3,10 @@
 const typography = require('./elevate/typography');
 const colors = require('./elevate/colors');
 const spacing = require('./elevate/spacing');
-const breakpoints = require('./elevate/breakpoints');
+const { screens, container } = require('./elevate/breakpoints');
 const utilities = require('./elevate/utilities');
 const plugins = require('./elevate/plugins');
+const colorPlugins = require('./elevate/colorPlugins');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -28,12 +29,12 @@ module.exports = {
     // ----------------------------------
     // Breakpoints
     // ----------------------------------
-    screens: breakpoints.screens,
+    screens: screens,
 
     // ----------------------------------
     // Container Sizes
     // ----------------------------------
-    container: breakpoints.container,
+    container: container,
 
     // ----------------------------------
     // Typography
@@ -59,11 +60,49 @@ module.exports = {
   },
 
   // ====================================================================================
+  // Safelist Configuration
+  // ====================================================================================
+  safelist: [
+    {
+      // Safelist patterns for bg and text classes with lighten/darken
+      pattern: /^bg-c-p-\d{3}\\:(lighten|darken)-\d{1,2}$/,
+    },
+    {
+      pattern: /^text-c-p-\d{3}\\:(lighten|darken)-\d{1,2}$/,
+    },
+    {
+      // Safelist patterns for gradient classes
+      pattern: /^gradient-c-[a-z]-\d{3}-to-c-[a-z]-\d{3}$/,
+    },
+    {
+      // Safelist patterns for accessible text
+      pattern: /^text-accessible$/,
+    },
+    {
+      // Safelist patterns for additional utility classes
+      pattern: /^text-complement$/,
+    },
+    {
+      pattern: /^text-triadic-\d$/,
+    },
+    {
+      pattern: /^dark-adapt-bg-c-p-\d{3}$/,
+    },
+    {
+      pattern: /^dark-adapt-text-c-p-\d{3}$/,
+    },
+    {
+      pattern: /^text-accessible-bg-c-p-\d{3}$/,
+    },
+    // Add more patterns as needed based on your plugins
+  ],
+
+  // ====================================================================================
   // Plugin Configuration
   // ====================================================================================
-  // Add custom plugins or configure existing ones
   plugins: [
     ...plugins,
+    ...colorPlugins,
     // Add any additional plugins here
   ],
 

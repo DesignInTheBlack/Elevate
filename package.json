@@ -16,6 +16,7 @@
     "tailwindcss": "^3.4.11"
   },
   "dependencies": {
+    "colorjs.io": "^0.5.2",
     "js-beautify": "^1.15.1"
   }
 }

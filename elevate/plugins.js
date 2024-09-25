@@ -10,43 +10,43 @@ module.exports = [
       '.row': { display: 'flex', flexDirection: 'row' },
       '.col': { display: 'flex', flexDirection: 'column' },
 
-      // Flex Alignment Classes (Row)
-      '.row-start': { alignItems: 'flex-start' },
-      '.row-end': { alignItems: 'flex-end' },
-      '.row-center': { alignItems: 'center' },
-      '.row-stretch': { alignItems: 'stretch' },
-      '.row-baseline': { alignItems: 'baseline' },
+        // Flex Alignment Classes (Row)
+      '.row-start': { display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' },
+      '.row-end': { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' },
+      '.row-center': { display: 'flex', flexDirection: 'row', justifyContent: 'center' },
+      '.row-stretch': { display: 'flex', flexDirection: 'row', alignItems: 'stretch' },
+      '.row-baseline': { display: 'flex', flexDirection: 'row', alignItems: 'baseline' },
 
       // Flex Alignment Classes (Column)
-      '.col-start': { justifyContent: 'flex-start' },
-      '.col-end': { justifyContent: 'flex-end' },
-      '.col-center': { justifyContent: 'center' },
-      '.col-stretch': { justifyContent: 'stretch' },
-      '.col-baseline': { justifyContent: 'baseline' },
+      '.col-start': { display: 'flex', flexDirection: 'column', alignItems: 'flex-start' },
+      '.col-end': { display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }, 
+      '.col-center': { display: 'flex', flexDirection: 'column', alignItems: 'center' },
+      '.col-stretch': { display: 'flex', flexDirection: 'column', justifyContent: 'stretch' },
+      '.col-baseline': { display: 'flex', flexDirection: 'column', justifyContent: 'baseline' },
 
       // Flex Distribution Classes (Row)
-      '.row-between': { justifyContent: 'space-between' },
-      '.row-around': { justifyContent: 'space-around' },
-      '.row-evenly': { justifyContent: 'space-evenly' },
+      '.row-between': { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' },   
+      '.row-around': { display: 'flex', flexDirection: 'row', justifyContent: 'space-around' },
+      '.row-evenly': { display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' },
 
-      // Flex Distribution Classes (Column)
-      '.col-between': { alignItems: 'space-between' },
-      '.col-around': { alignItems: 'space-around' },
-      '.col-evenly': { alignItems: 'space-evenly' },
+      // Flex Distribution Classes (Column) 
+      '.col-between': { display: 'flex', flexDirection: 'column', justifyContent: 'space-between' },
+      '.col-around': { display: 'flex', flexDirection: 'column', justifyContent: 'space-around' },  
+      '.col-evenly': { display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly' },
 
       // Flex Alignment with Justify and Align Combinations (Row)
-      '.row-endstart': { justifyContent: 'flex-end', alignItems: 'flex-start' },
-      '.row-endcenter': { justifyContent: 'flex-end', alignItems: 'center' },
-      '.row-startend': { justifyContent: 'flex-start', alignItems: 'flex-end' },
-      '.row-centerstart': { justifyContent: 'center', alignItems: 'flex-start' },
-      '.row-centerend': { justifyContent: 'center', alignItems: 'flex-end' },
+      '.row-startcenter': { display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' },
+      '.row-endcenter': { display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' },
+      '.row-centercenter': { display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }, 
+      '.row-betweencenter': { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+      '.row-aroundcenter': { display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' },
 
       // Flex Alignment with Justify and Align Combinations (Column)
-      '.col-endstart': { alignItems: 'flex-end', justifyContent: 'flex-start' },
-      '.col-endcenter': { alignItems: 'flex-end', justifyContent: 'center' },
-      '.col-startend': { alignItems: 'flex-start', justifyContent: 'flex-end' },
-      '.col-centerstart': { alignItems: 'center', justifyContent: 'flex-start' },
-      '.col-centerend': { alignItems: 'center', justifyContent: 'flex-end' },
+      '.col-startcenter': { display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' },
+      '.col-endcenter': { display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' },
+      '.col-centercenter': { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' },
+      '.col-betweencenter': { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between' },  
+      '.col-aroundcenter': { display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' },
 
       // Flex Item Classes
       '.grow': { flexGrow: '1' },
@@ -81,18 +81,17 @@ module.exports = [
       },
 
       // Content Component for Wrapping Content
-      '.content': {
+      '.space': {
         width: '100%',
         maxWidth: theme('container.screens.xl', '80rem'),
         marginLeft: 'auto',
         marginRight: 'auto',
-        paddingLeft: theme('spacing.a4', '1rem'),
-        paddingRight: theme('spacing.a4', '1rem'),
       },
 
       // Buffer Utility for Padding
       '.buffer': {
-        padding: theme('spacing.a4', '1rem'),
+        paddingLeft: theme('spacing.d4', '1rem'),
+        paddingRight: theme('spacing.d4', '1rem'),
       },
     };
 
