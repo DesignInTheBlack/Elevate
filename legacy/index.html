@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* Debug styles */
+.debug-overlay {
+ position: fixed;
+ top: 10px;
+ right: 10px;
+ background: rgba(0,0,0,0.8);
+ color: white;
+ padding: 10px;
+ font-family: monospace;
+ z-index: 100;
+ border-radius: 4px;
+ font-size: 14px;
+ line-height: 1.5;
+}
+
+.debug-overlay small {
+ opacity: 0.8;
+ display: block;
+ margin-top: 8px;
+ border-top: 1px solid rgba(255,255,255,0.2);
+ padding-top: 8px;
+}
+
+/* Base styles */
+body {
+ font-family: system-ui, sans-serif;
+ margin: 0;
+ padding: 20px;
+}
+
+.test-case {
+ border: 1px solid #eee;
+ margin: 20px 0;
+ padding: 20px;
+ transition: all 0.3s ease;
+}
+
+.test-case::before {
+ content: attr(data-test);
+ display: block;
+ font-size: 12px;
+ color: #666;
+ margin-bottom: 10px;
+}
+
+/* Base utilities */
+.box { 
+ background: white;
+ border: 2px solid #ccc;
+ padding: 10px;
+ margin: 10px;
+ transition: all 0.3s ease;
+}
+
+.text\:sm { font-size: 14px; }
+.text\:lg { font-size: 18px; }
+.text\:primary { color: blue; }
+.text\:secondary { color: green; }
+.p\:d2 { padding: 8px; }
+.p\:d4 { padding: 16px; }
+.m\:d2 { margin: 8px; }
+.m\:d4 { margin: 16px; }
+
+/* Medium breakpoint utilities */
+@media (min-width: 768px) {
+ [class*="/md/ text:sm"] { 
+   font-size: 16px; 
+   background: rgba(0,0,255,0.1);
+ }
+ [class*="/md/ text:lg"] { 
+   font-size: 24px; 
+   background: rgba(0,0,255,0.1);
+ }
+ [class*="/md/ p:d2"] { 
+   padding: 12px; 
+   border-color: blue;
+ }
+ [class*="/md/ p:d4"] { 
+   padding: 24px; 
+   border-color: blue;
+ }
+ [class*="/md/ m:d2"] { margin: 12px; }
+ [class*="/md/ m:d4"] { margin: 24px; }
+ [class*="/md/ text:primary"] { color: darkblue; }
+ [class*="/md/ text:secondary"] { color: darkgreen; }
+}
+
+/* Large breakpoint utilities */
+@media (min-width: 1024px) {
+ [class*="/lg/ text:sm"] { 
+   font-size: 18px;
+   background: rgba(255,0,0,0.1);
+ }
+ [class*="/lg/ text:lg"] { 
+   font-size: 32px;
+   background: rgba(255,0,0,0.1);
+ }
+ [class*="/lg/ p:d2"] { 
+   padding: 16px;
+   border-color: red;
+ }
+ [class*="/lg/ p:d4"] { 
+   padding: 32px;
+   border-color: red;
+ }
+ [class*="/lg/ m:d2"] { margin: 16px; }
+ [class*="/lg/ m:d4"] { margin: 32px; }
+ [class*="/lg/ text:primary"] { color: navy; }
+ [class*="/lg/ text:secondary"] { color: darkgreen; }
+}
+
+/* Hover states */
+[class*="/md/ "]:hover {
+ border-style: dashed;
+}
+
+[class*="/lg/ "]:hover {
+ border-style: dotted;
+}
+</style>
+</head>
+<body>
+ <div class="debug-overlay">
+   Viewport Width: <span id="viewport-width"></span>px<br>
+   Current Breakpoint: <span id="current-breakpoint"></span><br>
+   <small>
+     base: &lt;768px<br>
+     medium: ≥768px<br>
+     large: ≥1024px
+   </small>
+ </div>
+
+ <div class="test-case" data-test="1. Basic breakpoint test">
+   <div class="box /md/ text:lg p:d4">
+     This text should be 24px at md, 32px at lg with increasing padding
+   </div>
+ </div>
+
+ <div class="test-case" data-test="2. Multiple breakpoints">
+   <div class="box /md/ text:lg /lg/ p:d4">
+     24px text at md, 32px padding at lg only
+   </div>
+ </div>
+
+ <div class="test-case" data-test="3. Same utility different breakpoints">
+   <div class="box /md/ text:sm /lg/ text:sm">
+     16px at md, 18px at lg
+   </div>
+ </div>
+
+ <div class="test-case" data-test="4. Multiple utilities at same breakpoint">
+   <div class="box /md/ text:lg p:d4 m:d2 text:primary">
+     Multiple md utilities applied together
+   </div>
+ </div>
+
+ <div class="test-case" data-test="5. Nested elements">
+   <div class="box /md/ text:lg">
+     Parent md text
+     <div class="box /lg/ text:sm">
+       Child lg text independent of parent
+     </div>
+   </div>
+ </div>
+
+ <div class="test-case" data-test="6. Control - no breakpoints">
+   <div class="box text:sm p:d2">
+     Base styles only
+   </div>
+ </div>
+
+<script>
+function updateDebug() {
+ const width = window.innerWidth;
+ document.getElementById('viewport-width').textContent = width;
+ 
+ let breakpoint = 'base (<768px)';
+ if (width >= 1024) breakpoint = 'large (≥1024px)';
+ else if (width >= 768) breakpoint = 'medium (≥768px)';
+ 
+ document.getElementById('current-breakpoint').textContent = breakpoint;
+}
+
+window.addEventListener('resize', updateDebug);
+updateDebug();
+</script>
+</body>
+</html>

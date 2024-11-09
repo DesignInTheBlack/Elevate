@@ -1,0 +1,20 @@
+{
+  "name": "ewds-parser",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": "./index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "tsx index.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "chevrotain": "^11.0.3",
+    "@types/node": "^20.0.0"
+  }
+}
