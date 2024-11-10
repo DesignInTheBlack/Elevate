@@ -1,10 +1,13 @@
 import { createToken, Lexer, IToken, TokenType } from "chevrotain";
+import * as elevate from './features/syntax.js';
 
 // Define our AST types
 type UtilityNode = {
     type: 'utility';
-    name: string;
-    value: string;
+    property: string;
+    modifiers: {
+        [key: string]: string; // e.g. { color: 'blue' }
+    }
 };
 
 type ASTNode = UtilityNode;
@@ -20,13 +23,18 @@ const Colon = createToken({
     pattern: /:/
 });
 
-// Fixed the token array type
+const ModifierValue = createToken({
+    name: "ModifierValue",
+    pattern: /[a-z][a-z0-9]*/
+});
+
 const allTokens: TokenType[] = [
     Property,
-    Colon
+    Colon,
+    ModifierValue
 ];
 
-const lexer = new Lexer(allTokens,{positionTracking: "onlyOffset"});
+const lexer = new Lexer(allTokens, {positionTracking: "onlyOffset"});
 
 function parseToAST(input: string): ASTNode {
     const tokenResult = lexer.tokenize(input);
@@ -37,14 +45,32 @@ function parseToAST(input: string): ASTNode {
     
     const tokens: IToken[] = tokenResult.tokens;
     
-    if (tokens.length !== 3) {
-        throw new Error('Invalid utility format. Expected property:value');
-    }
+    // Get property name (first token)
+    const propertyName = tokens[0].image;
     
+    // Check if property exists in syntax
+    if (!(propertyName in elevate.syntax.sequences)) {
+        throw new Error(`Invalid property: ${propertyName}`);
+    }
+
+    const property = elevate.syntax.sequences[propertyName as elevate.ValidProperties];
+
+    // Get modifier value (third token)
+    const modifierValue = tokens[2].image;
+
+    
+    // For now, assume it's a color modifier
+    // Check if value is valid for color modifier
+    if (!property.modifiers.color.allowedValues.includes(modifierValue as elevate.ValidColorValues)) {
+        throw new Error(`Invalid color value: ${modifierValue}`);
+    }
+
     return {
         type: "utility",
-        name: tokens[0].image,
-        value: tokens[2].image
+        property: propertyName,
+        modifiers: {
+            color: modifierValue
+        }
     };
 }
 
