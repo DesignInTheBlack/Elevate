@@ -1,77 +1,91 @@
-import { createToken, Lexer, IToken, TokenType } from "chevrotain";
-import * as elevate from './features/syntax.js';
+import { createToken, Lexer, CstParser, CstNode, IToken } from "chevrotain";
 
-// Define our AST types
-type UtilityNode = {
-    type: 'utility';
-    property: string;
-    modifiers: {
-        [key: string]: string; // e.g. { color: 'blue' }
-    }
-};
+// Core Token Definitions
+const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
+const Modifier = createToken({ name: "Modifier", pattern: /[a-zA-Z0-9]+/ });
+const Colon = createToken({ name: "Colon", pattern: /:/ });
 
-type ASTNode = UtilityNode;
+// Combine Tokens into Vocabulary
+const tokens = [Property, Colon, Modifier];
 
-// Token definitions
-const Property = createToken({
-    name: "Property",
-    pattern: /[a-z]+/
-});
+// Initialize Lexer
+const lexer = new Lexer(tokens);
 
-const Colon = createToken({
-    name: "Colon", 
-    pattern: /:/
-});
+// Parser Definition
+class ElevateParser extends CstParser {
+    // Explicitly declare the `propertyDefinition` method to make TypeScript happy
+    public propertyDefinition!: () => CstNode;
 
-const ModifierValue = createToken({
-    name: "ModifierValue",
-    pattern: /[a-z][a-z0-9]*/
-});
+    constructor() {
+        super(tokens);
+        const $ = this;
 
-const allTokens: TokenType[] = [
-    Property,
-    Colon,
-    ModifierValue
-];
+        // Define the "propertyDefinition" rule
+        $.RULE("propertyDefinition", () => {
+            $.CONSUME(Property);
+            $.MANY(() => {
+                $.CONSUME(Colon);
+                $.CONSUME(Modifier);
+        });
+        });
 
-const lexer = new Lexer(allTokens, {positionTracking: "onlyOffset"});
-
-function parseToAST(input: string): ASTNode {
-    const tokenResult = lexer.tokenize(input);
-    
-    if (tokenResult.errors.length > 0) {
-        throw new Error(`Lexing errors encountered: ${tokenResult.errors}`);
-    }
-    
-    const tokens: IToken[] = tokenResult.tokens;
-    
-    // Get property name (first token)
-    const propertyName = tokens[0].image;
-    
-    // Check if property exists in syntax
-    if (!(propertyName in elevate.syntax.sequences)) {
-        throw new Error(`Invalid property: ${propertyName}`);
+        // Perform self-analysis to initialize the parser
+        this.performSelfAnalysis();
     }
 
-    const property = elevate.syntax.sequences[propertyName as elevate.ValidProperties];
+   // Convert CST to AST
+   public toAst(cst: CstNode): any {
+    // Extract the `Property` and `Modifier` nodes
+    const propertyNode = cst.children.Property[0];
+    const modifierNode = cst.children.Modifier[0];
 
-    // Get modifier value (third token)
-    const modifierValue = tokens[2].image;
-
-    
-    // For now, assume it's a color modifier
-    // Check if value is valid for color modifier
-    if (!property.modifiers.color.allowedValues.includes(modifierValue as elevate.ValidColorValues)) {
-        throw new Error(`Invalid color value: ${modifierValue}`);
+    // Type guard to ensure these are tokens, not nested CST nodes
+    if (propertyNode && "image" in propertyNode) {
+        return {
+            type: "Class Utility",
+            property: (propertyNode as IToken).image, // Cast propertyNode to IToken to access .image
+            modifier: (modifierNode as IToken).image  // Cast modifierNode to IToken to access .image
+        };
+    } else {
+        throw new Error("Expected tokens for Property and Modifier, but found something else.");
     }
-
-    return {
-        type: "utility",
-        property: propertyName,
-        modifiers: {
-            color: modifierValue
-        }
-    };
 }
 
-export { parseToAST, type ASTNode, type UtilityNode };
+    // Parse method to return the CST from the main rule
+    public parse(inputTokens: any): CstNode | undefined {
+        this.input = inputTokens;
+        const cst = this.propertyDefinition(); // Parse the main rule
+        if (this.errors.length > 0) {
+            console.error("Parsing errors detected:", this.errors);
+            return undefined;
+        }
+        return cst;
+    }
+}
+
+// The compiler function
+export const elevateCompiler = (input: string): void => {
+    const parser = new ElevateParser();
+    const result = lexer.tokenize(input);
+
+    // Check for lexing errors
+    if (result.errors.length > 0) {
+        console.error("Lexing errors detected:", result.errors);
+        return;
+    }
+
+    // Parse and get the CST
+    const cst = parser.parse(result.tokens);
+
+    if (!cst) {
+        console.error("Failed to parse input. Parsing errors:", parser.errors);
+        return;
+    }
+
+    //Convert CST to AST
+    const ast = parser.toAst(cst)
+
+    // Output the CST
+    console.log("", JSON.stringify(ast, null, 2));
+};
+
