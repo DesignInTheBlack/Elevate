@@ -13,11 +13,11 @@ import {LetterSpacingToken} from "./design/typography.js";
 
 // Core Token Definitions
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
-const Modifier = createToken({ name: "Modifier", pattern: /[a-zA-Z0-9]+/ });
-const Colon = createToken({ name: "Colon", pattern: /:/ });
+const Modifier = createToken({name: "ColonModifier",pattern: /:[a-zA-Z][a-zA-Z0-9_-]*/});
 
 // Combine Tokens into Vocabulary
-const tokens = [Property, Colon, Modifier];
+const tokens = [Property, Modifier];
+
 
 // Initialize Lexer
 const lexer = new Lexer(tokens);
@@ -34,50 +34,56 @@ class ElevateParser extends CstParser {
         // Define the "propertyDefinition" rule
         $.RULE("propertyDefinition", () => {
             $.CONSUME(Property);
-            $.MANY(() => {
-                $.CONSUME(Colon);
-                $.CONSUME(Modifier);
-        });
+            $.MANY(() => {  
+                $.CONSUME(Modifier) 
+            });
         });
 
         // Perform self-analysis to initialize the parser
         this.performSelfAnalysis();
     }
 
-   // Convert CST to AST
-   public toAst(cst: CstNode): any {
-    // Extract the `Property` and `Modifier` nodes
-    const propertyNode = cst.children.Property[0];
-    const modifierNode = cst.children.Modifier[0];
-
-    // Type guard to ensure these are tokens, not nested CST nodes
-    if (propertyNode && "image" in propertyNode) {
-        return {
-            type: "Class Utility",
-            property: (propertyNode as IToken).image, // Cast propertyNode to IToken to access .image
-            modifier: (modifierNode as IToken).image  // Cast modifierNode to IToken to access .image
-        };
-    } else {
-        throw new Error("Expected tokens for Property and Modifier, but found something else.");
+    public toAst(cst: CstNode): any {
+        // Extract the `Property` token
+        const propertyNode = cst.children.Property[0];
+        // Access `ColonModifier` tokens instead of `Modifier`
+        const modifierNodes = cst.children.ColonModifier || [];
+        // Access Original User Input
+        const inputNode = (cst as any).class;
+    
+        // Type guard to ensure these are tokens, not nested CST nodes
+        if (propertyNode && "image" in propertyNode) {
+            return {
+                type: "Stateless Class",
+                class:inputNode,
+                property: (propertyNode as IToken).image,
+                modifiers: modifierNodes
+                    .filter((modifier): modifier is IToken => "image" in modifier) // Type guard to keep only IToken elements
+                    .map((modifier) => modifier.image.replace(":", "")) // Remove the leading colon from each modifier's image
+            };
+        } else {
+            throw new Error("Expected tokens for Property and ColonModifier, but found something else.");
+        }
     }
-}
+    
 
     // Parse method to return the CST from the main rule
-    public parse(inputTokens: any): CstNode | undefined {
+    public parse(inputTokens: any, className: string): CstNode | undefined {
         this.input = inputTokens;
         const cst = this.propertyDefinition(); // Parse the main rule
         if (this.errors.length > 0) {
             console.error("Parsing errors detected:", this.errors);
             return undefined;
         }
+        (cst as any).class = className;
         return cst;
     }
 }
 
 // The compiler function
-export const elevateCompiler = (input: string): void => {
+export const elevateCompiler = (className: string): void => {
     const parser = new ElevateParser();
-    const result = lexer.tokenize(input);
+    const result = lexer.tokenize(className);
 
     // Check for lexing errors
     if (result.errors.length > 0) {
@@ -86,8 +92,9 @@ export const elevateCompiler = (input: string): void => {
     }
 
     // Parse and get the CST
-    const cst = parser.parse(result.tokens);
-
+    const cst = parser.parse(result.tokens,className);
+    console.log("", JSON.stringify(cst, null, 2));
+  
     if (!cst) {
         console.error("Failed to parse input. Parsing errors:", parser.errors);
         return;
@@ -96,7 +103,7 @@ export const elevateCompiler = (input: string): void => {
     //Convert CST to AST
     const ast = parser.toAst(cst)
 
-    // Output the CST
+    // Output the AST
     console.log("", JSON.stringify(ast, null, 2));
 };
 
