@@ -14,3 +14,5 @@ export const buffer: Record<BreakpointToken, SpacingToken> = {
     '4xl': 'c12',
     '5xl': 'c12'
 };
+
+export type BufferToken = typeof buffer;

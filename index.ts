@@ -1,4 +1,3 @@
-import { parseToAST } from './elevate/parser';
+import { elevateCompiler } from './elevate/parser';
 
-const result = parseToAST('text:blue:small');
-console.log(result);
+elevateCompiler('text:blue:h1');

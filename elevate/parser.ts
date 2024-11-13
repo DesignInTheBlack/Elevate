@@ -1,4 +1,15 @@
+// Import Chevrotain
 import { createToken, Lexer, CstParser, CstNode, IToken } from "chevrotain";
+
+// Import Design System Key/Value Pairs
+import {BreakpointToken} from "./design/breakpoints.js"
+import {BufferToken} from "./design/buffer.js";
+import {ColorToken} from "./design/colors.js"
+import {SpacingToken} from "./design/spacing.js"
+import {FontSizeToken} from "./design/typography.js";
+import {FontFamilyToken } from "./design/typography.js";
+import {LineHeightToken} from "./design/typography.js";
+import {LetterSpacingToken} from "./design/typography.js";
 
 // Core Token Definitions
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });

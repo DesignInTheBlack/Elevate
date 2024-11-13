@@ -48,11 +48,11 @@ export const typography = {
       mono: 'Sk-Modernist-Mono',
       serif: 'PlayfairDisplay'
     }
-  };
+  } as const;
   
   // For TypeScript type safety and autocomplete
-  export type FontSize = keyof typeof typography.size;
-  export type LineHeight = keyof typeof typography.leading;
-  export type LetterSpacing = keyof typeof typography.tracking;
-  export type Measure = keyof typeof typography.measure;
-  export type FontFamily = keyof typeof typography.family;
+  export type FontSizeToken = keyof typeof typography.size;
+  export type LineHeightToken = keyof typeof typography.leading;
+  export type LetterSpacingToken = keyof typeof typography.tracking;
+  export type MeasureToken = keyof typeof typography.measure;
+  export type FontFamilyToken = keyof typeof typography.family;

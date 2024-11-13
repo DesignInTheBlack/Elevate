@@ -9,6 +9,6 @@ export const breakpoints = {
     '3xl': '120rem',  // 1920px - Full HD
     '4xl': '160rem',  // 2560px - 2K
     '5xl': '240rem'   // 3840px - 4K
-};
+} as const;
 
 export type BreakpointToken = keyof typeof breakpoints;
