@@ -1,7 +1,10 @@
-// Import Chevrotain
-import { createToken, Lexer, CstParser, CstNode, IToken } from "chevrotain";
+// Import Chevrotain and Utility Functions
+import { createToken, Lexer, CstParser, CstNode} from "chevrotain";
+import {toAst} from "./utility.js";
 
-// Import Design System Key/Value Pairs
+// Import Design System Key/Value Pairs -- Need to Implement Property/Modifier Map To Allow For Order Agnostic Modifier Handling
+// We'll achieve this by creating a config file that maps the specific properties to the modifiers they accept and their preferred types from the design system. 
+// This should in theory allow us to compile styles based on which modifier matches which token type. 
 import {BreakpointToken} from "./design/breakpoints.js"
 import {BufferToken} from "./design/buffer.js";
 import {ColorToken} from "./design/colors.js"
@@ -18,7 +21,6 @@ const Modifier = createToken({name: "ColonModifier",pattern: /:[a-zA-Z][a-zA-Z0-
 // Combine Tokens into Vocabulary
 const tokens = [Property, Modifier];
 
-
 // Initialize Lexer
 const lexer = new Lexer(tokens);
 
@@ -26,7 +28,6 @@ const lexer = new Lexer(tokens);
 class ElevateParser extends CstParser {
     // Explicitly declare the `propertyDefinition` method to make TypeScript happy
     public propertyDefinition!: () => CstNode;
-
     constructor() {
         super(tokens);
         const $ = this;
@@ -42,42 +43,6 @@ class ElevateParser extends CstParser {
         // Perform self-analysis to initialize the parser
         this.performSelfAnalysis();
     }
-
-    public toAst(cst: CstNode): any {
-        // Extract the `Property` token
-        const propertyNode = cst.children.Property[0];
-        // Access `ColonModifier` tokens instead of `Modifier`
-        const modifierNodes = cst.children.ColonModifier || [];
-        // Access Original User Input
-        const inputNode = (cst as any).class;
-    
-        // Type guard to ensure these are tokens, not nested CST nodes
-        if (propertyNode && "image" in propertyNode) {
-            return {
-                type: "Stateless Class",
-                class:inputNode,
-                property: (propertyNode as IToken).image,
-                modifiers: modifierNodes
-                    .filter((modifier): modifier is IToken => "image" in modifier) // Type guard to keep only IToken elements
-                    .map((modifier) => modifier.image.replace(":", "")) // Remove the leading colon from each modifier's image
-            };
-        } else {
-            throw new Error("Expected tokens for Property and ColonModifier, but found something else.");
-        }
-    }
-    
-
-    // Parse method to return the CST from the main rule
-    public parse(inputTokens: any, className: string): CstNode | undefined {
-        this.input = inputTokens;
-        const cst = this.propertyDefinition(); // Parse the main rule
-        if (this.errors.length > 0) {
-            console.error("Parsing errors detected:", this.errors);
-            return undefined;
-        }
-        (cst as any).class = className;
-        return cst;
-    }
 }
 
 // The compiler function
@@ -91,19 +56,21 @@ export const elevateCompiler = (className: string): void => {
         return;
     }
 
-    // Parse and get the CST
-    const cst = parser.parse(result.tokens,className);
-    console.log("", JSON.stringify(cst, null, 2));
-  
-    if (!cst) {
-        console.error("Failed to parse input. Parsing errors:", parser.errors);
+    // Set the input tokens for the parser
+    parser.input = result.tokens;
+
+    // Parse the input by calling the parser's rule directly
+    const cst = parser.propertyDefinition();
+    (cst as any).className = className;
+
+    if (parser.errors.length > 0) {
+        console.error("Parsing errors detected:", parser.errors);
         return;
     }
 
-    //Convert CST to AST
-    const ast = parser.toAst(cst)
+    // Convert CST to AST
+    const ast = toAst(cst); // Call toAst directly, not as a method of parser
 
     // Output the AST
-    console.log("", JSON.stringify(ast, null, 2));
+    console.log("AST:", JSON.stringify(ast, null, 2));
 };
-
