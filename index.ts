@@ -1,3 +1,3 @@
 import { elevateCompiler } from './elevate/parser';
 
-elevateCompiler('text:blue:h1');
+elevateCompiler('row:h-center:v-start');
