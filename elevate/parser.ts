@@ -1,18 +1,8 @@
 // Import Chevrotain and Utility Functions
 import { createToken, Lexer, CstParser, CstNode} from "chevrotain";
-import {toAst} from "./utility.js";
+import {toAst,getModifierType} from "./utility.js";
 
-// Import Design System Key/Value Pairs -- Need to Implement Property/Modifier Map To Allow For Order Agnostic Modifier Handling
-// We'll achieve this by creating a config file that maps the specific properties to the modifiers they accept and their preferred types from the design system. 
-// This should in theory allow us to compile styles based on which modifier matches which token type. 
-import {BreakpointToken} from "./design/breakpoints.js"
-import {BufferToken} from "./design/buffer.js";
-import {ColorToken} from "./design/colors.js"
-import {SpacingToken} from "./design/spacing.js"
-import {FontSizeToken} from "./design/typography.js";
-import {FontFamilyToken } from "./design/typography.js";
-import {LineHeightToken} from "./design/typography.js";
-import {LetterSpacingToken} from "./design/typography.js";
+
 
 // Core Token Definitions
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
@@ -55,6 +45,14 @@ export const elevateCompiler = (className: string): void => {
         console.error("Lexing errors detected:", result.errors);
         return;
     }
+    
+    //Modifier Type Check Here
+    console.log("Modifiers found during lexing:");
+    result.tokens.slice(1).forEach(token => {
+        let x = getModifierType(token.image.replace(":", ""));
+        console.log(x)
+    });
+
 
     // Set the input tokens for the parser
     parser.input = result.tokens;
