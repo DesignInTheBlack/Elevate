@@ -36,7 +36,7 @@ class ElevateParser extends CstParser {
 }
 
 // The compiler function
-export const elevateCompiler = (className: string): void => {
+export const elevateCompiler = (className: string): any => {
     const parser = new ElevateParser();
     const result = lexer.tokenize(className);
 
@@ -62,5 +62,5 @@ export const elevateCompiler = (className: string): void => {
     const ast = toAst(cst); // Call toAst directly, not as a method of parser
 
     // Output the AST
-    console.log("AST:", JSON.stringify(ast, null, 2));
+    return(JSON.stringify(ast, null, 2));
 };
