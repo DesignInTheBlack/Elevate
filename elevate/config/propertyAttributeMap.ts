@@ -1,6 +1,6 @@
 
 //Attribute Mapping
-const propertyAttributeMap = {
+export const propertyAttributeMap = {
     //Text Properties
     text: {
         "font-size":"FontSizeToken",
@@ -8,3 +8,8 @@ const propertyAttributeMap = {
         "font-weight":"FontWeightToken"
     }
 }
+
+
+
+export type propertyMap = keyof typeof propertyAttributeMap;
+export const propertyKeys = Object.keys(propertyAttributeMap) as propertyMap[];

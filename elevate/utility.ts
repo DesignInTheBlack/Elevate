@@ -2,7 +2,10 @@
 // We'll achieve this by creating a config file that maps the specific properties to the modifiers they accept and their preferred types from the design system. 
 // This should in theory allow us to compile styles based on which modifier matches which token type. 
 
-//These made require separate validation
+
+//Import Property Map
+import {propertyAttributeMap,propertyMap,propertyKeys} from "./config/propertyAttributeMap.js";
+//These may require separate validation
 import {BreakpointToken} from "./design/breakpoints.js"
 import {BufferToken} from "./design/buffer.js";
 //Modifier Validation
@@ -12,21 +15,6 @@ import {FontSizeToken,typography} from "./design/typography.js";
 import {FontFamilyToken} from "./design/typography.js";
 import {LineHeightToken} from "./design/typography.js";
 import {LetterSpacingToken} from "./design/typography.js";
-
-
-export function toAst(cst: any) {
-    if (!cst) {
-        throw new Error("No CST to convert.");
-    }
-    // For demonstration purposes, just converting to a basic AST structure
-    return {
-        type: "Stateless Class",
-        className: cst.className,
-        property: cst.children.Property[0].image,
-        modifiers: cst.children.ColonModifier.map((mod: any) => mod.image.replace(":", "")),
-    };
-}
-
 
 export function getModifierType(modifier: string): string | null {
     const types = {
@@ -46,3 +34,56 @@ export function getModifierType(modifier: string): string | null {
 
     return "Undefined"; // No match found
 }
+
+
+
+export function mapModifierType(
+    modifier: string,
+    property: string,
+    keys: typeof propertyAttributeMap
+  ): Record<string, string> | string {
+    // Check if the property is included in the map
+    
+    
+    function isPropertyIncluded(property: string): property is propertyMap {
+        return property in keys;
+    }
+  
+    // If the property exists, return the object from the map
+    if (isPropertyIncluded(property)) {
+      
+        let match = keys[property]
+        const key = Object.keys(match).find((k) => match[k as keyof typeof match] === modifier) || "no-match";
+        return key
+
+    } else {
+
+      return "no match!";
+      
+    }
+  }
+
+
+
+export function toAst(cst: any) {
+    if (!cst) {
+        throw new Error("No CST to convert.");
+    }
+
+    return {
+        type: "Stateless Class",
+        className: cst.className,
+        property: cst.children.Property[0].image,
+        modifiers: cst.children.ColonModifier.map((mod: any) => {
+
+        let modType = getModifierType(mod.image.replace(":", ""));
+        let property = cst.children.Property[0].image
+
+        return mapModifierType(modType,property,propertyAttributeMap) + ": " + mod.image.replace(":", "")
+        
+        }),
+    };
+}
+
+
+
