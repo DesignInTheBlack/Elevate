@@ -46,14 +46,6 @@ export const elevateCompiler = (className: string): void => {
         return;
     }
     
-    //Modifier Type Check Here
-    console.log("Modifiers found during lexing:");
-    result.tokens.slice(1).forEach(token => {
-        let x = getModifierType(token.image.replace(":", ""));
-        console.log(x)
-    });
-
-
     // Set the input tokens for the parser
     parser.input = result.tokens;
 
