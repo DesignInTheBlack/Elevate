@@ -48,6 +48,6 @@ function compileToCSS(input) {
   }
   
 
-let x = elevateCompiler('text:h1:purple');
-console.log(compileToCSS(x));
+let x = elevateCompiler('text:purple:small');
+console.log("Compiled Class:" + '\n' + compileToCSS(x));
 
