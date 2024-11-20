@@ -1,15 +1,18 @@
 // Import Chevrotain and Utility Functions
 import { createToken, Lexer, CstParser, CstNode} from "chevrotain";
-import {toAst,getModifierType} from "./utility.js";
+import {toAst} from "./utility.js";
 
 
 
 // Core Token Definitions
+const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
+const openState = createToken({ name: "openState", pattern: /\[/ });
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
 const Modifier = createToken({name: "ColonModifier",pattern: /:[a-zA-Z][a-zA-Z0-9_-]*/});
+const closeState = createToken({name: "closeState",pattern: /\]/ });
 
 // Combine Tokens into Vocabulary
-const tokens = [Property, Modifier];
+const tokens = [State,openState,Property,Modifier,closeState];
 
 // Initialize Lexer
 const lexer = new Lexer(tokens);
@@ -22,11 +25,24 @@ class ElevateParser extends CstParser {
         super(tokens);
         const $ = this;
 
-        // Define the "propertyDefinition" rule
         $.RULE("propertyDefinition", () => {
+            // Handle the optional State, openState, and closeState group
+            $.OPTION(() => {
+                $.CONSUME(State);
+                $.CONSUME(openState);
+            });
+        
+            // Consume the Property token
             $.CONSUME(Property);
-            $.MANY(() => {  
-                $.CONSUME(Modifier) 
+        
+            // Consume zero or more Modifiers
+            $.MANY(() => {
+                $.CONSUME(Modifier);
+            });
+        
+            // Ensure the input ends after parsing
+            $.OPTION2(() => {
+                $.CONSUME(closeState); // Catch any dangling closeState
             });
         });
 
@@ -48,6 +64,7 @@ export const elevateCompiler = (className: string): any => {
     
     // Set the input tokens for the parser
     parser.input = result.tokens;
+    console.log(result.tokens);
 
     // Parse the input by calling the parser's rule directly
     const cst = parser.propertyDefinition();
@@ -59,6 +76,7 @@ export const elevateCompiler = (className: string): any => {
     }
 
     // Convert CST to AST
+    console.log(cst);
     const ast = toAst(cst); // Call toAst directly, not as a method of parser
 
     // Output the AST

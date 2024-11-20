@@ -49,5 +49,6 @@ function compileToCSS(input) {
   
 
 let x = elevateCompiler('text:purple:small');
-console.log("Compiled Class:" + '\n' + compileToCSS(x));
+console.log(x);
+// console.log("Compiled Class:" + '\n' + compileToCSS(x));
 

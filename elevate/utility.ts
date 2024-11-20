@@ -79,8 +79,10 @@ export function toAst(cst: any) {
     }
 
     return {
-        type: "Stateless Class",
+       
+        type:  cst.children.stateFlag? "Stateful Class" : "Stateless Class",
         className: cst.className,
+        state:cst.children.stateFlag? cst.children.stateFlag[0].image.replace("@", "").replace(":", "") : null,
         property: cst.children.Property[0].image,
 
         modifiers: cst.children.ColonModifier.map((mod: any) => {
