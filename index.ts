@@ -1,6 +1,7 @@
 import { elevateCompiler } from './elevate/parser';
+import findClassAttributes from './elevate/scan';
 
-
+//Legacy Compile to CSS (To Be Reformatted and Expanded)
 function compileToCSS(input) {
     let obj;
   
@@ -46,9 +47,35 @@ function compileToCSS(input) {
     // Build the CSS rule
     return `.${escapedClassName} {\n  ${cssProperties}\n}`;
   }
-  
 
-let x = elevateCompiler('text:purple:small');
-console.log(x);
+//Scan Files and Retrieve Class Lists.
+const scannedClasses = findClassAttributes('./', ['html']);
+
+function structureClasses(instance, index) {
+  let lastBreak = '';
+  console.log("---Parsing Individual Class List---")
+  let classList = instance.classes;
+
+  classList.forEach(function(classString,index) {
+    const regex = /\/[a-zA-Z]+\//;
+    //Mobile First Breakpoint Processing
+    if (regex.test(classString)) {
+      lastBreak=classString
+      return
+    }
+    
+    let classObject = elevateCompiler(classString)
+    classObject.breakpoint = lastBreak;
+    console.log(classObject);
+  })
+}
+
+scannedClasses.forEach(structureClasses)
+
+
+
+  
+// let x = elevateCompiler('text:purple:small');
+// console.log(x);
 // console.log("Compiled Class:" + '\n' + compileToCSS(x));
 

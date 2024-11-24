@@ -64,7 +64,6 @@ export const elevateCompiler = (className: string): any => {
     
     // Set the input tokens for the parser
     parser.input = result.tokens;
-    console.log(result.tokens);
 
     // Parse the input by calling the parser's rule directly
     const cst = parser.propertyDefinition();
@@ -75,10 +74,8 @@ export const elevateCompiler = (className: string): any => {
         return;
     }
 
-    // Convert CST to AST
-    console.log(cst);
     const ast = toAst(cst); // Call toAst directly, not as a method of parser
 
     // Output the AST
-    return(JSON.stringify(ast, null, 2));
+    return ast;
 };
