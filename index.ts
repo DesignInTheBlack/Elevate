@@ -1,62 +1,30 @@
 import { elevateCompiler } from './elevate/parser';
 import findClassAttributes from './elevate/scan';
+import { breakpoints, BreakpointToken } from './elevate/design/breakpoints';
 
-//Legacy Compile to CSS (To Be Reformatted and Expanded)
-function compileToCSS(input) {
-    let obj;
-  
-    // Parse JSON string if the input is not an object
-    if (typeof input === "string") {
-      try {
-        obj = JSON.parse(input);
-      } catch (error) {
-        throw new Error("Invalid JSON string provided.");
-      }
-    } else if (typeof input === "object" && input !== null) {
-      obj = input;
-    } else {
-      throw new Error("Invalid input: Must be a JSON string or an object.");
-    }
-  
-    // Validate required properties
-    const { type, className, modifiers } = obj;
-  
-    if (type !== "Stateless Class") {
-      throw new Error("Invalid type: Only 'Stateless Class' objects are supported.");
-    }
-  
-    if (!className || typeof className !== "string") {
-      throw new Error("Invalid input: 'className' must be a non-empty string.");
-    }
-  
-    if (!Array.isArray(modifiers) || modifiers.length === 0) {
-      throw new Error("Invalid input: 'modifiers' must be a non-empty array.");
-    }
-  
-    // Escape colons in className for valid CSS
-    const escapedClassName = className.replace(/:/g, "\\:");
-  
-    // Join modifiers into CSS properties
-    const cssProperties = modifiers
-      .map(mod => {
-        const [property, value] = mod.split(":").map(str => str.trim());
-        return `${property}: ${value};`;
-      })
-      .join("\n  ");
-  
-    // Build the CSS rule
-    return `.${escapedClassName} {\n  ${cssProperties}\n}`;
-  }
+
 
 //Scan Files and Retrieve Class Lists.
 const scannedClasses = findClassAttributes('./', ['html']);
 
-function structureClasses(instance, index) {
+//Define Compiled Classes Type Interface - Need to Specify In Future
+let compiledClasses: any[] = [];
+
+//Breakpoint Sorting Function
+function getBreakpointPriority(breakpoint: string): number {
+  // Remove the slashes from the breakpoint string (e.g., "/sm/" -> "sm")
+  const clean = breakpoint.replace(/\//g, '') as BreakpointToken;
+  
+  // Get the index from the breakpoints object
+  return Object.keys(breakpoints).indexOf(clean);
+}
+
+
+function structureClasses(instance) {
   let lastBreak = '';
-  console.log("---Parsing Individual Class List---")
   let classList = instance.classes;
 
-  classList.forEach(function(classString,index) {
+  classList.forEach(function(classString) {
     const regex = /\/[a-zA-Z]+\//;
     //Mobile First Breakpoint Processing
     if (regex.test(classString)) {
@@ -66,11 +34,22 @@ function structureClasses(instance, index) {
     
     let classObject = elevateCompiler(classString)
     classObject.breakpoint = lastBreak;
-    console.log(classObject);
+    compiledClasses.push(classObject)
   })
 }
 
-scannedClasses.forEach(structureClasses)
+scannedClasses.map(structureClasses)
+
+//Apply the Breakpoint Sorting Function to the Compiled Classes
+compiledClasses.sort((a, b) => {
+  // Handle empty breakpoints (put them first)
+  if (!a.breakpoint) return -1;
+  if (!b.breakpoint) return 1;
+  
+  return getBreakpointPriority(a.breakpoint) - getBreakpointPriority(b.breakpoint);
+});
+
+console.log(compiledClasses)
 
 
 

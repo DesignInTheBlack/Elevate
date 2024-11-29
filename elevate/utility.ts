@@ -1,6 +1,11 @@
-// Import Design System Key/Value Pairs -- Need to Implement Property/Modifier Map To Allow For Order Agnostic Modifier Handling
-// We'll achieve this by creating a config file that maps the specific properties to the modifiers they accept and their preferred types from the design system. 
-// This should in theory allow us to compile styles based on which modifier matches which token type. 
+
+//Limit Stack Trace to avoid overly robust errors - Revisit In Future.
+Error.stackTraceLimit = 0; 
+
+process.on('uncaughtException', (err) => {
+    console.log('\x1b[31m%s\x1b[0m', err.message);  // Red color
+    process.exit(1);
+});
 
 //Import Property Map
 import {propertyAttributeMap,propertyMap,propertyKeys} from "./config/propertyAttributeMap.js";
@@ -31,7 +36,7 @@ export function getModifierType(modifier: string): string | null {
         }
     }
 
-    return "Undefined";
+    throw new Error(`Unable to find type for modifier: ${modifier}`);
 }
 
 export function getModifierValue(modifier:string): string | null {
@@ -41,7 +46,7 @@ export function getModifierValue(modifier:string): string | null {
         }
     }
 
-    return "Undefined";
+    throw new Error(`Unable to find matching value for modifier: ${modifier}`);
 }
 
 
@@ -49,7 +54,7 @@ export function getRuleName(
     modifier: string,
     property: string,
     keys: typeof propertyAttributeMap
-  ): Record<string, string> | string {
+  ): string {
 
 
     // Check if the property is included in the map
