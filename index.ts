@@ -29,17 +29,19 @@ function establishBreakpoints(instance) {
     let classList = instance.classes;
 
     classList.forEach(function (classString) {
+        
+        if (!classString.includes("$")) {
         const regex = /\/[a-zA-Z]+\//;
-
         // ════ Mobile-First Breakpoint Processing ════
         if (regex.test(classString)) {
             lastBreak = classString;
             return;
         }
-
         let classObject = elevateCompiler(classString);
         classObject.breakpoint = lastBreak;
+
         compiledClasses.push(classObject);
+      }
     });
 }
 
