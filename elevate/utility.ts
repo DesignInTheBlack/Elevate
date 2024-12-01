@@ -101,6 +101,9 @@ export function toAst(cst: any) {
         throw new Error("No CST to convert.");
     }
 
+    const directions = ["left", "top", "right", "bottom"];
+    let directionIndex = 0;
+
     return {
         type: cst.children.stateFlag ? "Stateful Class" : "Stateless Class",
         className: cst.className,
@@ -111,19 +114,49 @@ export function toAst(cst: any) {
         }),
         property: cst.children.Property[0].image,
 
-        modifiers: cst.children.ColonModifier.map((mod: any) => {
-            let modifier = mod.image.replace(":", "");
+        modifiers: (() => {
             let property = cst.children.Property[0].image;
-            let modType = getModifierType(modifier);
 
-            let constructedRule =
-                getRuleName(modType, property, propertyAttributeMap) +
-                ": " +
-                getModifierValue(modifier);
-            return constructedRule;
-        }),
+            // Preprocess only for p or m
+            const modifiers =
+                property === "p" || property === "m"
+                    ? preprocessModifiers(cst.children.ColonModifier)
+                    : cst.children.ColonModifier;
+
+            return modifiers.map((mod: any, index: number) => {
+                let modifier = mod.image.replace(":", "");
+                let modType = "";
+
+                if (property === "p" || property === "m") {
+                    // Assign unique directions iteratively for properties p and m
+                    modType = directions[index % directions.length];
+                } else {
+                    modType = getModifierType(modifier);
+                }
+
+                let constructedRule =
+                    getRuleName(modType, property, propertyAttributeMap) +
+                    ": " +
+                    getModifierValue(modifier);
+                return constructedRule;
+            });
+        })(),
     };
 }
+
+// Preprocess the modifiers array for directional utilities.
+function preprocessModifiers(modifiers: any[]): any[] {
+    if (modifiers.length === 1) {
+        // Expand a single value to all four sides
+        return Array(4).fill(modifiers[0]);
+    } else if (modifiers.length === 2) {
+        // Expand two values: first for left/right, second for top/bottom
+        return [modifiers[0], modifiers[1], modifiers[0], modifiers[1]];
+    }
+    // Default: no preprocessing if already 4 values
+    return modifiers;
+}
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  6. BREAKPOINT PRIORITY FUNCTION                  ║

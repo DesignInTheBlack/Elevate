@@ -1,14 +1,24 @@
 
-.text\:purple\:h1 {
+.p\:d1\:d2 {
 
-color: #6320EE;
-font-size: 7.594rem;
+padding-left: 0.25rem;
+padding-top: 0.5rem;
+padding-right: 0.25rem;
+padding-bottom: 0.5rem;
 }
 
 
-.row\:h-center\:v-center {
-display:flex;
-flex-direction:row;
-justify-content: center;
-align-items: center;
+.text\:h1\:purple {
+
+font-size: 7.594rem;
+color: #6320EE;
+}
+
+
+.p\:d1 {
+
+padding-left: 0.25rem;
+padding-top: 0.25rem;
+padding-right: 0.25rem;
+padding-bottom: 0.25rem;
 }
