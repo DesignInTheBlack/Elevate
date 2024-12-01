@@ -56,7 +56,7 @@ const extractClasses = (content, classList, filePath) => {
  * @param {Array<string>} fileTypes - File extensions to scan for (e.g., ['html', 'jsx', 'tsx'])
  * @returns {Array<Object>} - Array of objects with file and class lists
  */
-const findClassAttributes = (startDir = process.cwd(), fileTypes = ['html', 'jsx', 'tsx', 'astro']) => {
+export function findClassAttributes (startDir = process.cwd(), fileTypes = ['html', 'jsx', 'tsx', 'astro'])  {
     try {
         return searchFiles(startDir, fileTypes);
     } catch (err) {
@@ -65,6 +65,5 @@ const findClassAttributes = (startDir = process.cwd(), fileTypes = ['html', 'jsx
     }
 };
 
-// Export the main function as the default export
-export default findClassAttributes;
+
 

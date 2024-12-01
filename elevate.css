@@ -1,0 +1,21 @@
+
+.text\:h3\:green {
+font-size: 3.375rem;
+color: #81C14B;
+}
+
+
+.text\:h3\:purple {
+font-size: 3.375rem;
+color: #6320EE;
+}
+
+
+.\@hover\:\[text\:warn\]:hover {
+color: #F7B538;
+}
+
+
+.\@hover\:\[text\:warn\]:hover {
+color: #F7B538;
+}
