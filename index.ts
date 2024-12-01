@@ -66,23 +66,32 @@ compiledClasses.sort((a, b) => {
 // ║                       6. OUTPUT RESULTS                            ║
 // ║ Compile the results into a CSS file                                ║
 // ╚════════════════════════════════════════════════════════════════════╝
-compiledClasses = compiledClasses.map((item) => {
-    // Helper function to escape special characters in class names
-    const escapeClassName = (className) => {
-      return className
-        .replace(/@/g, '\\@') // Escape '@'
-        .replace(/:/g, '\\:') // Escape ':'
-        .replace(/\[/g, '\\[') // Escape '['
-        .replace(/\]/g, '\\]'); // Escape ']'
-    };
-  
-    // Generate the rule
-    return `
-.${escapeClassName(item.className)}${item.state ? `:${item.state}` : ``} {
-${item.modifiers.map(modifier => `${modifier};`).join('\n')}
-}`;
-  });
 
+// Helper function to escape special characters in class names
+const escapeClassName = (className) => 
+  className.replace(/[@:\[\]]/g, (match) => `\\${match}`); // Escape special characters
+
+// Function to generate a compiled class rule
+const generateClassRule = (item) => {
+  const stateSelector = item.state ? `:${item.state}` : "";
+  const flexProperties = 
+    item.property === "row"
+      ? "display:flex;\nflex-direction:row;"
+      : item.property === "stack"
+      ? "display:flex;\nflex-direction:column;"
+      : "";
+
+  const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
+
+  return `
+.${escapeClassName(item.className)}${stateSelector} {
+${flexProperties}
+${modifiers}
+}`;
+};
+
+// Transform compiled classes
+compiledClasses = compiledClasses.map(generateClassRule);
 
 const compiledCSS = compiledClasses.join('\n\n');
 writeToFile(compiledCSS);

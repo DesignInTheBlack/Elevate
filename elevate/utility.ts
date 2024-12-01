@@ -6,7 +6,6 @@ const path = './elevate.css';
 // ║ Setup error stack trace limit and uncaught exception handler.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 Error.stackTraceLimit = 0;
-
 process.on('uncaughtException', (err) => {
     console.log('\x1b[31m%s\x1b[0m', err.message); // Red color
     process.exit(1);
@@ -16,20 +15,22 @@ process.on('uncaughtException', (err) => {
 // ║                  2. MODULE IMPORTS                                ║
 // ║ Import configurations, tokens, and utilities.                     ║
 // ╚════════════════════════════════════════════════════════════════════╝
-import { propertyAttributeMap, propertyMap, propertyKeys } from "./config/propertyAttributeMap.js";
-import { breakpoints, BreakpointToken } from "./design/breakpoints.js";
-import { ColorToken, colors } from "./design/colors.js";
-import { SpacingToken, spacing } from "./design/spacing.js";
-import { FontSizeToken, typography } from "./design/typography.js";
-import { FontFamilyToken } from "./design/typography.js";
-import { LineHeightToken } from "./design/typography.js";
-import { LetterSpacingToken } from "./design/typography.js";
+import {propertyAttributeMap, propertyMap} from "./config/propertyAttributeMap.js";
+import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
+import {colors } from "./design/colors.js";
+import {spacing } from "./design/spacing.js";
+import {typography } from "./design/typography.js";
+import {flex} from './design/flex.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  3. TOKEN TYPES CONFIGURATION                     ║
 // ║ Map various tokens to their respective values for validation.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 const types = {
+    RowMainToken:flex.rowMain,
+    RowCrossToken:flex.rowCross,
+    ColMainToken:flex.colMain,
+    ColCrossToken:flex.colMain,
     ColorToken: colors,
     SpacingToken: spacing,
     FontSizeToken: typography.size,
