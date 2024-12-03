@@ -20,7 +20,7 @@ import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
 import {colors } from "./design/colors.js";
 import {spacing } from "./design/spacing.js";
 import {typography } from "./design/typography.js";
-import {flex} from './design/flex.js';
+import {flex} from './design/maps/flex.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  3. TOKEN TYPES CONFIGURATION                     ║

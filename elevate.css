@@ -12,6 +12,13 @@ padding-right: 1rem;
 padding-bottom: 1rem;
 }
 
+.border\:blue\:d2\:d4 {
+
+border-color: #0496FF;
+border-width: 0.5rem;
+border-width: 1rem;
+}
+
 @media only screen and (min-width:48rem) {
 .text\:h2\:purple {
 
