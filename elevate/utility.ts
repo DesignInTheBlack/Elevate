@@ -15,12 +15,14 @@ process.on('uncaughtException', (err) => {
 // ║                  2. MODULE IMPORTS                                ║
 // ║ Import configurations, tokens, and utilities.                     ║
 // ╚════════════════════════════════════════════════════════════════════╝
-import {propertyAttributeMap, propertyMap} from "./config/propertyAttributeMap.js";
+import {propertyAttributeMap, propertyMap} from "./maps/propertyAttributeMap.js";
+import {cssReset} from './config/reset.js';
+import { config } from './config/elevate.js';
 import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
-import {colors } from "./design/colors.js";
-import {spacing } from "./design/spacing.js";
-import {typography } from "./design/typography.js";
-import {flex} from './design/maps/flex.js';
+import {colors} from "./design/colors.js";
+import {spacing} from "./design/spacing.js";
+import {typography} from "./design/typography.js";
+import {flex} from './maps/flex.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  3. TOKEN TYPES CONFIGURATION                     ║
@@ -48,7 +50,7 @@ const types = {
 /**
  * Get the type of a modifier based on its key in the types map.
  */
-export function getModifierType(modifier: string): string | null {
+export function getModifierType(modifier: string): string {
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
             return typeName;
@@ -175,21 +177,16 @@ export function getBreakpointPriority(breakpoint: string): number {
 // ╚════════════════════════════════════════════════════════════════════╝
 
 export function writeToFile(content: string) {
-    const filePath = 'elevate.css'; // Define the file path
+    const filePath = `${config.Output}/elevate.css`; // Define the file path
   
-    // Check if the file exists
-    if (fs.existsSync(filePath)) {
-      console.log('File exists. Clearing contents...');
-      fs.writeFileSync(filePath, ''); // Clear the file by overwriting with an empty string
-      console.log('File cleared successfully.');
-    } else {
-      console.log('File does not exist. Creating it...');
-      fs.writeFileSync(filePath, ''); // Create an empty file
-      console.log('File created successfully.');
-    }
+    // Clear or create the file
+    fs.writeFileSync(filePath, '', 'utf8'); // Ensures a clean slate
+  
+    // Combine the reset CSS with the provided content
+    const completeContent = `${cssReset}\n\n${content}`;
   
     // Write to the file
-    fs.writeFile(filePath, content, (err: any) => {
+    fs.writeFile(filePath, completeContent, (err: any) => {
       if (err) {
         console.error('Error writing to the file:', err);
       } else {

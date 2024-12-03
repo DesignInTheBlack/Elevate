@@ -1,4 +1,4 @@
-
+export const cssReset = `
 /* CSS Reset */
 html {
   -moz-text-size-adjust: none;
@@ -70,39 +70,4 @@ textarea:not([rows]) {
 *, *::before, *::after {
   transition: all 0.3s ease; /* Catch-all transition */
 }
-
-
-.text\:white\:h2 {
-
-color: #F7F5FB;
-font-size: 5.062rem;
-}
-
-.m\:d4 {
-
-margin-left: 1rem;
-margin-top: 1rem;
-margin-right: 1rem;
-margin-bottom: 1rem;
-}
-
-.color\:purple {
-
-background-color: #6320EE;
-}
-
-.row\:h-center\:v-center {
-display:flex;
-flex-direction:row;
-justify-content: center;
-align-items: center;
-}
-
-@media only screen and (min-width:64rem) {
-.text\:pink\:h1 {
-
-color: #FD3E81;
-font-size: 7.594rem;
-}
-
-}
+`;

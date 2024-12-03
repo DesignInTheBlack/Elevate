@@ -2,18 +2,18 @@
 // ║                          MODULE IMPORTS                            ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-import { elevateCompiler } from './elevate/parser';
-import { findClassAttributes } from './elevate/scan';
-import { getBreakpointPriority } from './elevate/utility';
-import { writeToFile } from './elevate/utility';
-import { BreakpointToken } from './elevate/design/breakpoints';
-import { getModifierValue } from './elevate/utility';
+import { elevateCompiler } from './parser.js';
+import { findClassAttributes } from './scan.js';
+import { getBreakpointPriority } from './utility.js';
+import { writeToFile } from './utility.js';
+import { getModifierValue } from './utility.js';
+import { config } from './config/elevate.js'
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                        1. SCAN FILES                               ║
 // ║ Scan the files in the provided directory and retrieve class lists. ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const scannedClasses = findClassAttributes('./', ['html']);
+const scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  2. INITIALIZE DATA STRUCTURES                     ║

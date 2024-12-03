@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "tsx index.ts"
+    "start": "tsx elevate/index.ts"
   },
   "devDependencies": {
     "tsx": "^4.7.0",

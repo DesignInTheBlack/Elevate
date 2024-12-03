@@ -77,7 +77,6 @@ export const propertyAttributeMap = {
         "border-radius": "SpacingToken",
         "outline-color": "ColorToken",
         "outline-width": "SpacingToken",
-        "box-shadow": "ColorToken"  // shadow functionality
     }
 } as const;
 
