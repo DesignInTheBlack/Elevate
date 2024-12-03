@@ -23,6 +23,7 @@ import {colors} from "./design/colors.js";
 import {spacing} from "./design/spacing.js";
 import {typography} from "./design/typography.js";
 import {flex} from './maps/flex.js';
+import { border } from './maps/border.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  3. TOKEN TYPES CONFIGURATION                     ║
@@ -39,7 +40,11 @@ const types = {
     FontFamilyToken: typography.family,
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
-    BreakPointToken:breakpoints
+    BreakPointToken:breakpoints,
+    BorderWidthToken: border.width,  
+    BorderRadiusToken: border.radius, 
+    BorderStyleToken: border.style,
+    BorderColorToken: border.color
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -51,26 +56,47 @@ const types = {
  * Get the type of a modifier based on its key in the types map.
  */
 export function getModifierType(modifier: string): string {
+    // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
             return typeName;
         }
     }
+    
+    // If not found, try compound modifier format
+    const [prefix] = modifier.split('-');
+    for (const [typeName, values] of Object.entries(types)) {
+        if (`${prefix}-` in values) {
+            return typeName;
+        }
+    }
+    
     throw new Error(`Unable to find type for modifier: ${modifier}`);
 }
 
 /**
  * Get the value of a modifier by searching its mapped values.
  */
+
 export function getModifierValue(modifier: string): string {
+    // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
             return (values as Record<string, string>)[modifier];
         }
     }
+    
+    // If not found, try compound modifier format
+    const [prefix, value] = modifier.split('-');
+    for (const [typeName, values] of Object.entries(types)) {
+        if (`${prefix}-` in values) {
+            const tokenType = values[`${prefix}-`];
+            return types[tokenType][value];
+        }
+    }
+    
     throw new Error(`Unable to find matching value for modifier: ${modifier}`);
 }
-
 /**
  * Get the rule name for a given modifier and property using a property map.
  */

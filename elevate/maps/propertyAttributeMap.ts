@@ -73,10 +73,10 @@ export const propertyAttributeMap = {
     // Border (all border-related properties) -- Need to submap these as multiple attributes rely upon SpacingToken
     border: {
         "border-color": "ColorToken",
-        "border-width": "SpacingToken",
-        "border-radius": "SpacingToken",
+        "border-width": "BorderWidthToken",
+        "border-radius": "BorderRadiusToken",
         "outline-color": "ColorToken",
-        "outline-width": "SpacingToken",
+        "outline-width": "BorderWidthToken",
     }
 } as const;
 

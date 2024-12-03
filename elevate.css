@@ -72,6 +72,12 @@ textarea:not([rows]) {
 }
 
 
+.border\:w-s2\:r-d1 {
+
+border-width: 28rem;
+border-radius: 0.25rem;
+}
+
 .text\:white\:h2 {
 
 color: #F7F5FB;
