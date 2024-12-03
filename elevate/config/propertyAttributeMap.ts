@@ -70,7 +70,7 @@ export const propertyAttributeMap = {
         "background-color": "ColorToken"
     },
 
-    // Border (all border-related properties)
+    // Border (all border-related properties) -- Need to submap these as multiple attributes rely upon SpacingToken
     border: {
         "border-color": "ColorToken",
         "border-width": "SpacingToken",
