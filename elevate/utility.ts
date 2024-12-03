@@ -16,7 +16,7 @@ process.on('uncaughtException', (err) => {
 // ║ Import configurations, tokens, and utilities.                     ║
 // ╚════════════════════════════════════════════════════════════════════╝
 import {propertyAttributeMap, propertyMap} from "./maps/propertyAttributeMap.js";
-import {cssReset} from './config/reset.js';
+import {cssReset} from './design/reset.js';
 import { config } from './config/elevate.js';
 import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
 import {colors} from "./design/colors.js";
