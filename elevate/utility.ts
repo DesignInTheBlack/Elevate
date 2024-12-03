@@ -44,7 +44,6 @@ const types = {
     BorderWidthToken: border.width,  
     BorderRadiusToken: border.radius, 
     BorderStyleToken: border.style,
-    BorderColorToken: border.color
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -77,7 +76,6 @@ export function getModifierType(modifier: string): string {
 /**
  * Get the value of a modifier by searching its mapped values.
  */
-
 export function getModifierValue(modifier: string): string {
     // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
@@ -91,6 +89,10 @@ export function getModifierValue(modifier: string): string {
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
             const tokenType = values[`${prefix}-`];
+            // Special case for passthrough values
+            if (tokenType === "PassThrough") {
+                return value;  // Just return the value as-is
+            }
             return types[tokenType][value];
         }
     }

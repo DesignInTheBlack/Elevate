@@ -72,16 +72,18 @@ textarea:not([rows]) {
 }
 
 
-.border\:w-s2\:r-d1 {
-
-border-width: 28rem;
-border-radius: 0.25rem;
-}
-
 .text\:white\:h2 {
 
 color: #F7F5FB;
 font-size: 5.062rem;
+}
+
+.border\:w-s2\:r-d1\:pink\:s-solid {
+
+border-width: 28rem;
+border-radius: 0.25rem;
+border-color: #FD3E81;
+border-style: solid;
 }
 
 .m\:d4 {
