@@ -1,24 +1,44 @@
+.text\:h3\:pink {
 
-.p\:d1\:d2 {
-
-padding-left: 0.25rem;
-padding-top: 0.5rem;
-padding-right: 0.25rem;
-padding-bottom: 0.5rem;
+font-size: 3.375rem;
+color: #FD3E81;
 }
 
+.p\:d4 {
 
-.text\:h1\:purple {
+padding-left: 1rem;
+padding-top: 1rem;
+padding-right: 1rem;
+padding-bottom: 1rem;
+}
 
-font-size: 7.594rem;
+@media only screen and (min-width:48rem) {
+.text\:h2\:purple {
+
+font-size: 5.062rem;
 color: #6320EE;
 }
 
+.\@hover\:\[text\:green\]:hover {
 
-.p\:d1 {
+color: #81C14B;
+}
 
-padding-left: 0.25rem;
-padding-top: 0.25rem;
-padding-right: 0.25rem;
-padding-bottom: 0.25rem;
+}
+
+@media only screen and (min-width:64rem) {
+.p\:d8 {
+
+padding-left: 2rem;
+padding-top: 2rem;
+padding-right: 2rem;
+padding-bottom: 2rem;
+}
+
+.text\:h1\:blue {
+
+font-size: 7.594rem;
+color: #0496FF;
+}
+
 }

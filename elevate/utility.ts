@@ -37,6 +37,7 @@ const types = {
     FontFamilyToken: typography.family,
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
+    BreakPointToken:breakpoints
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -59,7 +60,7 @@ export function getModifierType(modifier: string): string | null {
 /**
  * Get the value of a modifier by searching its mapped values.
  */
-export function getModifierValue(modifier: string): string | null {
+export function getModifierValue(modifier: string): string {
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
             return (values as Record<string, string>)[modifier];

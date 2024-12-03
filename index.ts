@@ -1,10 +1,13 @@
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                          MODULE IMPORTS                            ║
 // ╚════════════════════════════════════════════════════════════════════╝
+
 import { elevateCompiler } from './elevate/parser';
 import { findClassAttributes } from './elevate/scan';
 import { getBreakpointPriority } from './elevate/utility';
 import { writeToFile } from './elevate/utility';
+import { BreakpointToken } from './elevate/design/breakpoints';
+import { getModifierValue } from './elevate/utility';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                        1. SCAN FILES                               ║
@@ -70,13 +73,35 @@ compiledClasses.sort((a, b) => {
 // ╚════════════════════════════════════════════════════════════════════╝
 
 // Helper function to escape special characters in class names
-const escapeClassName = (className) => 
+const escapeClassName = (className) =>
   className.replace(/[@:\[\]]/g, (match) => `\\${match}`); // Escape special characters
 
-// Function to generate a compiled class rule
-const generateClassRule = (item) => {
+let breakpointSupervisor = null;
+let compiledCSS = '';
+let mediaQueryOpen = false;
+
+compiledClasses.forEach((item) => {
   const stateSelector = item.state ? `:${item.state}` : "";
-  const flexProperties = 
+
+  if (item.breakpoint !== breakpointSupervisor) {
+    // Close previous media query if open
+    if (mediaQueryOpen) {
+      compiledCSS += `}\n\n`;
+      mediaQueryOpen = false;
+    }
+
+    breakpointSupervisor = item.breakpoint;
+
+    // Open new media query if breakpoint exists
+    if (item.breakpoint) {
+      const breakpoint = getModifierValue(item.breakpoint.replace(/\//g, ""));
+      const breakpointTransition = `@media only screen and (min-width:${breakpoint}) {`;
+      compiledCSS += `${breakpointTransition}\n`;
+      mediaQueryOpen = true;
+    }
+  }
+
+  const flexProperties =
     item.property === "row"
       ? "display:flex;\nflex-direction:row;"
       : item.property === "stack"
@@ -85,15 +110,12 @@ const generateClassRule = (item) => {
 
   const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-  return `
-.${escapeClassName(item.className)}${stateSelector} {
-${flexProperties}
-${modifiers}
-}`;
-};
+  compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {\n${flexProperties}\n${modifiers}\n}\n\n`;
+});
 
-// Transform compiled classes
-compiledClasses = compiledClasses.map(generateClassRule);
+// Close the last media query if open
+if (mediaQueryOpen) {
+  compiledCSS += `}\n`;
+}
 
-const compiledCSS = compiledClasses.join('\n\n');
 writeToFile(compiledCSS);
