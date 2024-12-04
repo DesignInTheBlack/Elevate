@@ -1,81 +1,62 @@
 export const flex = {
-    
-    rowMain: {
-        "h-start": "flex-start",
-        "h-end": "flex-end",
-        "h-center": "center",
-        "h-between": "space-between",
-        "h-around": "space-around",
-        "h-evenly": "space-evenly"
-      },
-    
-      rowCross: {
-        "v-start": "flex-start",
-        "v-end": "flex-end",
-        "v-center": "center",
-        "v-baseline": "baseline",
-        "v-stretch": "stretch"
-      },
-    
-      colMain: {
-        "v-start": "flex-start",
-        "v-end": "flex-end",
-        "v-center": "center",
-        "v-between": "space-between",
-        "v-around": "space-around",
-        "v-evenly": "space-evenly"
-      },
-        
-      colCross: {
-        "h-start": "flex-start",
-        "h-end": "flex-end",
-        "h-center": "center",
-        "h-baseline": "baseline",
-        "h-stretch": "stretch"
-      },
+  xAxis: {
+      "x-start": "flex-start",
+      "x-end": "flex-end",
+      "x-center": "center",
+      "x-between": "space-between",
+      "x-around": "space-around",
+      "x-evenly": "space-evenly",
+      "x-stretch": "stretch",
+      "x-baseline": "baseline"
+  },
+  
+  yAxis: {
+      "y-start": "flex-start",
+      "y-end": "flex-end",
+      "y-center": "center",
+      "y-between": "space-between",
+      "y-around": "space-around",
+      "y-evenly": "space-evenly",
+      "y-stretch": "stretch",
+      "y-baseline": "baseline"
+  },
 
-      flexGrowToken: {
-        "g-0": "0",
-        "g-1": "1",
-        "g-auto": "auto"
-      },
+  // These remain unchanged
+  flexGrowToken: {
+      "g-0": "0",
+      "g-1": "1",
+      "g-auto": "auto"
+  },
 
-      flexShrinkToken: {
-        "s-0": "0",
-        "s-1": "1"
-      },
+  flexShrinkToken: {
+      "s-0": "0",
+      "s-1": "1"
+  },
 
-      flexSelfToken: {
-        "self-start": "flex-start",
-        "self-end": "flex-end",
-        "self-center": "center",
-        "self-stretch": "stretch",
-        "self-auto": "auto"
-      },
+  flexSelfToken: {
+      "self-start": "flex-start",
+      "self-end": "flex-end",
+      "self-center": "center",
+      "self-stretch": "stretch",
+      "self-auto": "auto"
+  },
 
-      flexOrderToken: {
-        "order-first": "-1",
-        "order-0": "0",
-        "order-1": "1",
-        "order-2": "2",
-        "order-3": "3",
-        "order-last": "999"
-      },
+  flexOrderToken: {
+      "order-first": "-1",
+      "order-0": "0",
+      "order-1": "1",
+      "order-2": "2",
+      "order-3": "3",
+      "order-last": "999"
+  },
 
-      flexBasisToken: {
-        "basis-": "SpacingToken"     // Uses prefix pattern for compound tokens
-      }
-
-
-
+  flexBasisToken: {
+      "basis-": "SpacingToken"
+  }
 } as const;
 
 export type FlexToken = keyof typeof flex;
 export type FlexGrowToken = keyof typeof flex.flexGrowToken;
-export type RowMainToken = keyof typeof flex.rowMain;
-export type RowCrossToken = keyof typeof flex.rowCross;
-export type ColMainToken = keyof typeof flex.colMain;
-export type ColCrossToken = keyof typeof flex.colCross;
 export type FlexShrinkToken = keyof typeof flex.flexShrinkToken;
 export type FlexSelfToken = keyof typeof flex.flexSelfToken;
 export type FlexOrderToken = keyof typeof flex.flexOrderToken;

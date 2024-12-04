@@ -46,17 +46,17 @@ export const propertyAttributeMap = {
 
     // Flex Properties
     row: {
-        "justify-content": "RowMainToken",
-        "align-items": "RowCrossToken",
+        "justify-content": "x",  // x maps to justify-content in row
+        "align-items": "y"       // y maps to align-items in row
     },
-
+    
     stack: {
-        "justify-content": "ColMainToken",
-        "align-items": "ColCrossToken",
+        "align-items": "x",      // x maps to align-items in stack 
+        "justify-content": "y"   // y maps to justify-content in stack
     },
 
     item: {
-        "basis": "FlexBasisToken",
+        "flex-basis": "FlexBasisToken",
         "flex-grow": "FlexGrowToken",
         "flex-shrink": "FlexShrinkToken",
         "align-self": "FlexSelfToken",

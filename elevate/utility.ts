@@ -31,27 +31,25 @@ import { text } from './maps/text.js';
 // ║ Map various tokens to their respective values for validation.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 const types = {
-    RowMainToken:flex.rowMain,
-    RowCrossToken:flex.rowCross,
-    ColMainToken:flex.colMain,
-    ColCrossToken:flex.colCross,
-    FlexGrowToken:flex.flexGrowToken,
+    xAxis: flex.xAxis,
+    yAxis: flex.yAxis,
     ColorToken: colors,
     SpacingToken: spacing,
     FontSizeToken: typography.size,
     FontFamilyToken: typography.family,
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
-    BreakPointToken:breakpoints,
+    BreakPointToken: breakpoints,
     BorderWidthToken: border.width,  
     BorderRadiusToken: border.radius, 
     BorderStyleToken: border.style,
-    FlexShrinkToken:flex.flexShrinkToken,
-    FlexSelfToken:flex.flexSelfToken,
-    FlexOrderToken:flex.flexOrderToken,
-    FlexBasisToken:flex.flexBasisToken,
+    FlexGrowToken: flex.flexGrowToken,
+    FlexShrinkToken: flex.flexShrinkToken,
+    FlexSelfToken: flex.flexSelfToken,
+    FlexOrderToken: flex.flexOrderToken,
+    FlexBasisToken: flex.flexBasisToken,
     fontweightToken: typography.weight,
-    TextAlignToken:text.align
+    TextAlignToken: text.align
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -85,21 +83,32 @@ export function getModifierType(modifier: string): string {
  * Get the value of a modifier by searching its mapped values.
  */
 export function getModifierValue(modifier: string): string {
-    // First try direct lookup
+    // Check axis-specific tokens first
+    if (modifier.startsWith('x-') && modifier in types.xAxis) {
+        return types.xAxis[modifier];
+    }
+    if (modifier.startsWith('y-') && modifier in types.yAxis) {
+        return types.yAxis[modifier];
+    }
+    
+    // For non-flex properties or if not found in flex tokens
     for (const [typeName, values] of Object.entries(types)) {
+        // Skip the axis token maps since we already checked them
+        if (['xAxis', 'yAxis'].includes(typeName)) {
+            continue;
+        }
         if (modifier in values) {
             return (values as Record<string, string>)[modifier];
         }
     }
     
-    // If not found, try compound modifier format
+    // Handle compound tokens
     const [prefix, value] = modifier.split('-');
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
             const tokenType = values[`${prefix}-`];
-            // Special case for passthrough values
             if (tokenType === "PassThrough") {
-                return value;  // Just return the value as-is
+                return value;
             }
             return types[tokenType][value];
         }
@@ -122,7 +131,7 @@ export function getRuleName(
     if (isPropertyIncluded(property)) {
         let match = keys[property];
         const key = Object.keys(match).find(
-            (k) => match[k as keyof typeof match] === modifier
+            (k) => modifier.startsWith(match[k as keyof typeof match])
         ) || "no-match";
         return key;
     } else {

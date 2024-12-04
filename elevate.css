@@ -105,14 +105,15 @@ padding-right: 1rem;
 padding-bottom: 1rem;
 }
 
-.stack\:v-start {
+.stack\:y-start {
 display:flex;
 flex-direction:column;
-no-match: flex-start;
+justify-content: flex-start;
 }
 
 .item\:basis-d12 {
-basis: 3rem;
+
+flex-basis: 3rem;
 }
 
 .text\:blue\:h6 {
@@ -173,10 +174,10 @@ font-size: 3.375rem;
 text-align: center;
 }
 
-.stack\:v-center {
+.stack\:y-center {
 display:flex;
 flex-direction:column;
-no-match: center;
+justify-content: center;
 }
 
 .color\:purple {
@@ -192,11 +193,11 @@ padding-right: 2rem;
 padding-bottom: 2rem;
 }
 
-.stack\:v-center\:h-center {
+.stack\:y-center\:x-center {
 display:flex;
 flex-direction:column;
-no-match: center;
-no-match: center;
+justify-content: center;
+align-items: center;
 }
 
 .text\:pink {
@@ -234,7 +235,7 @@ order: 2;
 order: -1;
 }
 
-.row\:h-end {
+.row\:x-end {
 display:flex;
 flex-direction:row;
 justify-content: flex-end;
@@ -252,7 +253,7 @@ background-color: #f1EEf7;
 }
 
 @media only screen and (min-width:48rem) {
-.row\:h-between\:v-center {
+.row\:x-between\:y-center {
 display:flex;
 flex-direction:row;
 justify-content: space-between;
@@ -274,7 +275,7 @@ font-size: 5.062rem;
 font-size: 1.125rem;
 }
 
-.row\:h-center {
+.row\:x-center {
 display:flex;
 flex-direction:row;
 justify-content: center;
