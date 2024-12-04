@@ -1,4 +1,6 @@
-import { SpacingToken } from '../design/spacing.js';
+// import { SpacingToken } from '../design/spacing.js';
+//export type FlexBasisToken = `basis-${SpacingToken}`;
+//Consider this approach for listing applicable values for token specific instances
 
 export const flex = {
   xAxis: {
@@ -23,7 +25,6 @@ export const flex = {
       "y-baseline": "baseline"
   },
 
-  // These remain unchanged
   flexGrowToken: {
       "g-0": "0",
       "g-1": "1",
@@ -62,4 +63,6 @@ export type FlexGrowToken = keyof typeof flex.flexGrowToken;
 export type FlexShrinkToken = keyof typeof flex.flexShrinkToken;
 export type FlexSelfToken = keyof typeof flex.flexSelfToken;
 export type FlexOrderToken = keyof typeof flex.flexOrderToken;
-export type FlexBasisToken = `basis-${SpacingToken}`;
+export type FlexBasisToken = keyof typeof flex.flexBasisToken
+
+

@@ -170,7 +170,7 @@ export function toAst(cst: any) {
 
             // Preprocess only for p or m
             const modifiers =
-                property === "p" || property === "m"
+                property === "p" || property === "m" ||property==="inset"
                     ? preprocessModifiers(cst.children.ColonModifier)
                     : cst.children.ColonModifier;
 
@@ -178,7 +178,7 @@ export function toAst(cst: any) {
                 let modifier = mod.image.replace(":", "");
                 let modType = "";
 
-                if (property === "p" || property === "m") {
+                if (property === "p" || property === "m" || property === "inset") {
                     // Assign unique directions iteratively for properties p and m
                     modType = directions[index % directions.length];
                 } else {
