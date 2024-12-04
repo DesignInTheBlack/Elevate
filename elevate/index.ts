@@ -64,7 +64,7 @@ const main = async () => {
                         lastBreak = classString;
                         return;
                     }
-                    let classObject = elevateCompiler(classString);
+                    let classObject = elevateCompiler(classString,{ fileName: instance.file });
                     classObject.breakpoint = lastBreak;
 
                     compiledClasses.push(classObject);

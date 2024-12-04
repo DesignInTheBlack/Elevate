@@ -90,9 +90,10 @@ justify-content: flex-start;
 left: 1rem;
 }
 
-.border\:r-d12 {
+.border\:r-d12\:w-d12 {
 
 border-radius: 3rem;
+border-width: 3rem;
 }
 
 .row\:x-center\:y-start {

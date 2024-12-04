@@ -13,7 +13,7 @@ export const border = {
 } as const;
 
 export type BorderToken = keyof typeof border;
-export type BorderWidthToken = keyof typeof border.width;
+export type BorderWidthToken = `w-${SpacingToken}`;
 export type BorderRadiusToken = `r-${SpacingToken}`;
 export type BorderStyleToken = keyof typeof border.style;
 

@@ -81,7 +81,7 @@ export function getModifierType(modifier: string): string {
 /**
  * Get the value of a modifier by searching its mapped values.
  */
-export function getModifierValue(modifier: string): string {
+export function getModifierValue(modifier: string,context?: { fileName: string }): string {
     // Check axis-specific tokens first
     if (modifier.startsWith('x-') && modifier in types.xAxis) {
         return types.xAxis[modifier];
@@ -111,7 +111,8 @@ export function getModifierValue(modifier: string): string {
             }
             // Validate the value exists in the token system
             if (!(value in types[tokenType])) {
-                throw new Error(`Invalid token value "${value}" for ${prefix}. Must be one of: ${Object.keys(types[tokenType]).join(', ')}`);
+                const validValues = Object.keys(types[tokenType]).join(', ');
+                throw new Error(`Unable to find matching value for modifier: ${modifier}${context ? ` in ${context.fileName}` : ''}. Valid tokens are defined in design/${tokenType.toLowerCase()}.ts`);
             }
             return types[tokenType][value];
         }
@@ -147,7 +148,7 @@ export function getRuleName(
 // ║ Function to convert CST into AST with detailed structure.         ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-export function toAst(cst: any) {
+export function toAst(cst: any,context?: { fileName: string }) {
     if (!cst) {
         throw new Error("No CST to convert.");
     }
@@ -188,7 +189,7 @@ export function toAst(cst: any) {
                 let constructedRule =
                     getRuleName(modType, property, propertyAttributeMap) +
                     ": " +
-                    getModifierValue(modifier);
+                    getModifierValue(modifier,context);
                 return constructedRule;
             });
         })(),
