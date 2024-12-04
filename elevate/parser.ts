@@ -4,6 +4,7 @@
 // ╚════════════════════════════════════════════════════════════════════╝
 import { createToken, Lexer, CstParser, CstNode } from "chevrotain";
 import { toAst } from "./utility.js";
+import ora from 'ora';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                 2. TOKEN DEFINITIONS                              ║
@@ -25,7 +26,9 @@ const tokens = [State, openState, Property, Modifier, closeState];
 // ║                   4. LEXER INITIALIZATION                         ║
 // ║ Initialize the Lexer with the vocabulary.                         ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const lexer = new Lexer(tokens);
+const lexer = new Lexer(tokens, {
+    positionTracking: "onlyOffset" // Disable line and column tracking
+});
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   5. PARSER DEFINITION                            ║

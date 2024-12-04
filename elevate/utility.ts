@@ -24,6 +24,7 @@ import {spacing} from "./design/spacing.js";
 import {typography} from "./design/typography.js";
 import {flex} from './maps/flex.js';
 import { border } from './maps/border.js';
+import { text } from './maps/text.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  3. TOKEN TYPES CONFIGURATION                     ║
@@ -33,7 +34,8 @@ const types = {
     RowMainToken:flex.rowMain,
     RowCrossToken:flex.rowCross,
     ColMainToken:flex.colMain,
-    ColCrossToken:flex.colMain,
+    ColCrossToken:flex.colCross,
+    FlexGrowToken:flex.flexGrowToken,
     ColorToken: colors,
     SpacingToken: spacing,
     FontSizeToken: typography.size,
@@ -44,6 +46,12 @@ const types = {
     BorderWidthToken: border.width,  
     BorderRadiusToken: border.radius, 
     BorderStyleToken: border.style,
+    FlexShrinkToken:flex.flexShrinkToken,
+    FlexSelfToken:flex.flexSelfToken,
+    FlexOrderToken:flex.flexOrderToken,
+    FlexBasisToken:flex.flexBasisToken,
+    fontweightToken: typography.weight,
+    TextAlignToken:text.align
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗

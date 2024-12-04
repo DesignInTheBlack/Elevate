@@ -1,12 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="../elevate.css">
+    <link rel="stylesheet" href="../elevate.css">
 </head>
 <body>
+    <!-- Main container: Stack on mobile, Row from tablet up -->
+    <div class="stack:v-start p:d4 color:grey /md/ row:h-between:v-center">
+        <!-- Logo section -->
+        <div class="item:basis-d12 text:purple:h2">Elevate</div>
 
-<div class ="$section row:h-center:v-center color:purple m:d4 border:w-s2:r-d1:pink:s-solid">
-    <p class = "text:white:h2 /lg/ text:pink:h1">Elevate</p>
-</div>
+        <!-- Navigation: Row always -->
+        <div class="row:h-end gap:d4 /md/ item:g-1">
+            <!-- Nav items with responsive text size -->
+            <div class="item:order-first text:base text:darkgrey /lg/ text:h6">Home</div>
+            <div class="item:order-2 text:base text:darkgrey /lg/ text:h6">Features</div>
+            <div class="item:order-3 text:base text:darkgrey /lg/ text:h6">Docs</div>
+            <div class="item:order-last text:base text:pink /lg/ text:h6">Login</div>
+        </div>
+    </div>
+
+    <!-- Hero section -->
+    <div class="stack:v-center:h-center p:d8 color:purple">
+        <!-- Content container -->
+        <div class="stack:v-center text:center m:d4">
+            <h1 class="text:white:h3 /md/ text:h2 /lg/ text:h1">
+                Type-Safe CSS
+            </h1>
+            <p class="text:grey:base m:d4 /md/ text:h6">
+                Enterprise Design System Framework
+            </p>
+        </div>
+
+        <!-- Feature cards: Stack on mobile, Row from tablet -->
+        <div class="stack:v-start gap:d4 /md/ row:h-center gap:d4">
+            <!-- Card 1 -->
+            <div class="item:basis-d12 stack:v-start p:d4 color:white border:w-d1:r-d2:s-solid:pink">
+                <h3 class="text:purple:h6">Type Safety</h3>
+                <p class="text:darkgrey:base">Compile-time token validation</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="item:basis-d12 stack:v-start p:d4 color:white border:w-d1:r-d2:s-solid:blue">
+                <h3 class="text:blue:h6">Semantic Classes</h3>
+                <p class="text:darkgrey:base">Intuitive property mapping</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="item:basis-d12 stack:v-start p:d4 color:white border:w-d1:r-d2:s-solid:green">
+                <h3 class="text:green:h6">Responsive</h3>
+                <p class="text:darkgrey:base">Mobile-first breakpoints</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

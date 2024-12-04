@@ -47,12 +47,20 @@ export const propertyAttributeMap = {
     // Flex Properties
     row: {
         "justify-content": "RowMainToken",
-        "align-items": "RowCrossToken"
+        "align-items": "RowCrossToken",
     },
 
     stack: {
         "justify-content": "ColMainToken",
-        "align-items": "ColCrossToken"
+        "align-items": "ColCrossToken",
+    },
+
+    item: {
+        "basis": "FlexBasisToken",
+        "flex-grow": "FlexGrowToken",
+        "flex-shrink": "FlexShrinkToken",
+        "align-self": "FlexSelfToken",
+        "order": "FlexOrderToken"
     },
 
     // Typography
@@ -62,7 +70,9 @@ export const propertyAttributeMap = {
         "font-family": "FontFamilyToken",
         "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
-        "max-width": "MeasureToken"
+        "text-align": "TextAlignToken",
+        "max-width": "MeasureToken",
+        "font-weight": "FontWeightToken"
     },
 
     // Background

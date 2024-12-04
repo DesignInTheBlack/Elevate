@@ -47,7 +47,16 @@ export const typography = {
       sans: 'Sk-Modernist',
       mono: 'Sk-Modernist-Mono',
       serif: 'PlayfairDisplay'
+    },
+
+    weight: {
+      light: '300',
+      regular: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700'
     }
+    
   } as const;
   
   // For TypeScript type safety and autocomplete
@@ -56,3 +65,4 @@ export const typography = {
   export type LetterSpacingToken = keyof typeof typography.tracking;
   export type MeasureToken = keyof typeof typography.measure;
   export type FontFamilyToken = keyof typeof typography.family;
+  export type FontWeightToken = keyof typeof typography.weight;
