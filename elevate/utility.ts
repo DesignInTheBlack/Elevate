@@ -1,5 +1,4 @@
 import fs from 'fs';
-const path = './elevate.css';
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                 1. GLOBAL ERROR HANDLING                           ║
