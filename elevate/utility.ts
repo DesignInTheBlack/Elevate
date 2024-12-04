@@ -110,6 +110,10 @@ export function getModifierValue(modifier: string): string {
             if (tokenType === "PassThrough") {
                 return value;
             }
+            // Validate the value exists in the token system
+            if (!(value in types[tokenType])) {
+                throw new Error(`Invalid token value "${value}" for ${prefix}. Must be one of: ${Object.keys(types[tokenType]).join(', ')}`);
+            }
             return types[tokenType][value];
         }
     }

@@ -1,3 +1,5 @@
+import { SpacingToken } from '../design/spacing.js';
+
 export const flex = {
   xAxis: {
       "x-start": "flex-start",
@@ -60,4 +62,4 @@ export type FlexGrowToken = keyof typeof flex.flexGrowToken;
 export type FlexShrinkToken = keyof typeof flex.flexShrinkToken;
 export type FlexSelfToken = keyof typeof flex.flexSelfToken;
 export type FlexOrderToken = keyof typeof flex.flexOrderToken;
-export type FlexBasisToken = keyof typeof flex.flexBasisToken;
+export type FlexBasisToken = `basis-${SpacingToken}`;
