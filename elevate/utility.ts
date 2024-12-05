@@ -157,10 +157,22 @@ function validateAndRetrieveCompoundValue(
     context?: { fileName: string }
 ): string {
     if (!(value in types[tokenType])) {
-        const validValues = Object.keys(types[tokenType]).join(', ');
+        const validValues = Object.keys(types[tokenType]);
+        const formattedValues = validValues
+            .reduce((acc, curr, idx) => {
+                if (idx % 10 === 0) {
+                    acc.push([curr]);
+                } else {
+                    acc[acc.length - 1].push(curr);
+                }
+                return acc;
+            }, [])
+            .map(group => group.join(', '))
+            .join('\n    ');
         throw new Error(
             `Unable to find matching value for modifier: ${modifier}${context ? ` in ${context.fileName}` : ''}. ` +
-            `Valid tokens are defined in design/${tokenType.toLowerCase()}.ts`
+            `Valid tokens are defined in design/${tokenType.toLowerCase()}.ts` +
+            (validValues.length ? `.\nAvailable values are:\n    ${formattedValues}` : '')
         );
     }
     return types[tokenType][value];
