@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                 1. GLOBAL ERROR HANDLING                           ║
+// ║                  GLOBAL ERROR HANDLING                             ║
 // ║ Setup error stack trace limit and uncaught exception handler.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 Error.stackTraceLimit = 0;
@@ -11,8 +11,8 @@ process.on('uncaughtException', (err) => {
 });
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                  2. MODULE IMPORTS                                ║
-// ║ Import configurations, tokens, and utilities.                     ║
+// ║                   MODULE IMPORTS                                   ║
+// ║      Import configurations, tokens, and utilities.                 ║
 // ╚════════════════════════════════════════════════════════════════════╝
 import {propertyAttributeMap, propertyMap} from "./maps/propertyAttributeMap.js";
 import {cssReset} from './design/reset.js';
@@ -25,8 +25,9 @@ import {flex} from './maps/flex.js';
 import { border } from './maps/border.js';
 import { text } from './maps/text.js';
 
+
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                  3. TOKEN TYPES CONFIGURATION                     ║
+// ║                   TOKEN TYPES CONFIGURATION                        ║
 // ║ Map various tokens to their respective values for validation.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 const types = {
@@ -48,17 +49,16 @@ const types = {
     FlexOrderToken: flex.flexOrderToken,
     FlexBasisToken: flex.flexBasisToken,
     fontweightToken: typography.weight,
-    TextAlignToken: text.align
+    TextAlignToken: text.align,
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                   4. MODIFIER HANDLING FUNCTIONS                  ║
+// ║                   MODIFIER HANDLING FUNCTIONS                      ║
 // ║ Functions to retrieve types, values, and rules for modifiers.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-/**
- * Get the type of a modifier based on its key in the types map.
- */
+
+// Get the type of a modifier based on its key in the types map.
 export function getModifierType(modifier: string): string {
     // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
@@ -78,21 +78,52 @@ export function getModifierType(modifier: string): string {
     throw new Error(`Unable to find type for modifier: ${modifier}`);
 }
 
-/**
- * Get the value of a modifier by searching its mapped values.
- */
-export function getModifierValue(modifier: string,context?: { fileName: string }): string {
-    // Check axis-specific tokens first
+// Get the value of a modifier by searching its mapped values.
+export function getModifierValue(modifier: string, context?: { fileName: string }): string {
+    if (isAxisSpecificModifier(modifier)) {
+        return getAxisSpecificValue(modifier);
+    }
+    
+    const value = getGeneralTokenValue(modifier);
+    if (value) {
+        return value;
+    }
+
+    return handleCompoundToken(modifier, context);
+}
+
+// Preprocess the modifiers array for directional utilities.
+function preprocessModifiers(modifiers: any[]): any[] {
+    if (modifiers.length === 1) {
+        // Expand a single value to all four sides
+        return Array(4).fill(modifiers[0]);
+    } else if (modifiers.length === 2) {
+        // Expand two values: first for left/right, second for top/bottom
+        return [modifiers[0], modifiers[1], modifiers[0], modifiers[1]];
+    }
+    // Default: no preprocessing if already 4 values
+    return modifiers;
+}
+
+// Check if the modifier is axis-specific
+function isAxisSpecificModifier(modifier: string): boolean {
+    return modifier.startsWith('x-') || modifier.startsWith('y-');
+}
+
+// Get value for axis-specific tokens
+function getAxisSpecificValue(modifier: string): string {
     if (modifier.startsWith('x-') && modifier in types.xAxis) {
         return types.xAxis[modifier];
     }
     if (modifier.startsWith('y-') && modifier in types.yAxis) {
         return types.yAxis[modifier];
     }
-    
-    // For non-flex properties or if not found in flex tokens
+    throw new Error(`Axis-specific modifier not found: ${modifier}`);
+}
+
+// Retrieve token from general types map
+function getGeneralTokenValue(modifier: string): string | null {
     for (const [typeName, values] of Object.entries(types)) {
-        // Skip the axis token maps since we already checked them
         if (['xAxis', 'yAxis'].includes(typeName)) {
             continue;
         }
@@ -100,8 +131,11 @@ export function getModifierValue(modifier: string,context?: { fileName: string }
             return (values as Record<string, string>)[modifier];
         }
     }
-    
-    // Handle compound tokens
+    return null;
+}
+
+// Handle compound tokens by breaking into prefix and value
+function handleCompoundToken(modifier: string, context?: { fileName: string }): string {
     const [prefix, value] = modifier.split('-');
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
@@ -109,20 +143,30 @@ export function getModifierValue(modifier: string,context?: { fileName: string }
             if (tokenType === "PassThrough") {
                 return value;
             }
-            // Validate the value exists in the token system
-            if (!(value in types[tokenType])) {
-                const validValues = Object.keys(types[tokenType]).join(', ');
-                throw new Error(`Unable to find matching value for modifier: ${modifier}${context ? ` in ${context.fileName}` : ''}. Valid tokens are defined in design/${tokenType.toLowerCase()}.ts`);
-            }
-            return types[tokenType][value];
+            return validateAndRetrieveCompoundValue(tokenType, value, modifier, context);
         }
     }
-    
     throw new Error(`Unable to find matching value for modifier: ${modifier}`);
 }
-/**
- * Get the rule name for a given modifier and property using a property map.
- */
+
+// Validate compound token and retrieve value
+function validateAndRetrieveCompoundValue(
+    tokenType: string,
+    value: string,
+    modifier: string,
+    context?: { fileName: string }
+): string {
+    if (!(value in types[tokenType])) {
+        const validValues = Object.keys(types[tokenType]).join(', ');
+        throw new Error(
+            `Unable to find matching value for modifier: ${modifier}${context ? ` in ${context.fileName}` : ''}. ` +
+            `Valid tokens are defined in design/${tokenType.toLowerCase()}.ts`
+        );
+    }
+    return types[tokenType][value];
+}
+
+ //Get the rule name for a given modifier and property using a property map.
 export function getRuleName(
     modifier: string,
     property: string,
@@ -144,75 +188,88 @@ export function getRuleName(
 }
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                   5. CST TO AST CONVERSION                       ║
-// ║ Function to convert CST into AST with detailed structure.         ║
+// ║                   CST TO AST CONVERSION                            ║
+// ║    Function to convert CST into AST with detailed structure.       ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-export function toAst(cst: any,context?: { fileName: string }) {
+// Main function to determine and delegate CST conversion logic.
+export function toAst(cst: any, context?: { fileName: string }) {
     if (!cst) {
         throw new Error("No CST to convert.");
     }
 
-    const directions = ["left", "top", "right", "bottom"];
-    let directionIndex = 0;
+    return cst.children.DirectProperty
+        ? handleDirectProperties(cst)
+        : handleCompoundProperties(cst, context);
+}
 
+// Handles the logic for direct properties within the CST.
+function handleDirectProperties(cst: any) {
+    const directProp = cst.children.DirectProperty[0].image;
+    return {
+        type: "Direct Class",
+        className: cst.className,
+        property: directProp,
+        modifiers: [
+            `display: ${propertyAttributeMap[directProp].display}`
+        ],
+    };
+}
+
+// Handles the logic for compound properties within the CST.
+function handleCompoundProperties(cst: any, context?: { fileName: string }) {
     return {
         type: cst.children.stateFlag ? "Stateful Class" : "Stateless Class",
         className: cst.className,
         ...(cst.children.stateFlag && {
-            state: cst.children.stateFlag
-                ? cst.children.stateFlag[0].image.replace("@", "").replace(":", "")
-                : null,
+            state: extractState(cst.children.stateFlag),
         }),
         property: cst.children.Property[0].image,
-
-        modifiers: (() => {
-            let property = cst.children.Property[0].image;
-
-            // Preprocess only for p or m
-            const modifiers =
-                property === "p" || property === "m" ||property==="inset"
-                    ? preprocessModifiers(cst.children.ColonModifier)
-                    : cst.children.ColonModifier;
-
-            return modifiers.map((mod: any, index: number) => {
-                let modifier = mod.image.replace(":", "");
-                let modType = "";
-
-                if (property === "p" || property === "m" || property === "inset") {
-                    // Assign unique directions iteratively for properties p and m
-                    modType = directions[index % directions.length];
-                } else {
-                    modType = getModifierType(modifier);
-                }
-
-                let constructedRule =
-                    getRuleName(modType, property, propertyAttributeMap) +
-                    ": " +
-                    getModifierValue(modifier,context);
-                return constructedRule;
-            });
-        })(),
+        modifiers: processModifiers(cst, context),
     };
 }
 
-// Preprocess the modifiers array for directional utilities.
-function preprocessModifiers(modifiers: any[]): any[] {
-    if (modifiers.length === 1) {
-        // Expand a single value to all four sides
-        return Array(4).fill(modifiers[0]);
-    } else if (modifiers.length === 2) {
-        // Expand two values: first for left/right, second for top/bottom
-        return [modifiers[0], modifiers[1], modifiers[0], modifiers[1]];
-    }
-    // Default: no preprocessing if already 4 values
-    return modifiers;
+// Extracts the state from the stateFlag property of the CST.
+function extractState(stateFlag: any) {
+    return stateFlag[0].image.replace("@", "").replace(":", "");
+}
+
+// Processes and maps the modifiers for the given property.
+function processModifiers(cst: any, context?: { fileName: string }) {
+    const property = cst.children.Property[0].image;
+    const directions = ["left", "top", "right", "bottom"];
+
+    // Preprocess modifiers based on property type
+    const modifiers =
+        property === "p" || property === "m" || property === "inset"
+            ? preprocessModifiers(cst.children.ColonModifier)
+            : cst.children.ColonModifier;
+
+    // Map and construct rules for each modifier
+    return modifiers.map((mod: any, index: number) => {
+        const modifier = mod.image.replace(":", "");
+        const modType =
+            property === "p" || property === "m" || property === "inset"
+                ? directions[index % directions.length]
+                : getModifierType(modifier);
+
+        return constructRule(modType, property, modifier, context);
+    });
+}
+
+// Constructs a rule string based on the modifier type, property, and context.
+function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
+    return (
+        getRuleName(modType, property, propertyAttributeMap) +
+        ": " +
+        getModifierValue(modifier, context)
+    );
 }
 
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                  6. BREAKPOINT PRIORITY FUNCTION                  ║
-// ║ Retrieve breakpoint priority based on its position in the map.    ║
+// ║                  BREAKPOINT PRIORITY FUNCTION                      ║
+// ║ Retrieve breakpoint priority based on its position in the map.     ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
 export function getBreakpointPriority(breakpoint: string): number {
@@ -221,7 +278,7 @@ export function getBreakpointPriority(breakpoint: string): number {
 }
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                  6. Write To File                                  ║
+// ║                   Write To File                                    ║
 // ║ Retrieve breakpoint priority based on its position in the map.     ║
 // ╚════════════════════════════════════════════════════════════════════╝
 

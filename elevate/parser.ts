@@ -1,38 +1,39 @@
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                 1. IMPORT STATEMENTS                              ║
-// ║ Import Chevrotain library and utility functions.                  ║
+// ║                 1. IMPORT STATEMENTS                               ║
+// ║ Import Chevrotain library and utility functions.                   ║
 // ╚════════════════════════════════════════════════════════════════════╝
 import { createToken, Lexer, CstParser, CstNode } from "chevrotain";
 import { toAst } from "./utility.js";
 import ora from 'ora';
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                 2. TOKEN DEFINITIONS                              ║
-// ║ Define core tokens using Chevrotain's `createToken`.              ║
+// ║                 2. TOKEN DEFINITIONS                               ║
+// ║ Define core tokens using Chevrotain's `createToken`.               ║
 // ╚════════════════════════════════════════════════════════════════════╝
 const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
+const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
 const Modifier = createToken({ name: "ColonModifier", pattern: /:[a-zA-Z][a-zA-Z0-9_-]*/ });
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║              3. COMBINE TOKENS INTO VOCABULARY                    ║
-// ║ Group defined tokens into a single array for Lexer initialization.║
+// ║              3. COMBINE TOKENS INTO VOCABULARY                     ║
+// ║ Group defined tokens into a single array for Lexer initialization. ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const tokens = [State, openState, Property, Modifier, closeState];
+const tokens = [State, openState, Property, Modifier, DirectProperty, closeState];
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                   4. LEXER INITIALIZATION                         ║
-// ║ Initialize the Lexer with the vocabulary.                         ║
+// ║                   4. LEXER INITIALIZATION                          ║
+// ║ Initialize the Lexer with the vocabulary.                          ║
 // ╚════════════════════════════════════════════════════════════════════╝
 const lexer = new Lexer(tokens, {
     positionTracking: "onlyOffset" // Disable line and column tracking
 });
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                   5. PARSER DEFINITION                            ║
-// ║ Define the `ElevateParser` class to process token streams.        ║
+// ║                   5. PARSER DEFINITION                             ║
+// ║ Define the `ElevateParser` class to process token streams.         ║
 // ╚════════════════════════════════════════════════════════════════════╝
 class ElevateParser extends CstParser {
     // Declare propertyDefinition explicitly for TypeScript compliance
@@ -42,6 +43,7 @@ class ElevateParser extends CstParser {
         super(tokens);
         const $ = this;
 
+      
         $.RULE("propertyDefinition", () => {
             // Optional State and Group Handling 
             $.OPTION(() => {
@@ -49,13 +51,25 @@ class ElevateParser extends CstParser {
                 $.CONSUME(openState);
             });
 
-            // Property Handling 
-            $.CONSUME(Property);
+            // Either a direct property or a property with modifiers
+            $.OR([
+                {
+                    ALT: () => {
+                        $.CONSUME(DirectProperty);
+                    }
+                },
+                {
+                    ALT: () => {
+                        // Property Handling 
+                        $.CONSUME(Property);
 
-            // Zero or More Modifiers
-            $.MANY(() => {
-                $.CONSUME(Modifier);
-            });
+                        // Zero or More Modifiers
+                        $.MANY(() => {
+                            $.CONSUME(Modifier);
+                        });
+                    }
+                }
+            ]);
 
             // Optional Close State 
             $.OPTION2(() => {
