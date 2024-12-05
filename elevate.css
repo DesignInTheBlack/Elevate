@@ -72,6 +72,24 @@ textarea:not([rows]) {
 }
 
 
+.text\:white\:h3 {
+
+color: #F7F5FB;
+font-size: 3.375rem;
+}
+
+.block {
+
+display: block;
+}
+
+.stack\:y-center\:y-start {
+display:flex;
+flex-direction:column;
+justify-content: center;
+justify-content: flex-start;
+}
+
 .color\:blue {
 
 background-color: #0496FF;
@@ -107,24 +125,6 @@ background-color: #6320EE;
 .color\:green {
 
 background-color: #81C14B;
-}
-
-.stack\:y-center\:y-start {
-display:flex;
-flex-direction:column;
-justify-content: center;
-justify-content: flex-start;
-}
-
-.block {
-
-display: block;
-}
-
-.text\:white\:h3 {
-
-color: #F7F5FB;
-font-size: 3.375rem;
 }
 
 }
