@@ -59,7 +59,7 @@ const types = {
 
 
 // Get the type of a modifier based on its key in the types map.
-export function getModifierType(modifier: string): string {
+export function getModifierType(modifier: string, context?: { fileName: string } ): string {
     // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
@@ -75,7 +75,9 @@ export function getModifierType(modifier: string): string {
         }
     }
     
-    throw new Error(`Unable to find type for modifier: ${modifier}`);
+    throw new Error(
+            `\nUnable to determine token type for value: ${modifier}${context ? ` in ${context.fileName}` : ''}\nPlease ensure that you are using a valid token as defined in the design directory.`
+    );
 }
 
 // Get the value of a modifier by searching its mapped values.
@@ -118,7 +120,7 @@ function getAxisSpecificValue(modifier: string): string {
     if (modifier.startsWith('y-') && modifier in types.yAxis) {
         return types.yAxis[modifier];
     }
-    throw new Error(`Axis-specific modifier not found: ${modifier}`);
+    throw new Error(`\nAxis-specific modifier not found: ${modifier}`);
 }
 
 // Retrieve token from general types map
@@ -146,7 +148,6 @@ function handleCompoundToken(modifier: string, context?: { fileName: string }): 
             return validateAndRetrieveCompoundValue(tokenType, value, modifier, context);
         }
     }
-    throw new Error(`Unable to find matching value for modifier: ${modifier}`);
 }
 
 // Validate compound token and retrieve value
@@ -170,9 +171,7 @@ function validateAndRetrieveCompoundValue(
             .map(group => group.join(', '))
             .join('\n    ');
         throw new Error(
-            `Unable to find matching value for modifier: ${modifier}${context ? ` in ${context.fileName}` : ''}. ` +
-            `Valid tokens are defined in design/${tokenType.toLowerCase()}.ts` +
-            (validValues.length ? `.\nAvailable values are:\n    ${formattedValues}` : '')
+            `\nInvalid ${tokenType.toLowerCase()} value: ${value}${context ? ` in ${context.fileName}` : ''}\nPlease examine this utility string and examine prefixes, modifiers, etc.`
         );
     }
     return types[tokenType][value];
@@ -263,7 +262,7 @@ function processModifiers(cst: any, context?: { fileName: string }) {
         const modType =
             property === "p" || property === "m" || property === "inset"
                 ? directions[index % directions.length]
-                : getModifierType(modifier);
+                : getModifierType(modifier,context);
 
         return constructRule(modType, property, modifier, context);
     });

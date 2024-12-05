@@ -6,7 +6,6 @@ import { elevateCompiler } from './elevate/parser';
 import { findClassAttributes } from './elevate/scan';
 import { getBreakpointPriority } from './elevate/utility';
 import { writeToFile } from './elevate/utility';
-import { BreakpointToken } from './elevate/design/breakpoints';
 import { getModifierValue } from './elevate/utility';
 
 // ╔════════════════════════════════════════════════════════════════════╗
