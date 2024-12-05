@@ -1,6 +1,6 @@
 const options = {
     Watch:'./', 
-    FileTypes:['html'],
+    FileTypes:['html', 'jsx', 'tsx', 'astro'],
     Output:'./'
 }
 

@@ -30,10 +30,17 @@ const main = async () => {
         // ╚════════════════════════════════════════════════════════════════════╝
         spinner.text = 'Scanning files for Elevate classes...';
         await delay(500);
-        const scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
+        let scannedClasses;
+        try {
+            scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
+        } catch (err) {
+            console.error('Failed to scan for classes:', err.message);
+            process.exit(1);
+        }
+        
         if (!scannedClasses || scannedClasses.length === 0) {
-          throw new Error('No classes found in specified directories');
-      }
+            console.warn('No classes found in the specified files.');
+        }
 
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║                  2. INITIALIZE DATA STRUCTURES                     ║
