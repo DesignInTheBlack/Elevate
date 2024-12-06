@@ -16,7 +16,7 @@ const main = async () => {
     const spinner = ora({
         text: 'Elevating Your CSS..',
         color: 'magentaBright',
-        spinner:'bouncingBar'
+        spinner:'dots'
     }).start();
 
     if (!config.Watch || !config.FileTypes) {

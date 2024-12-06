@@ -177,6 +177,21 @@ justify-content: flex-start;
 background-color: #6320EE;
 }
 
+.left\:d12 {
+
+left: 3rem;
+}
+
+.absolute {
+
+position: absolute;
+}
+
+.relative {
+
+position: relative;
+}
+
 .color\:white {
 
 background-color: #F7F5FB;
@@ -196,7 +211,7 @@ align-items: flex-start;
 
 .buffer {
 
-display: undefined;
+: ;
 }
 
 @media only screen and (min-width:64rem) {

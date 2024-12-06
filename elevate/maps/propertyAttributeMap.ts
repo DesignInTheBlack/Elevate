@@ -1,5 +1,14 @@
 export const propertyAttributeMap = {
     
+    // Position
+    relative: { "position": "relative" },
+    absolute: { "position": "absolute" },
+    fixed: { "position": "fixed" },
+    sticky: { "position": "sticky" },
+    static: { "position": "static" },
+    initial: { "position": "initial" },
+    inherit: { "position": "inherit" },
+        
     // Display
     block: { "display": "block" },
     "inline-block": { "display": "inline-block" },
@@ -22,6 +31,11 @@ export const propertyAttributeMap = {
     contents: { "display": "contents" },
     "list-item": { "display": "list-item" },
     hidden: { "display": "none" },
+
+      // Z-Index
+      z: {
+        "z-index": ""
+    },
 
     //Buffer
     buffer: {
@@ -108,11 +122,9 @@ export const propertyAttributeMap = {
         "font-weight": "FontWeightToken"
     },
 
-    // Background
     color: {
         "background-color": "ColorToken"
     },
-
 
     border: {
         "border-color": "ColorToken",

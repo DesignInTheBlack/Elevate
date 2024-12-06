@@ -43,6 +43,7 @@ import {buffer} from './design/buffer.js';
 const types = {
     xAxis: flex.xAxis,
     yAxis: flex.yAxis,
+    //Further Token Definitions
     ColorToken: colors,
     SpacingToken: spacing,
     FontSizeToken: typography.size,
@@ -69,6 +70,7 @@ const types = {
 
 // Get the type of a modifier based on its key in the types map.
 export function getModifierType(modifier: string, context?: { fileName: string } ): string {
+
     // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
@@ -83,7 +85,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
             return typeName;
         }
     }
-    
+
     throw new Error(
             `\nUnable to determine token type for value: ${modifier}${context ? ` in ${context.fileName}` : ''}\nPlease ensure that you are using a valid token as defined in the design directory.`
     );
@@ -91,6 +93,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 
 // Get the value of a modifier by searching its mapped values.
 export function getModifierValue(modifier: string, context?: { fileName: string }): string {
+   
     if (isAxisSpecificModifier(modifier)) {
         return getAxisSpecificValue(modifier);
     }
@@ -226,13 +229,13 @@ export function toAst(cst: any, context?: { fileName: string }) {
 // Handles the logic for direct properties within the CST.
 function handleDirectProperties(cst: any) {
     const directProp = cst.children.DirectProperty[0].image;
+    const propMap = propertyAttributeMap[directProp];
+    
     return {
         type: "Direct Class",
         className: cst.className,
         property: directProp,
-        modifiers: [
-            `display: ${propertyAttributeMap[directProp].display}`
-        ],
+        modifiers: Object.entries(propMap).map(([prop, value]) => `${prop}: ${value}`),
     };
 }
 

@@ -14,7 +14,7 @@ const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
 const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
-const Modifier = createToken({ name: "ColonModifier", pattern: /:[a-zA-Z][a-zA-Z0-9_-]*/ });
+const Modifier = createToken({ name: "ColonModifier", pattern: /:[a-zA-Z0-9][a-zA-Z0-9_-]*/ });
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
 
 // ╔════════════════════════════════════════════════════════════════════╗
