@@ -22,6 +22,11 @@ export const propertyAttributeMap = {
     contents: { "display": "contents" },
     "list-item": { "display": "list-item" },
     hidden: { "display": "none" },
+
+    //Buffer
+    buffer: {
+       "": ""
+    },
     
     // Spacing & Layout
     m: {

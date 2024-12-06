@@ -7,8 +7,6 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
     "start": "tsx elevate/index.ts"
   },
   "devDependencies": {

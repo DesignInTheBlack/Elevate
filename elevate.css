@@ -177,11 +177,26 @@ justify-content: flex-start;
 background-color: #6320EE;
 }
 
+.color\:white {
+
+background-color: #F7F5FB;
+}
+
+.w\:full {
+
+width: 100%;
+}
+
 .row\:x-center\:y-start {
 display:flex;
 flex-direction:row;
 justify-content: center;
 align-items: flex-start;
+}
+
+.buffer {
+
+display: undefined;
 }
 
 @media only screen and (min-width:64rem) {

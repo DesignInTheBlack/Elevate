@@ -1,134 +1,188 @@
 # Elevate CSS
 
-A utility CSS framework implementing the EWDS (Enterprise Web Design System) methodology with type-safe parsing and state management. Currently in active development.
-
-## Overview
-
-Elevate CSS aims to bridge the gap between design systems and utility CSS by providing a strongly-typed, enterprise-focused CSS framework. It combines the flexibility of utility classes with the structure and safety needed for large-scale applications.
-
-## Goals
-
-Based on EWDS methodology, Elevate CSS aims to:
-
-1. **Enforce Design Consistency**
-   - Strict token-based system for colors, spacing, and typography
-   - Validation against design system constraints
-   - Type-safe implementation of design tokens
-
-2. **Improve Developer Experience**
-   - Clear error messages with design system context
-   - Compile-time validation of utility classes
-   - Intelligent state management
-
-3. **Enable Design System Integration**
-   - Direct mapping to design tokens
-   - Structured property-attribute relationships
-   - Enterprise-ready type safety
-
-## Current Status
-
-This is an active work in progress. Currently implemented:
-- Basic parser and compiler
-- File scanning system
-- Token validation
-- State management
-- Breakpoint handling
-- Typography properties
+A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
 
 ## Features
 
-### 🛡️ Type Safety
-- Full TypeScript integration
-- Compile-time token validation
-- Property and attribute type checking
+- 🛡️ **Type-Safe CSS Generation**
+  - Full TypeScript integration
+  - Compile-time token validation
+  - Design system constraint enforcement
 
-### 🎯 State Management
-```css
-// State handling
-@hover:[text:red]
+- 🎨 **Design System Integration**
+  - Token-based system for colors, spacing, and typography
+  - Structured property-attribute relationships
+  - Enterprise-ready validation
 
-// Property with modifier
-text:large
+- 📱 **Responsive Design**
+  - Mobile-first breakpoint system
+  - Intuitive syntax: `/md/text:large`
+  - Automatic media query generation
+
+- ⚡ **State Management**
+  - Hover, focus, and custom states
+  - Syntax: `@hover:[text:red]`
+  - Automatic CSS state compilation
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Start development
+npm run dev
+
+# Build project
+npm run build
 ```
 
-### 📱 Mobile-First Design
+## Syntax Guide
+
+### Basic Syntax
 ```html
-<!-- Breakpoint syntax -->
+<div class="property:modifier">
+<!-- Example: <div class="color:purple"> -->
+```
+
+### Multiple Properties
+```html
+<div class="property1:modifier1 property2:modifier2">
+<!-- Example: <div class="color:purple text:large"> -->
+```
+
+### Layout Properties
+
+#### Flex Containers
+```html
+<!-- Row container with centered items -->
+<div class="row:x-center:y-center">
+
+<!-- Column (stack) container with top-aligned items -->
+<div class="stack:x-center:y-start">
+```
+
+#### Flex Values
+- X-axis alignment: `x-start`, `x-center`, `x-end`, `x-between`, `x-around`, `x-evenly`
+- Y-axis alignment: `y-start`, `y-center`, `y-end`, `y-stretch`, `y-baseline`
+
+#### Spacing
+```html
+<!-- Margin -->
+<div class="m:d1">  <!-- d1-d12 spacing scale -->
+
+<!-- Padding -->
+<div class="p:d1">
+
+<!-- Width and Height -->
+<div class="w:d12 h:d6">
+```
+
+### Typography
+```html
+<!-- Font size and color -->
+<div class="text:large color:purple">
+
+<!-- Multiple text properties -->
+<div class="text:large:bold:center">
+```
+
+### Responsive Design
+```html
+<!-- Applies only at medium breakpoint and above -->
 <div class="/md/text:large">
-  Responsive Text
-</div>
+
+<!-- Multiple responsive properties -->
+<div class="/lg/stack:x-center:y-start">
 ```
 
-## Architecture
+### State Management
+```html
+<!-- Hover state -->
+<div class="@hover:[color:purple]">
 
-The system consists of several key components:
+<!-- Focus state -->
+<div class="@focus:[text:large]">
 
-1. **File Scanner** - Searches project files for class attributes
-2. **Parser** - Built with Chevrotain for robust tokenization and parsing
-3. **AST Generator** - Converts parsed tokens into a structured AST
-4. **CSS Generator** - Outputs compiled CSS to `elevate.css`
-
-### Current Property Support
-
-```typescript
-// Currently supported properties
-text: {
-    "font-size": "FontSizeToken",
-    "color": "ColorToken",
-    "font-weight": "FontWeightToken"
-}
+<!-- Multiple states -->
+<div class="@hover:[color:purple] @focus:[text:large]">
 ```
 
-## Technical Details
+### Currently Supported Properties
 
-### File Processing
-- Scans HTML files for class attributes
-- Supports directory traversal (excludes node_modules)
-- Processes breakpoints in mobile-first order
+#### Layout
+- `display`: `block`, `flex`, `grid`, `hidden`, etc.
+- `row`: Flex row container with x/y alignment
+- `stack`: Flex column container with x/y alignment
+- `gap`: Spacing between flex/grid items
 
-### Error Handling
-- Detailed error messages
-- Stack trace management
-- Graceful error recovery during parsing
+#### Spacing
+- `m`: Margin (d1-d12 scale)
+- `p`: Padding (d1-d12 scale)
+- `w`: Width
+- `h`: Height
+- `min`: Min width/height
+- `max`: Max width/height
 
-### Token Types
-- ColorToken
-- SpacingToken
-- FontSizeToken
-- FontFamilyToken
-- LineHeightToken
-- LetterSpacingToken
+#### Typography
+- `text`: Font size, weight, family, alignment
+- `color`: Text color
+- `line-height`: Line height
+- `letter-spacing`: Letter spacing
+
+#### Flex Item Properties
+- `item`: Flex grow, shrink, basis
+- `order`: Flex order
+- `self`: Align self
+
+#### Visual
+- `color`: Background color
+- `border`: Border color, width, radius, style
+
+## Implementation
+
+The framework consists of four main components:
+
+1. **File Scanner** (`scan.ts`)
+   - Traverses project directories
+   - Extracts class attributes
+   - Excludes `node_modules`
+
+2. **Parser** (`parser.ts`)
+   - Tokenizes class definitions
+   - Validates against design system
+   - Built with Chevrotain
+
+3. **Utility System** (`utility.ts`)
+   - Breakpoint management
+   - Token validation
+   - File operations
+
+4. **Design System** (`design/`)
+   - Color tokens
+   - Typography scale
+   - Spacing system
+   - Breakpoint definitions
 
 ## Project Structure
 
 ```
-├── elevate/
-│   ├── parser.ts         // Parsing logic
-│   ├── utility.ts        // Shared utilities
-│   ├── scan.ts          // File scanning
-│   └── config/
-│       └── propertyAttributeMap.ts  // Property configuration
+elevate/
+├── config/     # Framework configuration
+├── design/     # Design system tokenization
+├── maps/       # Property-attribute mappings
+├── parser.ts   # Core parsing logic
+├── scan.js     # File scanning system
+└── utility.ts  # Helper functions
 ```
 
-## Planned Features
-- Complete EWDS token implementation
-- Extended property support
-- Build tool integration
-- Documentation generation
-- VS Code extension
+## Technical Requirements
 
-## Contributing
-
-As this project is in active development and implements proprietary methodology, we are not currently accepting external contributions. Please feel free to open issues for bug reports or feature discussions.
+- Node.js >=18
+- TypeScript ^5.3.0
+- Chevrotain ^11.0.3
 
 ## License
 
-Copyright (c) 2024 [Ken Pickett]
-
-All rights reserved. This source code is licensed under a proprietary license. No part of this source code may be reproduced, distributed, or transmitted in any form or by any means, without the prior written permission of the copyright holder.
-
-Unauthorized copying of this software, via any medium, is strictly prohibited.
-
-## Acknowledgments
-
-Built using Chevrotain parser toolkit and implementing EWDS methodology.
+Copyright (c) 2024 Ken Pickett. All rights reserved.
+Proprietary software - unauthorized distribution prohibited at this time.

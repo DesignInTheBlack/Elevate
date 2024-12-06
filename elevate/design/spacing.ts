@@ -1,6 +1,5 @@
 export const spacing = {
   
-    '0':'0',
     // Detail: For fine adjustments and component construction (0.25rem - 3.5rem)
     'd1': '0.25rem',  // 4pt (a1)
     'd2': '0.5rem',   // 8pt (a2)
@@ -45,6 +44,10 @@ export const spacing = {
     's11': '80rem',   // 1280pt (h2)
     's12': '90rem',   // 1440pt (h3)
     's13': '120rem',  // 1920pt (h4)
+
+    //Utility
+    '0':'0',
+    'fill':"100%"
 
 } as const;
 
