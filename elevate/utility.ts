@@ -14,16 +14,24 @@ process.on('uncaughtException', (err) => {
 // ║                   MODULE IMPORTS                                   ║
 // ║      Import configurations, tokens, and utilities.                 ║
 // ╚════════════════════════════════════════════════════════════════════╝
-import {propertyAttributeMap, propertyMap} from "./maps/propertyAttributeMap.js";
+
+//Configuration Options
+import {config} from './config/elevate.js';
+
+//CSS Reset
 import {cssReset} from './design/reset.js';
-import { config } from './config/elevate.js';
+
+//Syntax Maps
+import {propertyAttributeMap, propertyMap} from "./maps/propertyAttributeMap.js";
+import {flex} from './maps/flex.js';
+import {border} from './maps/border.js';
+import {text} from './maps/text.js';
+
+//Design Tokens
 import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
 import {colors} from "./design/colors.js";
 import {spacing,SpacingToken} from "./design/spacing.js";
 import {typography} from "./design/typography.js";
-import {flex} from './maps/flex.js';
-import {border} from './maps/border.js';
-import {text} from './maps/text.js';
 import {buffer} from './design/buffer.js';
 
 
@@ -31,6 +39,7 @@ import {buffer} from './design/buffer.js';
 // ║                   TOKEN TYPES CONFIGURATION                        ║
 // ║ Map various tokens to their respective values for validation.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
+
 const types = {
     xAxis: flex.xAxis,
     yAxis: flex.yAxis,
@@ -57,7 +66,6 @@ const types = {
 // ║                   MODIFIER HANDLING FUNCTIONS                      ║
 // ║ Functions to retrieve types, values, and rules for modifiers.      ║
 // ╚════════════════════════════════════════════════════════════════════╝
-
 
 // Get the type of a modifier based on its key in the types map.
 export function getModifierType(modifier: string, context?: { fileName: string } ): string {
@@ -277,7 +285,6 @@ function constructRule(modType: string, property: string, modifier: string, cont
         getModifierValue(modifier, context)
     );
 }
-
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  BREAKPOINT PRIORITY FUNCTION                      ║
