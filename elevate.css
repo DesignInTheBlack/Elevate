@@ -72,38 +72,109 @@ textarea:not([rows]) {
 }
 
 
-.text\:white\:h3 {
 
-color: #F7F5FB;
-font-size: 3.375rem;
+    @media only screen and (min-width:20rem) {
+        .buffer {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+    }
+    @media only screen and (min-width:30rem) {
+        .buffer {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+    }
+    @media only screen and (min-width:40rem) {
+        .buffer {
+            padding-left: 1.25rem;
+            padding-right: 1.25rem;
+        }
+    }
+    @media only screen and (min-width:48rem) {
+        .buffer {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+    @media only screen and (min-width:64rem) {
+        .buffer {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+    @media only screen and (min-width:80rem) {
+        .buffer {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+    @media only screen and (min-width:96rem) {
+        .buffer {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+    @media only screen and (min-width:120rem) {
+        .buffer {
+            padding-left: 16rem;
+            padding-right: 16rem;
+        }
+    }
+    @media only screen and (min-width:160rem) {
+        .buffer {
+            padding-left: 16rem;
+            padding-right: 16rem;
+        }
+    }
+    @media only screen and (min-width:240rem) {
+        .buffer {
+            padding-left: 16rem;
+            padding-right: 16rem;
+        }
+    }
+
+.m\:d1 {
+
+margin-left: 0.25rem;
+margin-top: 0.25rem;
+margin-right: 0.25rem;
+margin-bottom: 0.25rem;
 }
 
-.block {
+.color\:green {
 
-display: block;
+background-color: #81C14B;
 }
 
-.stack\:y-center\:y-start {
+.w\:d12 {
+
+width: 3rem;
+}
+
+.h\:d12 {
+
+height: 3rem;
+}
+
+.p\:d1 {
+
+padding-left: 0.25rem;
+padding-top: 0.25rem;
+padding-right: 0.25rem;
+padding-bottom: 0.25rem;
+}
+
+.stack\:x-center\:y-start {
 display:flex;
 flex-direction:column;
-justify-content: center;
+align-items: center;
 justify-content: flex-start;
 }
 
-.color\:blue {
+.color\:purple {
 
-background-color: #0496FF;
-}
-
-.left\:d4 {
-
-left: 1rem;
-}
-
-.border\:r-d12\:r-d12 {
-
-border-radius: 3rem;
-border-radius: 3rem;
+background-color: #6320EE;
 }
 
 .row\:x-center\:y-start {
@@ -113,18 +184,12 @@ justify-content: center;
 align-items: flex-start;
 }
 
-@media only screen and (min-width:48rem) {
-.color\:purple {
-
-background-color: #6320EE;
-}
-
-}
-
 @media only screen and (min-width:64rem) {
-.color\:green {
-
-background-color: #81C14B;
+.stack\:x-center\:y-start {
+display:flex;
+flex-direction:column;
+align-items: center;
+justify-content: flex-start;
 }
 
 }

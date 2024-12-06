@@ -19,11 +19,12 @@ import {cssReset} from './design/reset.js';
 import { config } from './config/elevate.js';
 import {breakpoints, BreakpointToken } from "./design/breakpoints.js";
 import {colors} from "./design/colors.js";
-import {spacing} from "./design/spacing.js";
+import {spacing,SpacingToken} from "./design/spacing.js";
 import {typography} from "./design/typography.js";
 import {flex} from './maps/flex.js';
-import { border } from './maps/border.js';
-import { text } from './maps/text.js';
+import {border} from './maps/border.js';
+import {text} from './maps/text.js';
+import {buffer} from './design/buffer.js';
 
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -298,9 +299,32 @@ export function writeToFile(content: string) {
   
     // Clear or create the file
     fs.writeFileSync(filePath, '', 'utf8'); // Ensures a clean slate
+
+    //Compose Buffer CSS
+    let bufferString = '';
+    Object.entries(buffer).forEach(([key, value]) => {
+        // Type-safe casting to preserve the types
+        const breakpointKey = key as BreakpointToken;
+        const spacingValue = value as SpacingToken;
+    
+        // Resolve actual values
+        const minWidth = breakpoints[breakpointKey]; // e.g., '320px'
+        const padding = spacing[spacingValue];      // e.g., '1.25rem'
+    
+        // Create CSS entry
+        let newEntry = `
+    @media only screen and (min-width:${minWidth}) {
+        .buffer {
+            padding-left: ${padding};
+            padding-right: ${padding};
+        }
+    }`;
+        bufferString += newEntry;
+    });
+    
   
     // Combine the reset CSS with the provided content
-    const completeContent = `${cssReset}\n\n${content}`;
+    const completeContent = `${cssReset}\n\n${bufferString}\n\n${content}`;
   
     // Write to the file
     fs.writeFile(filePath, completeContent, (err: any) => {
