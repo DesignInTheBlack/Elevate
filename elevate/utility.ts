@@ -61,6 +61,16 @@ const types = {
     FlexBasisToken: flex.flexBasisToken,
     fontweightToken: typography.weight,
     TextAlignToken: text.align,
+    ZIndexToken: {
+        validate: (value: string) => {
+            const num = parseInt(value, 10);
+            if (isNaN(num)) {
+                throw new Error(`Invalid z-index value: ${value}. Must be a number.`);
+            }
+            return num.toString();
+        }
+    }
+
 };
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -86,6 +96,11 @@ export function getModifierType(modifier: string, context?: { fileName: string }
         }
     }
 
+    // Handle numeric values for z-index
+       if (!isNaN(parseInt(modifier, 10))) {
+        return "ZIndexToken";
+    }
+
     throw new Error(
             `\nUnable to determine token type for value: ${modifier}${context ? ` in ${context.fileName}` : ''}\nPlease ensure that you are using a valid token as defined in the design directory.`
     );
@@ -93,6 +108,11 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 
 // Get the value of a modifier by searching its mapped values.
 export function getModifierValue(modifier: string, context?: { fileName: string }): string {
+
+    const modifierType = getModifierType(modifier, context);
+    if (modifierType === "ZIndexToken") {
+        return types.ZIndexToken.validate(modifier);
+    }
    
     if (isAxisSpecificModifier(modifier)) {
         return getAxisSpecificValue(modifier);

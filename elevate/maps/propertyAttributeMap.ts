@@ -33,8 +33,8 @@ export const propertyAttributeMap = {
     hidden: { "display": "none" },
 
       // Z-Index
-      z: {
-        "z-index": ""
+    z: {
+        "z-index": "ZIndexToken"
     },
 
     //Buffer

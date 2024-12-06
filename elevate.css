@@ -177,6 +177,11 @@ justify-content: flex-start;
 background-color: #6320EE;
 }
 
+.z\:20 {
+
+z-index: 20;
+}
+
 .left\:d12 {
 
 left: 3rem;
