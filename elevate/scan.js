@@ -42,7 +42,32 @@ const extractClasses = (content, classList, filePath) => {
     let match;
 
     while ((match = regex.exec(content)) !== null) {
-        const classNames = match[1].split(/\s+/).filter(Boolean);
+        const classValue = match[1].trim();
+
+        // Regex to find the special state pattern @something:[...]
+        const specialPattern = /@[^\:\s]+\:\[[^\]]+\]/;
+        const specialMatch = classValue.match(specialPattern);
+
+        let classNames;
+        if (specialMatch) {
+            // Extract the special token as a single class
+            const specialClass = specialMatch[0];
+
+            // Remove the special class from the string
+            let remainder = classValue.replace(specialClass, "").trim();
+
+            // Start with the special class
+            classNames = [specialClass];
+
+            // If there's anything left, split it on whitespace
+            if (remainder.length > 0) {
+                classNames.push(...remainder.split(/\s+/).filter(Boolean));
+            }
+        } else {
+            // No special pattern found, just split normally by whitespace
+            classNames = classValue.split(/\s+/).filter(Boolean);
+        }
+
         classList.push({
             file: filePath,
             classes: classNames

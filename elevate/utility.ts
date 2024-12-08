@@ -241,6 +241,9 @@ export function toAst(cst: any, context?: { fileName: string }) {
         throw new Error("No CST to convert.");
     }
 
+    console.log(JSON.stringify(cst.children.stateBlock,null,2))
+
+
     return cst.children.DirectProperty
         ? handleDirectProperties(cst)
         : handleCompoundProperties(cst, context);
@@ -259,14 +262,20 @@ function handleDirectProperties(cst: any) {
     };
 }
 
+
+function handleStatefulStrings (cst:any, context?:{fileName:string}) {
+    console.log("We are in a stateful string!")
+    // ...(cst.children.stateFlag && {
+    //     state: extractState(cst.children.stateFlag),
+    // }),
+}
+
 // Handles the logic for compound properties within the CST.
 function handleCompoundProperties(cst: any, context?: { fileName: string }) {
+
     return {
-        type: cst.children.stateFlag ? "Stateful Class" : "Stateless Class",
+        type: "Stateless Class",
         className: cst.className,
-        ...(cst.children.stateFlag && {
-            state: extractState(cst.children.stateFlag),
-        }),
         property: cst.children.Property[0].image,
         modifiers: processModifiers(cst, context),
     };

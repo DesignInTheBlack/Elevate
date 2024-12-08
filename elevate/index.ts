@@ -62,6 +62,7 @@ const main = async () => {
         }
             let lastBreak = '';
             let classList = instance.classes;
+            console.log(classList)
 
             classList.forEach(function (classString) {
                 if (!classString.includes("$")) {
@@ -71,8 +72,10 @@ const main = async () => {
                         lastBreak = classString;
                         return;
                     }
+                    console.log("Made it!")
                     let classObject = elevateCompiler(classString,{ fileName: instance.file });
                     classObject.breakpoint = lastBreak;
+                  
 
                     compiledClasses.push(classObject);
                 }
@@ -152,11 +155,11 @@ const main = async () => {
             }
 
             const flexProperties =
-                item.property === "row"
-                    ? "display:flex;\nflex-direction:row;"
-                    : item.property === "stack"
-                        ? "display:flex;\nflex-direction:column;"
-                        : "";
+            item.property === "row"
+                ? "display:flex;\nflex-direction:row;"
+                : item.property === "stack"
+                ? "display:flex;\nflex-direction:column;"
+                : "";
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
