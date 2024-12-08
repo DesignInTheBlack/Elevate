@@ -139,15 +139,22 @@ textarea:not([rows]) {
 font-weight: 700;
 }
 
+.row\:x-center\:y-center {
+display:flex;
+flex-direction:row;
+justify-content: center;
+align-items: center;
+}
+
 @media only screen and (min-width:64rem) {
-.\@hover\:\[text\:purple\:bold_p\:d1\]:hover {
+.\@hover\:\[text\:purple\:bold_p\:d1\:d5\]:hover {
 
 color: #6320EE;
 font-weight: 700;
 padding-left: 0.25rem;
-padding-top: 0.25rem;
+padding-top: 1.25rem;
 padding-right: 0.25rem;
-padding-bottom: 0.25rem;
+padding-bottom: 1.25rem;
 }
 
 }

@@ -73,7 +73,6 @@ const main = async () => {
                         return;
                     }
                     let classObject = elevateCompiler(classString,{ fileName: instance.file });
-                    // console.log("Generated classObject: " + JSON.stringify(classObject,null,2))
                     classObject.breakpoint = lastBreak;
                    
 
@@ -114,7 +113,6 @@ const main = async () => {
 
         // Convert back to array
         compiledClasses = Array.from(uniqueClasses.values());
-        console.log(compiledClasses)
 
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║                       6. OUTPUT RESULTS                            ║

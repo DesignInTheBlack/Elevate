@@ -244,19 +244,15 @@ export function toAst(cst: any, context?: { fileName: string }) {
 
    let managedCST = null
    if (cst.children.DirectProperty) {
-   console.log("\nDirect Property Detected!")
    console.log(cst)
    managedCST = handleDirectProperties(cst)
    }
 
    else if (cst.children.stateBlock) {
-   console.log("\nStateful String Detected!")
    managedCST = handleStatefulStrings(cst)
    }
 
    else {
-    console.log("\nCompound Property Detected!")
-    // console.log("CST IS: " + JSON.stringify(cst,null,2) + "\n" + "CST CHILDREN IS: " + JSON.stringify(cst.children,null,2))
     managedCST = handleCompoundProperties(cst, context);
    }
 
@@ -281,7 +277,6 @@ function handleDirectProperties(cst: any) {
 
 function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     
-    console.log(cst)
     const stateMatch = cst.className.match(/@(\w+):/); // Captures the term after `@` and before `:`
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/); // Captures terms inside `[]`
 

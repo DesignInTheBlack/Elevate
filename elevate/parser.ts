@@ -19,7 +19,7 @@ const Property = createToken({
 });
 const Modifier = createToken({ 
     name: "ColonModifier", 
-    pattern: /:[a-zA-Z0-9][a-zA-Z0-9]*/ 
+    pattern: /:[a-zA-Z0-9][a-zA-Z0-9-]*/ 
 });
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
 const WhiteSpace = createToken({
@@ -116,12 +116,9 @@ export const elevateCompiler = (className: string,context?: { fileName: string }
     // Set tokens for parser input
     parser.input = result.tokens;
 
-    console.log(result.tokens)
-
     // Parse input using the primary rule
     const cst = parser.propertyDefinition();
     (cst as any).className = className;
-    console.log("\nSuccessfully parsed:" + className)
 
     // Parsing Error Handling 
     if (parser.errors.length > 0) {
