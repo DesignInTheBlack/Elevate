@@ -134,17 +134,20 @@ textarea:not([rows]) {
         }
     }
 
-.text\:green {
+.text\:bold {
 
-color: #81C14B;
+font-weight: 700;
 }
 
-.\@hover\:\[text\:purple p\:d1\]:hover {
+@media only screen and (min-width:64rem) {
+.\@hover\:\[text\:purple\:bold_p\:d1\]:hover {
 
 color: #6320EE;
+font-weight: 700;
 padding-left: 0.25rem;
 padding-top: 0.25rem;
 padding-right: 0.25rem;
 padding-bottom: 0.25rem;
 }
 
+}

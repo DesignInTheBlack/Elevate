@@ -60,7 +60,7 @@ const types = {
     FlexSelfToken: flex.flexSelfToken,
     FlexOrderToken: flex.flexOrderToken,
     FlexBasisToken: flex.flexBasisToken,
-    fontweightToken: typography.weight,
+    FontWeightToken: typography.weight,
     TextAlignToken: text.align,
     ZIndexToken: {
         validate: (value: string) => {
@@ -289,7 +289,7 @@ function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     let state = stateMatch ? stateMatch[1] : null;
 
     // Extract the subterms
-    let subterms = subtermsMatch ? subtermsMatch[1].split(/\s+/).map(term => term.trim()) : []
+    let subterms = subtermsMatch ? subtermsMatch[1].split(/_/).map(term => term.trim()) : []
 
    let newterms = subterms.map((item) => {
         item = elevateCompiler(item);

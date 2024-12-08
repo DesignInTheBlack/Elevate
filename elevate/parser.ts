@@ -13,12 +13,18 @@ import { toAst } from "./utility.js";
 const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
-const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
-const Modifier = createToken({ name: "ColonModifier", pattern: /:[a-zA-Z0-9][a-zA-Z0-9_-]*/ });
+const Property = createToken({ 
+    name: "Property", 
+    pattern: /[a-zA-Z][a-zA-Z0-9]*(?=:)/ 
+});
+const Modifier = createToken({ 
+    name: "ColonModifier", 
+    pattern: /:[a-zA-Z0-9][a-zA-Z0-9]*/ 
+});
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
 const WhiteSpace = createToken({
     name: "WhiteSpace",
-    pattern: /\s+/,
+    pattern: /_+/,
     group: Lexer.SKIPPED
 });
 
@@ -26,7 +32,7 @@ const WhiteSpace = createToken({
 // ║              3. COMBINE TOKENS INTO VOCABULARY                     ║
 // ║ Group defined tokens into a single array for Lexer initialization. ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const tokens = [WhiteSpace, State, openState, Property, Modifier, DirectProperty, closeState];
+const tokens = [State, openState, Property, Modifier, WhiteSpace, DirectProperty, closeState];
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   4. LEXER INITIALIZATION                          ║
@@ -52,9 +58,11 @@ class ElevateParser extends CstParser {
         $.RULE("stateBlock", () => {
             $.CONSUME(State);
             $.CONSUME(openState);
-            $.AT_LEAST_ONE(() => {
+            $.MANY(() => {
                 $.CONSUME(Property);
-                $.CONSUME(Modifier);
+                $.MANY2(() => {
+                    $.CONSUME(Modifier);
+                });
             });
             $.CONSUME(closeState);
         });
@@ -108,10 +116,12 @@ export const elevateCompiler = (className: string,context?: { fileName: string }
     // Set tokens for parser input
     parser.input = result.tokens;
 
+    console.log(result.tokens)
+
     // Parse input using the primary rule
     const cst = parser.propertyDefinition();
     (cst as any).className = className;
-    console.log("ClassName:" + className)
+    console.log("\nSuccessfully parsed:" + className)
 
     // Parsing Error Handling 
     if (parser.errors.length > 0) {
