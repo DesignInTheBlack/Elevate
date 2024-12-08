@@ -62,7 +62,7 @@ const main = async () => {
         }
             let lastBreak = '';
             let classList = instance.classes;
-            console.log(classList)
+         
 
             classList.forEach(function (classString) {
                 if (!classString.includes("$")) {
@@ -72,10 +72,10 @@ const main = async () => {
                         lastBreak = classString;
                         return;
                     }
-                    console.log("Made it!")
                     let classObject = elevateCompiler(classString,{ fileName: instance.file });
+                    // console.log("Generated classObject: " + JSON.stringify(classObject,null,2))
                     classObject.breakpoint = lastBreak;
-                  
+                   
 
                     compiledClasses.push(classObject);
                 }
@@ -114,6 +114,7 @@ const main = async () => {
 
         // Convert back to array
         compiledClasses = Array.from(uniqueClasses.values());
+        console.log(compiledClasses)
 
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║                       6. OUTPUT RESULTS                            ║

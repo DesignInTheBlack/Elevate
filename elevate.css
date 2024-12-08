@@ -139,10 +139,12 @@ textarea:not([rows]) {
 color: #81C14B;
 }
 
-@media only screen and (min-width:64rem) {
-.text\:purple {
+.\@hover\:\[text\:purple p\:d1\]:hover {
 
 color: #6320EE;
+padding-left: 0.25rem;
+padding-top: 0.25rem;
+padding-right: 0.25rem;
+padding-bottom: 0.25rem;
 }
 
-}

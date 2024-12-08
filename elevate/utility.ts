@@ -17,6 +17,7 @@ process.on('uncaughtException', (err) => {
 
 //Configuration Options
 import {config} from './config/elevate.js';
+import { elevateCompiler } from './parser.js';
 
 //CSS Reset
 import {cssReset} from './design/reset.js';
@@ -241,12 +242,27 @@ export function toAst(cst: any, context?: { fileName: string }) {
         throw new Error("No CST to convert.");
     }
 
-    console.log(JSON.stringify(cst.children.stateBlock,null,2))
+   let managedCST = null
+   if (cst.children.DirectProperty) {
+   console.log("\nDirect Property Detected!")
+   console.log(cst)
+   managedCST = handleDirectProperties(cst)
+   }
 
+   else if (cst.children.stateBlock) {
+   console.log("\nStateful String Detected!")
+   managedCST = handleStatefulStrings(cst)
+   }
 
-    return cst.children.DirectProperty
-        ? handleDirectProperties(cst)
-        : handleCompoundProperties(cst, context);
+   else {
+    console.log("\nCompound Property Detected!")
+    // console.log("CST IS: " + JSON.stringify(cst,null,2) + "\n" + "CST CHILDREN IS: " + JSON.stringify(cst.children,null,2))
+    managedCST = handleCompoundProperties(cst, context);
+   }
+
+   return managedCST
+
+   
 }
 
 // Handles the logic for direct properties within the CST.
@@ -263,11 +279,35 @@ function handleDirectProperties(cst: any) {
 }
 
 
-function handleStatefulStrings (cst:any, context?:{fileName:string}) {
-    console.log("We are in a stateful string!")
-    // ...(cst.children.stateFlag && {
-    //     state: extractState(cst.children.stateFlag),
-    // }),
+function handleStatefulStrings(cst: any, context?: { fileName: string }) {
+    
+    console.log(cst)
+    const stateMatch = cst.className.match(/@(\w+):/); // Captures the term after `@` and before `:`
+    const subtermsMatch = cst.className.match(/\[([^\]]+)\]/); // Captures terms inside `[]`
+
+    // Extract the state correctly
+    let state = stateMatch ? stateMatch[1] : null;
+
+    // Extract the subterms
+    let subterms = subtermsMatch ? subtermsMatch[1].split(/\s+/).map(term => term.trim()) : []
+
+   let newterms = subterms.map((item) => {
+        item = elevateCompiler(item);
+        return item.modifiers
+    });
+
+   let modifiers = newterms.flat();
+
+    let fauxAST = {
+        name:'propertyDefinition',
+        children:null,
+        state,
+        className:cst.className,
+        modifiers
+    }
+
+    return fauxAST
+  
 }
 
 // Handles the logic for compound properties within the CST.
