@@ -43,30 +43,32 @@ const extractClasses = (content, classList, filePath) => {
 
     while ((match = regex.exec(content)) !== null) {
         const classValue = match[1].trim();
+        
+        // First find any state patterns
+        const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
+        let classString = classValue;
+        const states = [];
+        let stateMatch;
+        let index = 0;
+        const placeholders = [];
 
-        // Regex to find the special state pattern @something:[...]
-        const specialPattern = /@[^\:\s]+\:\[[^\]]+\]/;
-        const specialMatch = classValue.match(specialPattern);
-
-        let classNames;
-        if (specialMatch) {
-            // Extract the special token as a single class
-            const specialClass = specialMatch[0];
-
-            // Remove the special class from the string
-            let remainder = classValue.replace(specialClass, "").trim();
-
-            // Start with the special class
-            classNames = [specialClass];
-
-            // If there's anything left, split it on whitespace
-            if (remainder.length > 0) {
-                classNames.push(...remainder.split(/\s+/).filter(Boolean));
-            }
-        } else {
-            // No special pattern found, just split normally by whitespace
-            classNames = classValue.split(/\s+/).filter(Boolean);
+        // Replace state patterns with placeholders and store them
+        while ((stateMatch = statePattern.exec(classValue)) !== null) {
+            const placeholder = `__STATE${index}__`;
+            states.push(stateMatch[0]);
+            placeholders.push(placeholder);
+            classString = classString.replace(stateMatch[0], placeholder);
+            index++;
         }
+
+        // Split the string (now with placeholders) by whitespace
+        const parts = classString.split(/\s+/).filter(Boolean);
+
+        // Restore state patterns in their original positions
+        const classNames = parts.map(part => {
+            const placeholderIndex = placeholders.indexOf(part);
+            return placeholderIndex !== -1 ? states[placeholderIndex] : part;
+        });
 
         classList.push({
             file: filePath,
@@ -74,7 +76,6 @@ const extractClasses = (content, classList, filePath) => {
         });
     }
 };
-
 /**
  * Main function to scan the project directory
  * @param {string} startDir - The directory to start scanning (default: current directory)
