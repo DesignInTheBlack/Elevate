@@ -83,10 +83,15 @@ Elevate manages design tokens across multiple domains:
 ### Planned Roadmap
 
 #### Near-Term Improvements
+- Grid support with expressive syntax
+- Expanded media query support
+- Pseudo-class support
+- Child selector support and custom syntax(this)
+- Container query shorthand syntax and generation
+- Improved error reporting
 - Enhanced type safety
 - More comprehensive design token validation and support for varying token organization
-- Improved error reporting
-- Container query shorthand syntax and generation
+
 
 
 ## Quick Start
@@ -336,4 +341,4 @@ elevate/
 Proprietary software developed by Ken Pickett.
 All rights reserved. Unauthorized distribution prohibited.
 
-*Elevate your web design. Elevate your code.*
+*Elevate Your Code. Elevate the Web.*
