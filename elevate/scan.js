@@ -42,14 +42,40 @@ const extractClasses = (content, classList, filePath) => {
     let match;
 
     while ((match = regex.exec(content)) !== null) {
-        const classNames = match[1].split(/\s+/).filter(Boolean);
+        const classValue = match[1].trim();
+        
+        // First find any state patterns
+        const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
+        let classString = classValue;
+        const states = [];
+        let stateMatch;
+        let index = 0;
+        const placeholders = [];
+
+        // Replace state patterns with placeholders and store them
+        while ((stateMatch = statePattern.exec(classValue)) !== null) {
+            const placeholder = `__STATE${index}__`;
+            states.push(stateMatch[0]);
+            placeholders.push(placeholder);
+            classString = classString.replace(stateMatch[0], placeholder);
+            index++;
+        }
+
+        // Split the string (now with placeholders) by whitespace
+        const parts = classString.split(/\s+/).filter(Boolean);
+
+        // Restore state patterns in their original positions
+        const classNames = parts.map(part => {
+            const placeholderIndex = placeholders.indexOf(part);
+            return placeholderIndex !== -1 ? states[placeholderIndex] : part;
+        });
+
         classList.push({
             file: filePath,
             classes: classNames
         });
     }
 };
-
 /**
  * Main function to scan the project directory
  * @param {string} startDir - The directory to start scanning (default: current directory)

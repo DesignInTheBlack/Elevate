@@ -4,7 +4,7 @@
 // ╚════════════════════════════════════════════════════════════════════╝
 import { createToken, Lexer, CstParser, CstNode } from "chevrotain";
 import { toAst } from "./utility.js";
-import ora from 'ora';
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                 2. TOKEN DEFINITIONS                               ║
@@ -13,15 +13,26 @@ import ora from 'ora';
 const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
-const Property = createToken({ name: "Property", pattern: /[a-zA-Z]+(?=:)/ });
-const Modifier = createToken({ name: "ColonModifier", pattern: /:[a-zA-Z0-9][a-zA-Z0-9_-]*/ });
+const Property = createToken({ 
+    name: "Property", 
+    pattern: /[a-zA-Z][a-zA-Z0-9]*(?=:)/ 
+});
+const Modifier = createToken({ 
+    name: "ColonModifier", 
+    pattern: /:[a-zA-Z0-9][a-zA-Z0-9-]*/ 
+});
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
+const WhiteSpace = createToken({
+    name: "WhiteSpace",
+    pattern: /_+/,
+    group: Lexer.SKIPPED
+});
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║              3. COMBINE TOKENS INTO VOCABULARY                     ║
 // ║ Group defined tokens into a single array for Lexer initialization. ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const tokens = [State, openState, Property, Modifier, DirectProperty, closeState];
+const tokens = [State, openState, Property, Modifier, WhiteSpace, DirectProperty, closeState];
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   4. LEXER INITIALIZATION                          ║
@@ -38,21 +49,31 @@ const lexer = new Lexer(tokens, {
 class ElevateParser extends CstParser {
     // Declare propertyDefinition explicitly for TypeScript compliance
     public propertyDefinition!: () => CstNode;
+    public stateBlock!: () => CstNode;
 
     constructor() {
         super(tokens);
         const $ = this;
 
-      
-        $.RULE("propertyDefinition", () => {
-            // Optional State and Group Handling 
-            $.OPTION(() => {
-                $.CONSUME(State);
-                $.CONSUME(openState);
+        $.RULE("stateBlock", () => {
+            $.CONSUME(State);
+            $.CONSUME(openState);
+            $.MANY(() => {
+                $.CONSUME(Property);
+                $.MANY2(() => {
+                    $.CONSUME(Modifier);
+                });
             });
+            $.CONSUME(closeState);
+        });
 
-            // Either a direct property or a property with modifiers
+        $.RULE("propertyDefinition", () => {
             $.OR([
+                {
+                    ALT: () => {
+                        $.SUBRULE($.stateBlock);
+                    }
+                },
                 {
                     ALT: () => {
                         $.CONSUME(DirectProperty);
@@ -60,27 +81,23 @@ class ElevateParser extends CstParser {
                 },
                 {
                     ALT: () => {
-                        // Property Handling 
-                        $.CONSUME(Property);
-
-                        // Zero or More Modifiers
+                        // multiple properties and modifiers without the @hover block
                         $.MANY(() => {
-                            $.CONSUME(Modifier);
+                            $.CONSUME(Property);
+                            $.MANY2(() => {
+                                $.CONSUME(Modifier);
+                            });
                         });
                     }
                 }
             ]);
-
-            // Optional Close State 
-            $.OPTION2(() => {
-                $.CONSUME(closeState); // Catch dangling closeState
-            });
         });
 
         // Perform self-analysis to initialize parser internals
         this.performSelfAnalysis();
     }
 }
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   6. COMPILER FUNCTION                            ║

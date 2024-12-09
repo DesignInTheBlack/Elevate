@@ -10,19 +10,84 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
   - Design system constraint enforcement
 
 - 🎨 **Design System Integration**
-  - Token-based system for colors, spacing, and typography
+  - Token-based system for colors, spacing, breakpoints and typography
   - Structured property-attribute relationships
   - Enterprise-ready validation
 
 - 📱 **Responsive Design**
   - Mobile-first breakpoint system
-  - Intuitive syntax: `/md/text:large`
+  - Intuitive syntax: `property:modifier /md/ property:modifier`
   - Automatic media query generation
 
 - ⚡ **State Management**
   - Hover, focus, and custom states
-  - Syntax: `@hover:[text:red]`
+  - Syntax: `@state:[property:modifier_property:modifier]`
   - Automatic CSS state compilation
+
+## Design Philosophy
+
+### The Elevate Web Design System (EWDS)
+
+#### Core Design Principles
+Elevate is a compile-time CSS generation framework that focuses on:
+- Type-safe class parsing
+- Declarative syntax for styling
+- Intelligent breakpoint management
+- Minimal runtime overhead
+
+#### Key Technical Innovations
+- **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
+- **Mobile-First Design**: Intelligent breakpoint processing
+- **Declarative Syntax**: Transform HTML class attributes into optimized CSS
+
+### Architectural Approach
+
+#### Parsing Strategy
+Elevate uses a multi-stage parsing approach:
+1. **File Scanning**: Discover class attributes across project files
+2. **Lexical Analysis**: Tokenize class strings
+3. **Syntax Parsing**: Convert tokens to Abstract Syntax Trees (AST)
+4. **CSS Generation**: Transform AST into optimized CSS
+
+#### Type Safety
+Implemented through:
+- Strict token definitions
+- Compile-time validation of design tokens
+- TypeScript type constraints for design system tokens
+
+### Current Capabilities
+
+#### Supported Features
+- Responsive design syntax
+- State-based styling 
+- Breakpoint-aware class generation
+- Intelligent buffer/container management
+- Comprehensive design token system
+
+#### Design Token Management
+Elevate manages design tokens across multiple domains:
+- Colors
+- Spacing (Detail, Content, Space scales)
+- Typography
+- Breakpoints
+
+### Performance Characteristics
+
+#### Compilation Approach
+- Zero runtime JavaScript overhead
+- Generates static CSS at compile-time
+- Minimal additional bundle size
+- Predictable performance characteristics
+- No tree shaking necessary
+
+### Planned Roadmap
+
+#### Near-Term Improvements
+- Enhanced type safety
+- More comprehensive design token validation and support for varying token organization
+- Improved error reporting
+- Container query shorthand syntax and generation
+
 
 ## Quick Start
 
@@ -30,114 +95,198 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
 # Install dependencies
 npm install
 
-# Start development
-npm run dev
-
-# Build project
-npm run build
+# Compile to CSS
+npm start
 ```
+
+## Configuation 
+
+### Framework Configuration
+The `elevate/config/` directory contains configuration files for the framework, including:
+elevate.js: Framework configuration options
+
+```html
+const options = {
+    Watch:'./', <-- Directory to watch for changes>
+    FileTypes: ['html', 'jsx', 'tsx', 'astro'], <-- File extensions to scan -->
+    Output:'./' <-- Output directory for generated CSS -->
+}
+
+export const config = options
+```
+
+The maps folder contains the property-attribute mappings for the framework, including:
+propertyAttributeMap.js as well as feature specific syntax maps. 
+
+The token import statements and the maps are imported in the utility.ts and can be expanded upon as needed.
+
 
 ## Syntax Guide
 
-### Basic Syntax
+### 1. Core Syntax Types
+
+#### Direct Properties
+Single-token modifications that apply a basic styling or layout property. These are the simplest form of styling, providing immediate, straightforward application of a single characteristic to an element.
+
 ```html
-<div class="property:modifier">
-<!-- Example: <div class="color:purple"> -->
+<!-- Basic direct property application -->
+<div class="block">       <!-- Display type -->      
+<div class="hidden">      <!-- Visibility -->
+<div class="buffer">
 ```
 
-### Multiple Properties
+#### Compound Properties
+Modifications that combine a property with a specific modifier, allowing more nuanced and precise styling. These provide granular control over element characteristics by specifying both the property and its desired state or value.
+
 ```html
-<div class="property1:modifier1 property2:modifier2">
-<!-- Example: <div class="color:purple text:large"> -->
+<!-- Property:Modifier syntax -->
+<div class="text:large">        <!-- Text size -->
+<div class="color:purple">      <!-- Color specification -->
+<div class="row:x-center">       <!-- Layout with alignment -->
+<div class="border:d1">          <!-- Border width -->
+<div class="m:d4">               <!-- Margin of 1rem -->
 ```
 
-### Layout Properties
+#### Stateful Strings
+Dynamic styling mechanism that enables responsive and interactive visual changes based on element states. These allow complex, conditional styling that adapts to user interactions or specific conditions.
 
-#### Flex Containers
 ```html
-<!-- Row container with centered items -->
-<div class="row:x-center:y-center">
+<!-- State-based styling -->
+<div class="@hover:[text:purple]">     <!-- Text color on hover -->
+<div class="@focus:[color:red]">       <!-- Background color on focus -->
+<div class="@active:[text:bold]">      <!-- Text weight when active -->
 
-<!-- Column (stack) container with top-aligned items -->
-<div class="stack:x-center:y-start">
+<!-- Complex state combinations -->
+<div class="@hover:[text:purple:bold] @focus:[color:red]">
 ```
 
-#### Flex Values
-- X-axis alignment: `x-start`, `x-center`, `x-end`, `x-between`, `x-around`, `x-evenly`
-- Y-axis alignment: `y-start`, `y-center`, `y-end`, `y-stretch`, `y-baseline`
+### 2. Chaining Modifiers
+Combine multiple modifiers to create complex, multi-dimensional styling rules. This approach allows for rich, layered design specifications within a single class attribute.
 
-#### Spacing
 ```html
-<!-- Margin -->
-<div class="m:d1">  <!-- d1-d12 spacing scale -->
-
-<!-- Padding -->
-<div class="p:d1">
-
-<!-- Width and Height -->
-<div class="w:d12 h:d6">
+<!-- Chained property modifiers -->
+<div class="text:h3:bold:center">  <!-- Large, bold, centered text -->
+<div class="m:d4:d6">        <!-- Margin with d4 values for x axis and d6 for y axis values -->
 ```
 
-### Typography
-```html
-<!-- Font size and color -->
-<div class="text:large color:purple">
+### 3. Advanced Syntax Patterns
 
-<!-- Multiple text properties -->
-<div class="text:large:bold:center">
+#### Responsive Styling
+Apply different styles at specific breakpoints, enabling adaptive design that responds to varying screen sizes and device characteristics.
+
+```html
+<!-- Responsive text sizing -->
+<div class="/lg/ text:h2">     <!-- Large text at large breakpoint -->
+<div class="/md/ text:base">   <!-- Base text at medium breakpoint -->
+
+<!-- Responsive layout -->
+<div class="/lg/ row:x-center:y-start">
 ```
 
-### Responsive Design
-```html
-<!-- Applies only at medium breakpoint and above -->
-<div class="/md/text:large">
+#### Complex State Management
+Combine responsive design with interaction states to create sophisticated, context-aware styling that adapts to both device characteristics and user interactions.
 
-<!-- Multiple responsive properties -->
-<div class="/lg/stack:x-center:y-start">
+```html
+<!-- Responsive state styling -->
+<div class="/md/ @hover:[text:large]">
+<div class="/lg/ @focus:[color:purple]">
+
+<!-- Multiple state and responsive combinations -->
+<div class="/md/ @hover:[text:purple:bold] @focus:[color:red]">
 ```
 
-### State Management
+### 4. Buffer Class
+An intelligent, implicit container mechanism that dynamically adjusts content spacing across different device sizes. The buffer class provides consistent, responsive padding without requiring manual intervention or complex CSS wrapping.
+
 ```html
-<!-- Hover state -->
-<div class="@hover:[color:purple]">
-
-<!-- Focus state -->
-<div class="@focus:[text:large]">
-
-<!-- Multiple states -->
-<div class="@hover:[color:purple] @focus:[text:large]">
+<!-- Buffer automatically manages spacing -->
+<div class="buffer">
+    <!-- Content will have appropriate padding based on current breakpoint -->
+</div>
 ```
 
-### Currently Supported Properties
+Buffer Spacing Mapping:
+- `2xs`, `xs`, `sm`: `d5` spacing (smallest padding)
+- `md`, `lg`, `xl`, `2xl`: `d8` spacing (medium padding)
+- `3xl`, `4xl`, `5xl`: `c12` spacing (largest padding)
 
-#### Layout
-- `display`: `block`, `flex`, `grid`, `hidden`, etc.
-- `row`: Flex row container with x/y alignment
-- `stack`: Flex column container with x/y alignment
-- `gap`: Spacing between flex/grid items
+### 5. Comprehensive Property Modifiers
 
-#### Spacing
-- `m`: Margin (d1-d12 scale)
-- `p`: Padding (d1-d12 scale)
-- `w`: Width
-- `h`: Height
-- `min`: Min width/height
-- `max`: Max width/height
+#### Breakpoint Reference
+Elevate provides a comprehensive breakpoint system for responsive design:
+- `2xs`: 20rem (320px) - Very Small Mobile
+- `xs`: 30rem (480px) - Small Mobile
+- `sm`: 40rem (640px) - Large Mobile
+- `md`: 48rem (768px) - Tablet
+- `lg`: 64rem (1024px) - Small Desktop
+- `xl`: 80rem (1280px) - Medium Desktop
+- `2xl`: 96rem (1536px) - Large Desktop
+- `3xl`: 120rem (1920px) - Full HD
+- `4xl`: 160rem (2560px) - 2K
+- `5xl`: 240rem (3840px) - 4K
 
-#### Typography
-- `text`: Font size, weight, family, alignment
-- `color`: Text color
-- `line-height`: Line height
-- `letter-spacing`: Letter spacing
+#### Spacing Scale
+Elevate uses three primary spacing scales with granular control:
 
-#### Flex Item Properties
-- `item`: Flex grow, shrink, basis
-- `order`: Flex order
-- `self`: Align self
+1. **Detail Scale (`d1-d13`)**: Fine adjustments and component construction
+   - Range: `0.25rem` (4pt) to `3.5rem` (56pt)
+   - Ideal for: Padding, margins, small gaps
+   - Example: `m:d4` (margin of 1rem), `p:d2` (padding of 0.5rem)
 
-#### Visual
-- `color`: Background color
-- `border`: Border color, width, radius, style
+2. **Content Scale (`c1-c13`)**: General page layout and component spacing
+   - Range: `4rem` (64pt) to `20rem` (320pt)
+   - Ideal for: Section spacing, component layouts
+   - Example: `gap:c6` (7rem gap between elements)
+
+3. **Space Scale (`s1-s13`)**: Major page sections and full-page layouts
+   - Range: `24rem` (384pt) to `120rem` (1920pt)
+   - Ideal for: Page sections, full-width containers
+   - Example: `w:s8` (width of 60rem)
+
+Utility Values:
+- `0`: Zero spacing
+- `fill`: 100% width/height
+
+#### Typography Modifiers
+
+1. **Font Sizes**:
+   - `tiny`: `0.533rem`
+   - `small`: `0.711rem`
+   - `base`: `1rem`
+   - `h6` to `h1`: Increasing sizes from `1.125rem` to `7.594rem`
+
+2. **Line Heights**:
+   - `hug`: `1`
+   - `tight`: `1.2`
+   - `normal`: `1.4`
+   - `loose`: `1.6`
+   - `extra-spacious`: `1.8`
+
+3. **Letter Tracking**:
+   - `extra-tight`: `-0.02rem`
+   - `tight`: `-0.01rem`
+   - `normal`: `0`
+   - `wide`: `0.01rem`
+   - `widest`: `0.04rem`
+
+### Breakpoint Reference
+- `2xs`: 20rem (320px) - Very Small Mobile
+- `xs`: 30rem (480px) - Small Mobile
+- `sm`: 40rem (640px) - Large Mobile
+- `md`: 48rem (768px) - Tablet
+- `lg`: 64rem (1024px) - Small Desktop
+- `xl`: 80rem (1280px) - Medium Desktop
+- `2xl`: 96rem (1536px) - Large Desktop
+- `3xl`: 120rem (1920px) - Full HD
+- `4xl`: 160rem (2560px) - 2K
+- `5xl`: 240rem (3840px) - 4K
+
+### Design Token References
+For complete token definitions, refer to:
+- Spacing Tokens: `/elevate/design/spacing.ts`
+- Typography Tokens: `/elevate/design/typography.ts`
+- Color Tokens: `/elevate/design/colors.ts`
+- Breakpoint Tokens: `/elevate/design/breakpoints.ts`
 
 ## Implementation
 
@@ -182,7 +331,9 @@ elevate/
 - TypeScript ^5.3.0
 - Chevrotain ^11.0.3
 
-## License
+## Licensing
 
-Copyright (c) 2024 Ken Pickett. All rights reserved.
-Proprietary software - unauthorized distribution prohibited at this time.
+Proprietary software developed by Ken Pickett.
+All rights reserved. Unauthorized distribution prohibited.
+
+*Elevate your web design. Elevate your code.*

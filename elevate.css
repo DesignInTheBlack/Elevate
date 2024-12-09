@@ -134,97 +134,27 @@ textarea:not([rows]) {
         }
     }
 
-.m\:d1 {
+.text\:bold {
 
-margin-left: 0.25rem;
-margin-top: 0.25rem;
-margin-right: 0.25rem;
-margin-bottom: 0.25rem;
+font-weight: 700;
 }
 
-.color\:green {
-
-background-color: #81C14B;
-}
-
-.w\:d12 {
-
-width: 3rem;
-}
-
-.h\:d12 {
-
-height: 3rem;
-}
-
-.p\:d1 {
-
-padding-left: 0.25rem;
-padding-top: 0.25rem;
-padding-right: 0.25rem;
-padding-bottom: 0.25rem;
-}
-
-.stack\:x-center\:y-start {
-display:flex;
-flex-direction:column;
-align-items: center;
-justify-content: flex-start;
-}
-
-.color\:purple {
-
-background-color: #6320EE;
-}
-
-.z\:20 {
-
-z-index: 20;
-}
-
-.left\:d12 {
-
-left: 3rem;
-}
-
-.absolute {
-
-position: absolute;
-}
-
-.relative {
-
-position: relative;
-}
-
-.color\:white {
-
-background-color: #F7F5FB;
-}
-
-.w\:fill {
-
-width: 100%;
-}
-
-.row\:x-center\:y-start {
+.row\:x-center\:y-center {
 display:flex;
 flex-direction:row;
 justify-content: center;
-align-items: flex-start;
-}
-
-.buffer {
-
-: ;
+align-items: center;
 }
 
 @media only screen and (min-width:64rem) {
-.stack\:x-center\:y-start {
-display:flex;
-flex-direction:column;
-align-items: center;
-justify-content: flex-start;
+.\@hover\:\[text\:purple\:bold_p\:d1\:d5\]:hover {
+
+color: #6320EE;
+font-weight: 700;
+padding-left: 0.25rem;
+padding-top: 1.25rem;
+padding-right: 0.25rem;
+padding-bottom: 1.25rem;
 }
 
 }

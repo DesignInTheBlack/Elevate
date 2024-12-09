@@ -17,6 +17,7 @@ process.on('uncaughtException', (err) => {
 
 //Configuration Options
 import {config} from './config/elevate.js';
+import { elevateCompiler } from './parser.js';
 
 //CSS Reset
 import {cssReset} from './design/reset.js';
@@ -59,7 +60,7 @@ const types = {
     FlexSelfToken: flex.flexSelfToken,
     FlexOrderToken: flex.flexOrderToken,
     FlexBasisToken: flex.flexBasisToken,
-    fontweightToken: typography.weight,
+    FontWeightToken: typography.weight,
     TextAlignToken: text.align,
     ZIndexToken: {
         validate: (value: string) => {
@@ -241,9 +242,23 @@ export function toAst(cst: any, context?: { fileName: string }) {
         throw new Error("No CST to convert.");
     }
 
-    return cst.children.DirectProperty
-        ? handleDirectProperties(cst)
-        : handleCompoundProperties(cst, context);
+   let managedCST = null
+   if (cst.children.DirectProperty) {
+   console.log(cst)
+   managedCST = handleDirectProperties(cst)
+   }
+
+   else if (cst.children.stateBlock) {
+   managedCST = handleStatefulStrings(cst)
+   }
+
+   else {
+    managedCST = handleCompoundProperties(cst, context);
+   }
+
+   return managedCST
+
+   
 }
 
 // Handles the logic for direct properties within the CST.
@@ -259,14 +274,43 @@ function handleDirectProperties(cst: any) {
     };
 }
 
+
+function handleStatefulStrings(cst: any, context?: { fileName: string }) {
+    
+    const stateMatch = cst.className.match(/@(\w+):/); // Captures the term after `@` and before `:`
+    const subtermsMatch = cst.className.match(/\[([^\]]+)\]/); // Captures terms inside `[]`
+
+    // Extract the state correctly
+    let state = stateMatch ? stateMatch[1] : null;
+
+    // Extract the subterms
+    let subterms = subtermsMatch ? subtermsMatch[1].split(/_/).map(term => term.trim()) : []
+
+   let newterms = subterms.map((item) => {
+        item = elevateCompiler(item);
+        return item.modifiers
+    });
+
+   let modifiers = newterms.flat();
+
+    let fauxAST = {
+        name:'propertyDefinition',
+        children:null,
+        state,
+        className:cst.className,
+        modifiers
+    }
+
+    return fauxAST
+  
+}
+
 // Handles the logic for compound properties within the CST.
 function handleCompoundProperties(cst: any, context?: { fileName: string }) {
+
     return {
-        type: cst.children.stateFlag ? "Stateful Class" : "Stateless Class",
+        type: "Stateless Class",
         className: cst.className,
-        ...(cst.children.stateFlag && {
-            state: extractState(cst.children.stateFlag),
-        }),
         property: cst.children.Property[0].image,
         modifiers: processModifiers(cst, context),
     };
