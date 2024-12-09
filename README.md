@@ -92,7 +92,91 @@ Elevate manages design tokens across multiple domains:
 - Enhanced type safety
 - More comprehensive design token validation and support for varying token organization
 
+## Tokenization Strategy
 
+Elevate's design system leverages a sophisticated tokenization approach that provides flexibility, type safety, and design consistency.
+
+### Token Types
+
+#### 1. Design System Tokens
+- **Purpose**: Global, immutable design constraints
+- **Location**: `design/` directory
+- **Characteristics**:
+  - Centralized design values
+  - Enforce system-wide consistency
+  - Used across multiple property mappings
+
+**Example**:
+```typescript
+// design/spacing.ts
+export const spacing = {
+  'd1': '0.25rem',
+  'd2': '0.5rem',
+  'd3': '0.75rem'
+} as const;
+
+export type SpacingToken = keyof typeof spacing;
+```
+#### 2. Syntax Tokens
+- **Purpose**: Property-specific structural validation
+- **Location**: `maps/` directory
+- **Characteristics**:
+  - Validate specific property values
+  - Provide type-safe transformations
+  - Scoped to specific property behaviors
+
+**Example**:
+```typescript
+// maps/text.ts
+export const text = {
+  align: {
+    "left": "left",
+    "center": "center",
+    "right": "right"
+  }
+} as const;
+
+export type TextAlignToken = keyof typeof text.align;
+```
+#### 3. PassThrough Token
+- **Purpose**: Unrestricted value entry
+- **Characteristics**:
+  - Maximum flexibility
+  - No compile-time validation
+  - Used for dynamic properties
+
+**Example**:
+```typescript
+// propertyAttributeMap.ts
+rotate: {
+  "rotate": "PassThrough"  // Allows any rotation value
+}
+```
+### Token Selection Guide
+
+#### Decision Matrix
+```
+Property Characteristics
+├── Needs Global Consistency?
+│   ├── Yes → Design System Token
+│   └── No →
+│       ├── Property-Specific Validation Needed?
+│       │   ├── Yes → Syntax Token (Create a map file and define the syntax)
+│       │   └── No → PassThrough Token (This will NOT be validated)
+```
+Note that passthrough tokens are not validated, can be used in either a map or directly in the propertyAttributeMap. 
+
+You MUST import any applicable design token files if said design tokens in a submap. 
+
+### Best Practices
+1. Prefer Design System Tokens
+2. Use Syntax Tokens for structured properties
+3. Minimize PassThrough usage
+
+### Advanced Considerations
+- Token composition
+- Prefix-based token generation
+- Compound token strategies
 
 ## Quick Start
 
@@ -160,7 +244,6 @@ Dynamic styling mechanism that enables responsive and interactive visual changes
 <div class="@hover:[text:purple]">     <!-- Text color on hover -->
 <div class="@focus:[color:red]">       <!-- Background color on focus -->
 <div class="@active:[text:bold]">      <!-- Text weight when active -->
-
 <!-- Complex state combinations -->
 <div class="@hover:[text:purple:bold] @focus:[color:red]">
 ```
@@ -191,7 +274,6 @@ Apply different styles at specific breakpoints, enabling adaptive design that re
 <!-- Responsive text sizing -->
 <div class="/lg/ text:h2">     <!-- Large text at large breakpoint -->
 <div class="/md/ text:base">   <!-- Base text at medium breakpoint -->
-
 <!-- Responsive layout -->
 <div class="/lg/ row:x-center:y-start">
 ```
@@ -203,7 +285,6 @@ Combine responsive design with interaction states to create sophisticated, conte
 <!-- Responsive state styling -->
 <div class="/md/ @hover:[text:large]">
 <div class="/lg/ @focus:[color:purple]">
-
 <!-- Multiple state and responsive combinations -->
 <div class="/md/ @hover:[text:purple:bold] @focus:[color:red]">
 ```

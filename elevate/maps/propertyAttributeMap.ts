@@ -119,7 +119,8 @@ export const propertyAttributeMap = {
         "letter-spacing": "LetterSpacingToken",
         "text-align": "TextAlignToken",
         "max-width": "MeasureToken",
-        "font-weight": "FontWeightToken"
+        "font-weight": "FontWeightToken",
+        "text-transform": "TextTransformToken"
     },
 
     color: {
