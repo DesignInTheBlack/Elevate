@@ -194,11 +194,6 @@ textarea:not([rows]) {
 
     }
 
-.border\:s-feet {
-
-border-style: feet;
-}
-
 .text\:left\:purple\:uppercase {
 
 text-align: left;
@@ -206,9 +201,23 @@ color: #6320EE;
 text-transform: uppercase;
 }
 
-.grid\:c-2 {
+.border\:solid {
+
+border-style: solid;
+}
+
+.grid\:col-2\:gap-d4\:row-3 {
 
 grid-template-columns: 2;
+grid-gap: 1rem;
+grid-template-rows: 3;
+}
+
+.row\:x-center\:y-start {
+display:flex;
+flex-direction:row;
+justify-content: center;
+align-items: flex-start;
 }
 
 .z\:20 {

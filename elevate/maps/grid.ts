@@ -3,15 +3,15 @@ import { NumericToken } from '../maps/numeric.js';
 
 export const grid = {
  gap: {
-  "g-": "SpacingToken", // This looks correct
+  "gap-": "SpacingToken", // This looks correct
  },
 
  row: {
-  "r-": "NumericToken", // Changed from NumberToken
+  "row-": "NumericToken", // Changed from NumberToken
  },
 
  column: {
-  "c-": "NumericToken" // Changed from NumberToken
+  "col-": "NumericToken" // Changed from NumberToken
  }
 } as const;
 

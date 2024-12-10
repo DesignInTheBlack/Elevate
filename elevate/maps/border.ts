@@ -8,7 +8,16 @@ export const border = {
         "r-": "SpacingToken"
     },
     style: {
-        "s-": "PassThrough"     // Just passes through the value (solid, dashed, etc)
+        "solid": "solid",
+        "dashed": "dashed",
+        "dotted": "dotted",
+        "double": "double",
+        "groove": "groove",
+        "ridge": "ridge",
+        "inset": "inset",
+        "outset": "outset",
+        "none": "none",
+        "hidden": "hidden"
     }
 } as const;
 
