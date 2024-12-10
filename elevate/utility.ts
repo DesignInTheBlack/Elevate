@@ -199,7 +199,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 
 
     throw new Error(
-
+            //Need to Adjust This for Design Token/Submap Differentiation
             `\nUnable to determine token type for value: ${modifier}${context ? ` in ${context.fileName}` : ''}\nPlease ensure that you are using a valid token as defined in the design directory.`
 
     );
