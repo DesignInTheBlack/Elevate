@@ -88,12 +88,6 @@ import {buffer} from './design/buffer.js';
 
 const types = {
 
-    xAxis: flex.xAxis,
-
-    yAxis: flex.yAxis,
-
-    //Further Token Definitions
-
     ColorToken: colors,
 
     SpacingToken: spacing,
@@ -106,7 +100,17 @@ const types = {
 
     LetterSpacingToken: typography.tracking,
 
+    FontWeightToken: typography.weight,
+
+    TextAlignToken: text.align,
+
+    TextTransformToken: text.transform,
+
     BreakPointToken: breakpoints,
+
+    xAxis: flex.xAxis,
+
+    yAxis: flex.yAxis,
 
     BorderWidthToken: border.width,  
 
@@ -123,12 +127,6 @@ const types = {
     FlexOrderToken: flex.flexOrderToken,
 
     FlexBasisToken: flex.flexBasisToken,
-
-    FontWeightToken: typography.weight,
-
-    TextAlignToken: text.align,
-
-    TextTransformToken: text.transform,
 
     NumericToken: numeric.NumericToken,
 
@@ -199,9 +197,23 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 
 
     throw new Error(
-            //Need to Adjust This for Design Token/Submap Differentiation
-            `\nUnable to determine token type for value: ${modifier}${context ? ` in ${context.fileName}` : ''}\nPlease ensure that you are using a valid token as defined in the design directory.`
+        `\n❌ Design Token Validation Failed: Unable to determine token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+    
+    🔍 Diagnostic Information:
 
+    - Attempted Modifier: ${modifier}
+
+    - Registered Token Types: 
+    ${Object.keys(types).map((key, index) => 
+        index % 5 === 0 ? '\n    ' + key : key
+    ).join(', ')}
+    
+    💡 Troubleshooting Tips:
+    1. Verify the modifier is correctly defined in your design tokens
+    2. Check for potential submap or nested token configurations
+    3. Ensure the modifier follows the expected design system syntax
+    
+    For more information, refer to the Elevate CSS documentation.`
     );
 
 }
@@ -300,7 +312,25 @@ function getAxisSpecificValue(modifier: string): string {
 
     }
 
-    throw new Error(`\nAxis-specific modifier not found: ${modifier}`);
+    throw new Error(
+        `\n❌ Invalid Token Configuration: Unable to determine token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+    
+    🔍 Diagnostic Information:
+
+    - Attempted Modifier: ${modifier}
+
+    - Registered Token Types: 
+    ${Object.keys(types).map((key, index) => 
+        index % 5 === 0 ? '\n    ' + key : key
+    ).join(', ')}
+
+    💡 Troubleshooting Tips:
+    1. Verify the modifier syntax matches the design system
+    2. Check for typos in your class name
+    3. Ensure the modifier is defined in one of the token maps
+    
+    For more information, refer to the Elevate CSS documentation.`
+    );
 
 }
 
