@@ -39,9 +39,10 @@ import { elevateCompiler } from './parser.js';
 
 
 
-//CSS Reset
+//CSS Reset & Utility Tokens
 
 import {cssReset} from './design/reset.js';
+import { numeric } from './maps/numeric.js';
 
 
 
@@ -54,6 +55,8 @@ import {flex} from './maps/flex.js';
 import {border} from './maps/border.js';
 
 import {text} from './maps/text.js';
+
+import {grid} from './maps/grid.js';
 
 
 
@@ -127,25 +130,13 @@ const types = {
 
     TextTransformToken: text.transform,
 
-    ZIndexToken: {
+    NumericToken: numeric.NumericToken,
 
-        validate: (value: string) => {
+    GridGapToken: grid.gap,
 
-            const num = parseInt(value, 10);
+    GridRowToken: grid.row,
 
-            if (isNaN(num)) {
-
-                throw new Error(`Invalid z-index value: ${value}. Must be a number.`);
-
-            }
-
-            return num.toString();
-
-        }
-
-    }
-
-
+    GridColumnToken: grid.column
 
 };
 
@@ -201,7 +192,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 
        if (!isNaN(parseInt(modifier, 10))) {
 
-        return "ZIndexToken";
+        return "NumericToken";
 
     }
 
@@ -225,9 +216,9 @@ export function getModifierValue(modifier: string, context?: { fileName: string 
 
     const modifierType = getModifierType(modifier, context);
 
-    if (modifierType === "ZIndexToken") {
+    if (modifierType === "NumericToken") {
 
-        return types.ZIndexToken.validate(modifier);
+        return types.NumericToken.validate(modifier);
 
     }
 

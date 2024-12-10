@@ -206,11 +206,9 @@ color: #6320EE;
 text-transform: uppercase;
 }
 
-.row\:x-center\:y-center {
-display:flex;
-flex-direction:row;
-justify-content: center;
-align-items: center;
+.z\:20 {
+
+z-index: 20;
 }
 
 @media only screen and (min-width:64rem) {

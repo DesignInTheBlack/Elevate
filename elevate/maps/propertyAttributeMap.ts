@@ -26,7 +26,6 @@ export const propertyAttributeMap = {
     "table-row-group": { "display": "table-row-group" },
     "table-row": { "display": "table-row" },
     "flow-root": { "display": "flow-root" },
-    grid: { "display": "grid" },
     "inline-grid": { "display": "inline-grid" },
     contents: { "display": "contents" },
     "list-item": { "display": "list-item" },
@@ -34,12 +33,12 @@ export const propertyAttributeMap = {
 
       // Z-Index
     z: {
-        "z-index": "ZIndexToken"
+        "z-index": "NumericToken"
     },
 
     //Buffer
     buffer: {
-       "": ""
+    
     },
     
     // Spacing & Layout
@@ -94,12 +93,14 @@ export const propertyAttributeMap = {
     // Flex Properties
     row: {
         "justify-content": "x",  // x maps to justify-content in row
-        "align-items": "y"       // y maps to align-items in row
+        "align-items": "y",       // y maps to align-items in row
+        "flex-wrap": "FlexWrapToken" ,
     },
     
     stack: {
         "align-items": "x",      // x maps to align-items in stack 
-        "justify-content": "y"   // y maps to justify-content in stack
+        "justify-content": "y",   // y maps to justify-content in stack
+        "flex-wrap": "FlexWrapToken" ,
     },
 
     item: {
@@ -133,7 +134,15 @@ export const propertyAttributeMap = {
         "border-radius": "BorderRadiusToken",
         "outline-width": "BorderWidthToken",
         "border-style": "BorderStyleToken",
+    },
+    
+    grid: {
+        "grid-template-columns": "GridColumnToken",
+        "grid-template-rows": "GridRowToken",
+        "grid-gap": "GridGapToken",
     }
+
+
 } as const;
 
 export type propertyMap = keyof typeof propertyAttributeMap;

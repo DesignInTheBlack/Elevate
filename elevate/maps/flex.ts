@@ -55,11 +55,19 @@ export const flex = {
 
   flexBasisToken: {
       "basis-": "SpacingToken"
-  }
+  },
+
+ flexWrapToken: {
+     "wrap": "wrap",
+     "nowrap": "nowrap",
+     "reverse": "wrap-reverse"
+ }
+
 } as const;
 
 export type FlexToken = keyof typeof flex;
 export type FlexGrowToken = keyof typeof flex.flexGrowToken;
+export type FlexWrapToken = keyof typeof flex.flexWrapToken
 export type FlexShrinkToken = keyof typeof flex.flexShrinkToken;
 export type FlexSelfToken = keyof typeof flex.flexSelfToken;
 export type FlexOrderToken = keyof typeof flex.flexOrderToken;
