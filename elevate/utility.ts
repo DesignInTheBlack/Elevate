@@ -363,53 +363,37 @@ function handleCompoundToken(modifier: string, context?: { fileName: string }): 
 // Validate compound token and retrieve value
 
 function validateAndRetrieveCompoundValue(
-
     tokenType: string,
-
     value: string,
-
     modifier: string,
-
     context?: { fileName: string }
-
 ): string {
+    // Special handling for NumericToken
+    if (tokenType === "NumericToken") {
+        return numeric.NumericToken.validate(value);
+    }
 
     if (!(value in types[tokenType])) {
-
         const validValues = Object.keys(types[tokenType]);
 
         const formattedValues = validValues
-
             .reduce((acc, curr, idx) => {
-
                 if (idx % 10 === 0) {
-
                     acc.push([curr]);
-
                 } else {
-
                     acc[acc.length - 1].push(curr);
-
                 }
-
                 return acc;
-
             }, [])
-
             .map(group => group.join(', '))
-
             .join('\n    ');
 
         throw new Error(
-
             `\nInvalid ${tokenType.toLowerCase()} value: ${value}${context ? ` in ${context.fileName}` : ''}\nPlease examine this utility string and examine prefixes, modifiers, etc.`
-
         );
-
     }
 
     return types[tokenType][value];
-
 }
 
 

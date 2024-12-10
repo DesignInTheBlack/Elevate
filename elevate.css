@@ -206,6 +206,11 @@ color: #6320EE;
 text-transform: uppercase;
 }
 
+.grid\:c-2 {
+
+grid-template-columns: 2;
+}
+
 .z\:20 {
 
 z-index: 20;
