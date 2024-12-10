@@ -197,38 +197,39 @@ textarea:not([rows]) {
 .text\:left\:purple\:uppercase {
 
 text-align: left;
-color: #6320EE;
+color: #6665DD;
 text-transform: uppercase;
 }
 
-.border\:solid {
+.h\:d8 {
 
-border-style: solid;
+height: 2rem;
 }
 
-.grid\:col-2\:gap-d4\:row-3 {
+.w\:full {
 
-grid-template-columns: 2;
-grid-gap: 1rem;
-grid-template-rows: 3;
+width: 100%;
 }
 
-.row\:x-center\:y-start {
-display:flex;
-flex-direction:row;
-justify-content: center;
-align-items: flex-start;
+.color\:dark {
+
+background-color: #2C2638;
 }
 
-.z\:20 {
+@media only screen and (min-width:48rem) {
+.text\:warn\:bold\:lowercase {
 
-z-index: 20;
+color: #FABC2A;
+font-weight: 700;
+text-transform: lowercase;
+}
+
 }
 
 @media only screen and (min-width:64rem) {
 .\@hover\:\[text\:purple\:bold_p\:d1\:d5\]:hover {
 
-color: #6320EE;
+color: #6665DD;
 font-weight: 700;
 padding-left: 0.25rem;
 padding-top: 1.25rem;
