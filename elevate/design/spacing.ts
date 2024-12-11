@@ -47,7 +47,7 @@ export const spacing = {
 
     //Utility
     '0':'0',
-    'fill':"100%"
+    'full':"100%"
 
 } as const;
 
