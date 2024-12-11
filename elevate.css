@@ -201,9 +201,16 @@ color: #6320EE;
 text-transform: uppercase;
 }
 
-.border\:solid {
+.min-w\:d4 {
 
+min-width: 1rem;
+}
+
+.border\:purple\:solid\:d1 {
+
+border-color: #6320EE;
 border-style: solid;
+no-match: 0.25rem;
 }
 
 .grid\:col-2\:gap-d4\:row-3 {

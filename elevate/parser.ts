@@ -15,7 +15,7 @@ const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
 const Property = createToken({ 
     name: "Property", 
-    pattern: /[a-zA-Z][a-zA-Z0-9]*(?=:)/ 
+    pattern: /[a-zA-Z][a-zA-Z0-9-]*(?=:)/ 
 });
 const Modifier = createToken({ 
     name: "ColonModifier", 

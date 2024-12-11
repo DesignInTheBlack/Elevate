@@ -64,14 +64,20 @@ export const propertyAttributeMap = {
         "height": "SpacingToken"
     },
 
-    min: {
+    'min-w': {
         "min-width": "SpacingToken",
-        "min-height": "SpacingToken"
     },
 
-    max: {
+    'max-w': {
         "max-width": "SpacingToken",
-        "max-height": "SpacingToken"
+    },
+
+    'min-h': {
+        "min-height": "SpacingToken",
+    },
+
+    'max-h': {
+        "max-height": "SpacingToken",
     },
 
     gap: {
@@ -97,7 +103,7 @@ export const propertyAttributeMap = {
         "flex-wrap": "FlexWrapToken" ,
     },
     
-    stack: {
+    col: {
         "align-items": "x",      // x maps to align-items in stack 
         "justify-content": "y",   // y maps to justify-content in stack
         "flex-wrap": "FlexWrapToken" ,
