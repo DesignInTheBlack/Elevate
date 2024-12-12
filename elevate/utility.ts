@@ -65,9 +65,13 @@ export function toAst(cst: any, context?: { fileName: string }) {
     }
     let managedCST = null
     if (cst.children.DirectProperty) {
-        console.log(cst)
         managedCST = handleDirectProperties(cst)
     }
+
+    else if (cst.children.passBlock) {
+        managedCST = handlePassThrough(cst)
+    }
+
     else if (cst.children.stateBlock) {
         managedCST = handleStatefulStrings(cst)
     }
@@ -109,6 +113,25 @@ function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     }
     return fauxAST
 }
+
+function handlePassThrough(cst: any, context?: { fileName: string }) {
+    const passThroughMatch = cst.className.match(/^([^:]+):(.*)/);
+    if (passThroughMatch) {
+        const property = passThroughMatch[1];
+        const modifier = passThroughMatch[2];
+        
+        let fauxAST = {
+            name: 'propertyDefinition',
+            children: null,
+            property,
+            className: cst.className,
+            modifiers: [modifier]
+        }
+        
+        return fauxAST;
+    }
+}
+
 
 function handleCompoundProperties(cst: any, context?: { fileName: string }) {
     return {
@@ -152,6 +175,11 @@ function constructRule(modType: string, property: string, modifier: string, cont
 // ╚════════════════════════════════════════════════════════════════════╝
 
 export function getModifierType(modifier: string, context?: { fileName: string }): string {
+
+    if (/^:\(.*\)$/.test(modifier)) {
+        return "PassThroughToken";
+    }
+
     // First try direct lookup
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {

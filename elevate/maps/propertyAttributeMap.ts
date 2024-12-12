@@ -141,6 +141,10 @@ export const propertyAttributeMap = {
         "outline-width": "BorderWidthToken",
         "border-style": "BorderStyleToken",
     },
+
+    background: {
+        "background-image":"PassThroughToken"
+    },
     
     grid: {
         "grid-template-columns": "GridColumnToken",

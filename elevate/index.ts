@@ -121,7 +121,7 @@ const main = async () => {
 
         // Helper function to escape special characters in class names
         const escapeClassName = (className) =>
-            className.replace(/[@:\[\]]/g, (match) => `\\${match}`); // Escape special characters
+            className.replace(/[@:\[\]()]/g, (match) => `\\${match}`);
 
         spinner.text = 'Generating CSS output...';
         await delay(400);

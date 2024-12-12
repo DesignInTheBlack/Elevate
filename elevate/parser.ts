@@ -13,6 +13,7 @@ import { toAst } from "./utility.js";
 const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
+const PassProperty = createToken({ name: "PassProperty", pattern: /:([\w\-()'".,\s]+)/ });
 const Property = createToken({ 
     name: "Property", 
     pattern: /[a-zA-Z][a-zA-Z0-9-]*(?=:)/ 
@@ -32,7 +33,7 @@ const WhiteSpace = createToken({
 // ║              3. COMBINE TOKENS INTO VOCABULARY                     ║
 // ║ Group defined tokens into a single array for Lexer initialization. ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const tokens = [State, openState, Property, Modifier, WhiteSpace, DirectProperty, closeState];
+const tokens = [State, openState, Property, Modifier, WhiteSpace, DirectProperty, PassProperty, closeState];
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   4. LEXER INITIALIZATION                          ║
@@ -50,6 +51,7 @@ class ElevateParser extends CstParser {
     // Declare propertyDefinition explicitly for TypeScript compliance
     public propertyDefinition!: () => CstNode;
     public stateBlock!: () => CstNode;
+    public passBlock!: () => CstNode;
 
     constructor() {
         super(tokens);
@@ -67,11 +69,22 @@ class ElevateParser extends CstParser {
             $.CONSUME(closeState);
         });
 
+
+        $.RULE("passBlock", () => {
+            $.CONSUME(Property);
+            $.CONSUME(PassProperty)
+        });
+
         $.RULE("propertyDefinition", () => {
             $.OR([
                 {
                     ALT: () => {
                         $.SUBRULE($.stateBlock);
+                    }
+                },
+                {
+                    ALT: () => {
+                        $.SUBRULE($.passBlock);
                     }
                 },
                 {
@@ -128,7 +141,7 @@ export const elevateCompiler = (className: string,context?: { fileName: string }
 
     // Generate AST from CST using `toAst`
     const ast = toAst(cst,context);
-
+    
     // Return the AST
     return ast;
 };

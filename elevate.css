@@ -141,16 +141,21 @@ color: #6665DD;
 text-transform: uppercase;
 }
 
+.background\:\(red\) {
+
+(red);
+}
+
 .min-w\:d4 {
 
 min-width: 1rem;
 }
 
-.border\:purple\:solid\:d1 {
+.border\:purple\:solid\:w-d1 {
 
 border-color: #6665DD;
 border-style: solid;
-no-match: 0.25rem;
+border-width: 0.25rem;
 }
 
 .grid\:col-2\:gap-d4\:row-3 {
