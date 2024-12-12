@@ -134,58 +134,33 @@ textarea:not([rows]) {
         }
     }
 
-.text\:left\:purple\:uppercase {
+.absolute {
 
-text-align: left;
-color: #6665DD;
-text-transform: uppercase;
-}
-
-.background\:\(red\) {
-
-(red);
-}
-
-.min-w\:d4 {
-
-min-width: 1rem;
-}
-
-.border\:purple\:solid\:w-d1 {
-
-border-color: #6665DD;
-border-style: solid;
-border-width: 0.25rem;
-}
-
-.grid\:col-2\:gap-d4\:row-3 {
-
-grid-template-columns: 2;
-grid-gap: 1rem;
-grid-template-rows: 3;
-}
-
-.row\:x-center\:y-start {
-display:flex;
-flex-direction:row;
-justify-content: center;
-align-items: flex-start;
-}
-
-.z\:20 {
-
-z-index: 20;
+position: absolute;
 }
 
 @media only screen and (min-width:64rem) {
-.\@hover\:\[text\:purple\:bold_p\:d1\:d5\]:hover {
+.background\:\(url\(https\:\/\/www\.applesfromny\.com\/wp-content\/uploads\/2020\/05\/20Ounce_NYAS-Apples2\.png\)\) {
+
+background-image: url(https://www.applesfromny.com/wp-content/uploads/2020/05/20Ounce_NYAS-Apples2.png);
+}
+
+}
+
+@media only screen and (min-width:80rem) {
+.text\:purple\:bold {
 
 color: #6665DD;
 font-weight: 700;
+}
+
+.\@hover\:\[text\:dark_p\:d1\]:hover {
+
+color: #2C2638;
 padding-left: 0.25rem;
-padding-top: 1.25rem;
+padding-top: 0.25rem;
 padding-right: 0.25rem;
-padding-bottom: 1.25rem;
+padding-bottom: 0.25rem;
 }
 
 }

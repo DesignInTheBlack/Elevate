@@ -119,15 +119,18 @@ function handlePassThrough(cst: any, context?: { fileName: string }) {
     if (passThroughMatch) {
         const property = passThroughMatch[1];
         const modifier = passThroughMatch[2];
-        
+
+        const modType = getModifierType(modifier, context);
+
+
+
         let fauxAST = {
             name: 'propertyDefinition',
             children: null,
             property,
             className: cst.className,
-            modifiers: [modifier]
+            modifiers: [constructRule(modType, property, modifier, context)]
         }
-        
         return fauxAST;
     }
 }
@@ -162,6 +165,7 @@ function processModifiers(cst: any, context?: { fileName: string }) {
 }
 
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
+    console.log(modType, property, modifier);
     return (
         getRuleName(modType, property, propertyAttributeMap) +
         ": " +
@@ -176,7 +180,16 @@ function constructRule(modType: string, property: string, modifier: string, cont
 
 export function getModifierType(modifier: string, context?: { fileName: string }): string {
 
-    if (/^:\(.*\)$/.test(modifier)) {
+    // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
+    const cleanedModifier = modifier.includes(':') 
+        ? modifier.slice(modifier.indexOf('(')) 
+        : modifier;
+
+    console.log("Modifier:", modifier);
+    console.log("Cleaned Modifier:", cleanedModifier);
+
+    if (/^\(.*\)$/.test(cleanedModifier)) {
+        console.log("Identified PassThroughToken");
         return "PassThroughToken";
     }
 
@@ -219,6 +232,14 @@ function isAxisSpecificModifier(modifier: string): boolean {
 
 export function getModifierValue(modifier: string, context?: { fileName: string }): string {
     const modifierType = getModifierType(modifier, context);
+
+     if (modifierType === "PassThroughToken") {
+        // Extract value inside parentheses
+        const match = modifier.match(/^\((.*)\)$/);
+        return match ? match[1] : modifier;
+    }
+
+    console.log("Modifier Type:", modifierType);
     if (modifierType === "NumericToken") {
         return types.NumericToken.validate(modifier);
     }

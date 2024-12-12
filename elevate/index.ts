@@ -66,7 +66,7 @@ const main = async () => {
 
             classList.forEach(function (classString) {
                 if (!classString.includes("$")) {
-                    const regex = /\/[a-zA-Z]+\//;
+                    const regex = /\/[a-zA-Z]{1,3}\//;
                     // ════ Mobile-First Breakpoint Processing ════
                     if (regex.test(classString)) {
                         lastBreak = classString;
@@ -121,7 +121,7 @@ const main = async () => {
 
         // Helper function to escape special characters in class names
         const escapeClassName = (className) =>
-            className.replace(/[@:\[\]()]/g, (match) => `\\${match}`);
+            className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
 
         spinner.text = 'Generating CSS output...';
         await delay(400);

@@ -13,7 +13,10 @@ import { toAst } from "./utility.js";
 const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
-const PassProperty = createToken({ name: "PassProperty", pattern: /:([\w\-()'".,\s]+)/ });
+const PassProperty = createToken({ 
+    name: "PassProperty", 
+    pattern: /:([\w\-()'".,\s:\/\.@#%=&?]+)/ 
+});
 const Property = createToken({ 
     name: "Property", 
     pattern: /[a-zA-Z][a-zA-Z0-9-]*(?=:)/ 
