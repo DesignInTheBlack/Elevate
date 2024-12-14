@@ -7,7 +7,7 @@ import { findClassAttributes } from './scan.js';
 import { getBreakpointPriority } from './utility.js';
 import { writeToFile } from './utility.js';
 import { getModifierValue } from './utility.js';
-import { config } from './config/elevate.js'
+import { config } from '../config/elevate.js'
 import ora from 'ora';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

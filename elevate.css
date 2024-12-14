@@ -159,3 +159,9 @@ padding-bottom: 0.5rem;
 color: #6665DD;
 }
 
+.row\:x-center {
+display:flex;
+flex-direction:row;
+justify-content: center;
+}
+

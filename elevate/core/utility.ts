@@ -1,23 +1,22 @@
 import fs from 'fs';
 //Configuration Options
-import { config } from './config/elevate.js';
+import { config } from '../config/elevate.js';
 import { elevateCompiler } from './parser.js';
 //CSS Reset & Utility Tokens
-import { cssReset } from './design/reset.js';
-import { numeric } from './maps/numeric.js';
+import { cssReset } from '../maps/reset.js';
+import { numeric } from '../maps/numeric.js';
 //Syntax Maps
-import { propertyAttributeMap, propertyMap } from "./maps/propertyAttributeMap.js";
-import { flex } from './maps/flex.js';
-import { border } from './maps/border.js';
-import { text } from './maps/text.js';
-import { grid } from './maps/grid.js';
+import { propertyAttributeMap, propertyMap } from "../maps/propertyAttributeMap.js";
+import { flex } from '../maps/flex.js';
+import { border } from '../maps/border.js';
+import { text } from '../maps/text.js';
+import { grid } from '../maps/grid.js';
 //Design Tokens
-import { breakpoints, BreakpointToken } from "./design/breakpoints.js";
-import { colors } from "./design/colors.js";
-import { spacing, SpacingToken } from "./design/spacing.js";
-import { typography } from "./design/typography.js";
-import { buffer } from './design/buffer.js';
+import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
+import { spacing, SpacingToken } from "../design/spacing.js";
+import { buffer } from '../maps/buffer.js';
 
+import { designSystem } from '../config/designConfig.js';
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  SETUP AND CONFIGURATION                           ║
 // ║ Includes foundational setup, such as error handling and token maps.║
@@ -30,13 +29,7 @@ process.on('uncaughtException', (err) => {
 });
 
 const types = {
-    ColorToken: colors,
-    SpacingToken: spacing,
-    FontSizeToken: typography.size,
-    FontFamilyToken: typography.family,
-    LineHeightToken: typography.leading,
-    LetterSpacingToken: typography.tracking,
-    FontWeightToken: typography.weight,
+    ...designSystem,
     TextAlignToken: text.align,
     TextTransformToken: text.transform,
     BreakPointToken: breakpoints,
