@@ -17,6 +17,7 @@ import { colors } from "./design/colors.js";
 import { spacing, SpacingToken } from "./design/spacing.js";
 import { typography } from "./design/typography.js";
 import { buffer } from './design/buffer.js';
+
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  SETUP AND CONFIGURATION                           ║
 // ║ Includes foundational setup, such as error handling and token maps.║
@@ -59,31 +60,50 @@ const types = {
 // ║ Handles conversion of Concrete Syntax Trees (CST) into ASTs.       ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
+// Converts a CST into an AST by identifying the block type and processing accordingly.
 export function toAst(cst: any, context?: { fileName: string }) {
     if (!cst) {
         throw new Error("No CST to convert.");
     }
-    let managedCST = null
+
+    // console.log(JSON.stringify(cst,null,2))
+
+    let utilityAST = null
     if (cst.children.DirectProperty) {
-        managedCST = handleDirectProperties(cst)
+        utilityAST = handleDirectProperties(cst,context)
     }
 
     else if (cst.children.passBlock) {
-        managedCST = handlePassThrough(cst)
+        utilityAST = handlePassThrough(cst)
     }
 
     else if (cst.children.stateBlock) {
-        managedCST = handleStatefulStrings(cst)
+        utilityAST = handleStatefulStrings(cst,context)
     }
     else {
-        managedCST = handleCompoundProperties(cst, context);
+        utilityAST = handleCompoundProperties(cst, context);
     }
-    return managedCST
+    return utilityAST
 }
 
-function handleDirectProperties(cst: any) {
+// Processes direct property classes, mapping a single property to its modifiers and returns an AST.
+function handleDirectProperties(cst: any, context?: { fileName: string }) {
     const directProp = cst.children.DirectProperty[0].image;
+
     const propMap = propertyAttributeMap[directProp];
+
+    if (!propMap) {
+        throw new Error(
+    `\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName}` : ''}
+
+    💡 Troubleshooting Tips:
+    1. Verify the property "${directProp}" is correctly defined in your property map
+    2. Check for typos or mismatched case in the property name
+
+    For more information, refer to the Elevate CSS documentation.\n`
+        );
+    }
+
     return {
         type: "Direct Class",
         className: cst.className,
@@ -92,6 +112,7 @@ function handleDirectProperties(cst: any) {
     };
 }
 
+// Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
 function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     const stateMatch = cst.className.match(/@(\w+):/); // Captures the term after `@` and before `:`
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/); // Captures terms inside `[]`
@@ -100,7 +121,7 @@ function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     // Extract the subterms
     let subterms = subtermsMatch ? subtermsMatch[1].split(/_/).map(term => term.trim()) : []
     let newterms = subterms.map((item) => {
-        item = elevateCompiler(item);
+        item = elevateCompiler(item,context);
         return item.modifiers
     });
     let modifiers = newterms.flat();
@@ -114,6 +135,7 @@ function handleStatefulStrings(cst: any, context?: { fileName: string }) {
     return fauxAST
 }
 
+// Handles pass-through blocks by mapping a property and its modifier directly to a CSS rule.
 function handlePassThrough(cst: any, context?: { fileName: string }) {
     const passThroughMatch = cst.className.match(/^([^:]+):(.*)/);
     if (passThroughMatch) {
@@ -135,23 +157,42 @@ function handlePassThrough(cst: any, context?: { fileName: string }) {
     }
 }
 
-
+// Handles compound property classes by extracting their modifiers and constructing a stateless class AST.
 function handleCompoundProperties(cst: any, context?: { fileName: string }) {
+    // Extract property from CST
+    const property = cst.children.Property[0].image;
+
+    // Validate property before processing
+    if (!(property in propertyAttributeMap)) {
+        throw new Error(
+            `\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName}` : ''}
+    
+    💡 Troubleshooting Tips:
+    1. Verify the property name matches the design system
+    2. Check for typos in your class name
+    3. Ensure the property is defined in the propertyAttributeMap
+
+    For more information, refer to the Elevate CSS documentation.\n`
+        );
+    }
+
     return {
         type: "Stateless Class",
         className: cst.className,
-        property: cst.children.Property[0].image,
+        property: property,
         modifiers: processModifiers(cst, context),
     };
 }
 
+// Processes modifiers for properties, potentially expanding directional values and constructing CSS rules.
 function processModifiers(cst: any, context?: { fileName: string }) {
     const property = cst.children.Property[0].image;
     const directions = ["left", "top", "right", "bottom"];
     // Preprocess modifiers based on property type
     const modifiers =
+    //Handle Directional Modifiers
         property === "p" || property === "m" || property === "inset"
-            ? preprocessModifiers(cst.children.ColonModifier)
+            ? directionExpansion(cst.children.ColonModifier)
             : cst.children.ColonModifier;
     // Map and construct rules for each modifier
     return modifiers.map((mod: any, index: number) => {
@@ -164,8 +205,8 @@ function processModifiers(cst: any, context?: { fileName: string }) {
     });
 }
 
+// Constructs a single CSS rule line by combining a property and a resolved modifier value.
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
-    console.log(modType, property, modifier);
     return (
         getRuleName(modType, property, propertyAttributeMap) +
         ": " +
@@ -174,10 +215,11 @@ function constructRule(modType: string, property: string, modifier: string, cont
 }
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                   MODIFIER HANDLING                                ║
-// ║ Functions to identify, validate, and retrieve modifier values.     ║
+// ║                        Modifier Handling                           ║
+// ║   Functions to identify, validate, and retrieve modifier values.   ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
+// Determines the type of a given modifier (token) by checking known token maps and patterns.
 export function getModifierType(modifier: string, context?: { fileName: string }): string {
 
     // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
@@ -185,11 +227,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
         ? modifier.slice(modifier.indexOf('(')) 
         : modifier;
 
-    console.log("Modifier:", modifier);
-    console.log("Cleaned Modifier:", cleanedModifier);
-
     if (/^\(.*\)$/.test(cleanedModifier)) {
-        console.log("Identified PassThroughToken");
         return "PassThroughToken";
     }
 
@@ -211,25 +249,18 @@ export function getModifierType(modifier: string, context?: { fileName: string }
         return "NumericToken";
     }
     throw new Error(
-        `\n❌ Design Token Validation Failed: Unable to determine token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
-    🔍 Diagnostic Information:
-    - Attempted Modifier: ${modifier}
-    - Registered Token Types:
-    ${Object.keys(types).map((key, index) =>
-            index % 5 === 0 ? '\n    ' + key : key
-        ).join(', ')}
+        `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+    
     💡 Troubleshooting Tips:
     1. Verify the modifier is correctly defined in your design tokens
-    2. Check for potential submap or nested token configurations
+    2. Examine submap or nested token configurations
     3. Ensure the modifier follows the expected design system syntax
-    For more information, refer to the Elevate CSS documentation.`
+    For more information, refer to the Elevate CSS documentation.\n`
+
     );
 }
 
-function isAxisSpecificModifier(modifier: string): boolean {
-    return modifier.startsWith('x-') || modifier.startsWith('y-');
-}
-
+// Retrieves the actual CSS value for a given modifier by resolving it through token types and handlers.
 export function getModifierValue(modifier: string, context?: { fileName: string }): string {
     const modifierType = getModifierType(modifier, context);
 
@@ -239,7 +270,6 @@ export function getModifierValue(modifier: string, context?: { fileName: string 
         return match ? match[1] : modifier;
     }
 
-    console.log("Modifier Type:", modifierType);
     if (modifierType === "NumericToken") {
         return types.NumericToken.validate(modifier);
     }
@@ -250,9 +280,15 @@ export function getModifierValue(modifier: string, context?: { fileName: string 
     if (value) {
         return value;
     }
-    return handleCompoundToken(modifier, context);
+    return handlePrefixModifier(modifier, context);
 }
 
+// Checks if a modifier is axis-specific (x- or y-) to handle direction-based token retrieval.
+function isAxisSpecificModifier(modifier: string): boolean {
+    return modifier.startsWith('x-') || modifier.startsWith('y-');
+}
+
+// Retrieves the mapped CSS value for axis-specific modifiers from the xAxis or yAxis token sets.
 function getAxisSpecificValue(modifier: string): string {
     if (modifier.startsWith('x-') && modifier in types.xAxis) {
         return types.xAxis[modifier];
@@ -261,21 +297,18 @@ function getAxisSpecificValue(modifier: string): string {
         return types.yAxis[modifier];
     }
     throw new Error(
-        `\n❌ Invalid Token Configuration: Unable to determine token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
-    🔍 Diagnostic Information:
-    - Attempted Modifier: ${modifier}
-    - Registered Token Types:
-    ${Object.keys(types).map((key, index) =>
-            index % 5 === 0 ? '\n    ' + key : key
-        ).join(', ')}
+        `\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+ 
     💡 Troubleshooting Tips:
     1. Verify the modifier syntax matches the design system
     2. Check for typos in your class name
     3. Ensure the modifier is defined in one of the token maps
-    For more information, refer to the Elevate CSS documentation.`
+    For more information, refer to the Elevate CSS documentation.\n`
+
     );
 }
 
+// Attempts to find a given modifier in the general token maps and returns its corresponding value if found.
 function getGeneralTokenValue(modifier: string): string | null {
     for (const [typeName, values] of Object.entries(types)) {
         if (['xAxis', 'yAxis'].includes(typeName)) {
@@ -288,23 +321,24 @@ function getGeneralTokenValue(modifier: string): string | null {
     return null;
 }
 
-function handleCompoundToken(modifier: string, context?: { fileName: string }): string {
+// Handles compound modifiers with prefixes (property:r-modifier), resolving their token types and retrieving validated values.
+function handlePrefixModifier(modifier: string, context?: { fileName: string }): string {
     const [prefix, value] = modifier.split('-');
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
             const tokenType = values[`${prefix}-`];
-            if (tokenType === "PassThrough") {
+            if (tokenType === "PassThroughToken") {
                 return value;
             }
-            return validateAndRetrieveCompoundValue(tokenType, value, modifier, context);
+            return validateAndRetrievePrefixValue(tokenType, value, context);
         }
     }
 }
 
-function validateAndRetrieveCompoundValue(
+// Validates and retrieves a compound value from a tokenType map, ensuring it is a recognized token value.
+function validateAndRetrievePrefixValue(
     tokenType: string,
     value: string,
-    modifier: string,
     context?: { fileName: string }
 ): string {
     // Special handling for NumericToken
@@ -321,17 +355,24 @@ function validateAndRetrieveCompoundValue(
                     acc[acc.length - 1].push(curr);
                 }
                 return acc;
-            }, [])
+            }, [] as string[][])
             .map(group => group.join(', '))
             .join('\n    ');
-        throw new Error(
-            `\nInvalid ${tokenType.toLowerCase()} value: ${value}${context ? ` in ${context.fileName}` : ''}\nPlease examine this utility string and examine prefixes, modifiers, etc.`
-        );
+            throw new Error(
+    `\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName}` : ''}
+
+    💡 Troubleshooting Tips:
+    1. Examine your prefix value and ensure it matches the expected token type
+    2. Confirm that the value is correctly defined in the relevant token map
+
+    For more information, refer to the Elevate CSS documentation.\n`
+            );
     }
     return types[tokenType][value];
 }
 
-function preprocessModifiers(modifiers: any[]): any[] {
+// Expands shorthand directional modifiers (p, m, inset) into full sets of values for all four sides.
+function directionExpansion(modifiers: any[]): any[] {
     if (modifiers.length === 1) {
         // Expand a single value to all four sides
         return Array(4).fill(modifiers[0]);
@@ -343,11 +384,7 @@ function preprocessModifiers(modifiers: any[]): any[] {
     return modifiers;
 }
 
-// ╔════════════════════════════════════════════════════════════════════╗
-// ║                   PROPERTY MAPPING                                 ║
-// ║ Maps modifiers to CSS property names for rule construction.        ║
-// ╚════════════════════════════════════════════════════════════════════╝
-
+// Determines the correct CSS property name for a given modifier and property combination from the property map.
 export function getRuleName(
     modifier: string,
     property: string,
@@ -368,10 +405,11 @@ export function getRuleName(
 }
 
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                  BREAKPOINT HANDLING                               ║
-// ║ Manages responsive behavior by determining breakpoint priorities.  ║
+// ║                  Breakpoint Handling                               ║
+// ║    Handles final CSS content output to a file.                     ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
+// Determines the priority of a breakpoint by its index in the breakpoints map, used for responsive ordering.
 export function getBreakpointPriority(breakpoint: string): number {
     const clean = breakpoint.replace(/\//g, '') as BreakpointToken;
     return Object.keys(breakpoints).indexOf(clean);
@@ -380,9 +418,10 @@ export function getBreakpointPriority(breakpoint: string): number {
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   FILE WRITING                                     ║
-// ║ Handles final CSS content output to a file.                        ║
+// ║        Handles final CSS content output to a file.                 ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
+// Writes the compiled CSS content, along with reset and buffer styles, to the elevate.css output file.
 export function writeToFile(content: string) {
     const filePath = `${config.Output}/elevate.css`; // Define the file path
     // Clear or create the file
@@ -398,12 +437,12 @@ export function writeToFile(content: string) {
         const padding = spacing[spacingValue];      // e.g., '1.25rem'
         // Create CSS entry
         let newEntry = `
-    @media only screen and (min-width:${minWidth}) {
-        .buffer {
-            padding-left: ${padding};
-            padding-right: ${padding};
-        }
-    }`;
+@media only screen and (min-width:${minWidth}) {
+.buffer {
+    padding-left: ${padding};
+    padding-right: ${padding};
+    }
+}`;
         bufferString += newEntry;
     });
     // Combine the reset CSS with the provided content

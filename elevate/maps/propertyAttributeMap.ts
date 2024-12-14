@@ -56,6 +56,38 @@ export const propertyAttributeMap = {
         "padding-bottom": "bottom"
     },
 
+    pl: {
+        "padding-left": "SpacingToken"
+    },
+
+    pr: {
+        "padding-right": "SpacingToken"
+    },
+
+    pt: {
+        "padding-top": "SpacingToken"
+    },
+
+    pb: {    
+        "padding-bottom": "SpacingToken"
+    },
+
+    ml: {
+        "margin-left": "SpacingToken"
+    },
+
+    mr: {    
+        "margin-right": "SpacingToken"
+    },
+
+    mt: {
+        "margin-top": "SpacingToken"
+    },
+
+    mb: {
+        "margin-bottom": "SpacingToken"
+    },
+
     w: {
         "width": "SpacingToken"
     },

@@ -73,94 +73,89 @@ textarea:not([rows]) {
 
 
 
-    @media only screen and (min-width:20rem) {
-        .buffer {
-            padding-left: 1.25rem;
-            padding-right: 1.25rem;
-        }
+@media only screen and (min-width:20rem) {
+.buffer {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
     }
-    @media only screen and (min-width:30rem) {
-        .buffer {
-            padding-left: 1.25rem;
-            padding-right: 1.25rem;
-        }
-    }
-    @media only screen and (min-width:40rem) {
-        .buffer {
-            padding-left: 1.25rem;
-            padding-right: 1.25rem;
-        }
-    }
-    @media only screen and (min-width:48rem) {
-        .buffer {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-    @media only screen and (min-width:64rem) {
-        .buffer {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-    @media only screen and (min-width:80rem) {
-        .buffer {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-    @media only screen and (min-width:96rem) {
-        .buffer {
-            padding-left: 2rem;
-            padding-right: 2rem;
-        }
-    }
-    @media only screen and (min-width:120rem) {
-        .buffer {
-            padding-left: 16rem;
-            padding-right: 16rem;
-        }
-    }
-    @media only screen and (min-width:160rem) {
-        .buffer {
-            padding-left: 16rem;
-            padding-right: 16rem;
-        }
-    }
-    @media only screen and (min-width:240rem) {
-        .buffer {
-            padding-left: 16rem;
-            padding-right: 16rem;
-        }
-    }
-
-.absolute {
-
-position: absolute;
 }
-
+@media only screen and (min-width:30rem) {
+.buffer {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    }
+}
+@media only screen and (min-width:40rem) {
+.buffer {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    }
+}
+@media only screen and (min-width:48rem) {
+.buffer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    }
+}
 @media only screen and (min-width:64rem) {
-.background\:\(url\(https\:\/\/www\.applesfromny\.com\/wp-content\/uploads\/2020\/05\/20Ounce_NYAS-Apples2\.png\)\) {
-
-background-image: url(https://www.applesfromny.com/wp-content/uploads/2020/05/20Ounce_NYAS-Apples2.png);
+.buffer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    }
 }
-
-}
-
 @media only screen and (min-width:80rem) {
-.text\:purple\:bold {
-
-color: #6665DD;
-font-weight: 700;
+.buffer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    }
+}
+@media only screen and (min-width:96rem) {
+.buffer {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    }
+}
+@media only screen and (min-width:120rem) {
+.buffer {
+    padding-left: 16rem;
+    padding-right: 16rem;
+    }
+}
+@media only screen and (min-width:160rem) {
+.buffer {
+    padding-left: 16rem;
+    padding-right: 16rem;
+    }
+}
+@media only screen and (min-width:240rem) {
+.buffer {
+    padding-left: 16rem;
+    padding-right: 16rem;
+    }
 }
 
-.\@hover\:\[text\:dark_p\:d1\]:hover {
+.background\:\(url\(banana\)\) {
+
+background-image: url(banana);
+}
+
+.\@focus\:\[color\:white\]:focus {
+
+background-color: #F0EFF4;
+}
+
+.\@hover\:\[text\:dark\:bold_p\:d1\:d2\]:hover {
 
 color: #2C2638;
+font-weight: 700;
 padding-left: 0.25rem;
-padding-top: 0.25rem;
+padding-top: 0.5rem;
 padding-right: 0.25rem;
-padding-bottom: 0.25rem;
+padding-bottom: 0.5rem;
 }
 
+.text\:purple {
+
+color: #6665DD;
 }
+
