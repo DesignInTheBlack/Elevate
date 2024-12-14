@@ -52,7 +52,7 @@ Elevate uses a multi-stage parsing approach:
 #### Type Safety
 Implemented through:
 - Strict token definitions
-- Compile-time validation of design tokens
+- Compile-time validation of design system tokens
 - TypeScript type constraints for design system tokens
 
 ### Current Capabilities
@@ -74,23 +74,19 @@ Elevate manages design tokens across multiple domains:
 ### Performance Characteristics
 
 #### Compilation Approach
-- Zero runtime JavaScript overhead
 - Generates static CSS at compile-time
-- Minimal additional bundle size
-- Predictable performance characteristics
+- Transforms HTML class attributes into optimized CSS
+- Zero Runtime JavaScript overhead 
 - No tree shaking necessary
 
 ### Planned Roadmap
 
 #### Near-Term Improvements
-- Grid support with expressive syntax
+- Expand CSS feature support
 - Expanded media query support
 - Pseudo-class support
-- Child selector support and custom syntax(this)
+- Child selector support
 - Container query shorthand syntax and generation
-- Improved error reporting
-- Enhanced type safety
-- More comprehensive design token validation and support for varying token organization
 
 ## Tokenization Strategy
 
@@ -138,7 +134,7 @@ export const text = {
 
 export type TextAlignToken = keyof typeof text.align;
 ```
-#### 3. PassThrough Token
+#### 3. PassThroughToken
 - **Purpose**: Unrestricted value entry
 - **Characteristics**:
   - Maximum flexibility
@@ -152,6 +148,14 @@ rotate: {
   "rotate": "PassThrough"  // Allows any rotation value
 }
 ```
+
+```HTML
+// someHTML.file
+<div class="rotate:((90deg))"></div>
+```
+Note that you must include the parenthesis for CSS rules that require them such as URLS.
+
+
 ### Token Selection Guide
 
 #### Decision Matrix
@@ -161,8 +165,8 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → Syntax Token (Create a map file and define the syntax)
-│       │   └── No → PassThrough Token (This will NOT be validated)
+│       │   ├── Yes → Syntax Token (Create a map file and define the syntax or define directly in the propertyAttributeMap)
+│       │   └── No → PassThroughToken (This will NOT be validated)
 ```
 Note that passthrough tokens are not validated, can be used in either a map or directly in the propertyAttributeMap. 
 
@@ -205,7 +209,7 @@ export const config = options
 ```
 
 The maps folder contains the property-attribute mappings for the framework, including:
-propertyAttributeMap.js as well as feature specific syntax maps. 
+propertyAttributeMap.js as well as CSS feature specific syntax maps. 
 
 The token import statements and the maps are imported in the utility.ts and can be expanded upon as needed.
 
@@ -303,6 +307,8 @@ Buffer Spacing Mapping:
 - `2xs`, `xs`, `sm`: `d5` spacing (smallest padding)
 - `md`, `lg`, `xl`, `2xl`: `d8` spacing (medium padding)
 - `3xl`, `4xl`, `5xl`: `c12` spacing (largest padding)
+
+Note that your buffer definitions must align with your spacing and breakpoint tokens. 
 
 ### 5. Comprehensive Property Modifiers
 
@@ -412,11 +418,16 @@ The framework consists of four main components:
 ```
 elevate/
 ├── config/     # Framework configuration
+│   ├── designConfig.ts
+│   └── elevate.ts
+├── core/       # Core parsing and compilation logic
+│   ├── index.ts
+│   ├── parser.ts
+│   ├── scan.js
+│   └── utility.ts
 ├── design/     # Design system tokenization
 ├── maps/       # Property-attribute mappings
-├── parser.ts   # Core parsing logic
-├── scan.js     # File scanning system
-└── utility.ts  # Helper functions
+└── README.md
 ```
 
 ## Technical Requirements
