@@ -221,6 +221,7 @@ Elevate features three distinct token types:
    - Validate property values, provide type-safe transformations.
    - Allow for syntax extensions and modification through submapping.
 <br>
+
 **Pass Through Tokens**
    - Unrestricted value entry.  
    - No compile-time validation, for dynamic or flexible values.
