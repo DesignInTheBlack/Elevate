@@ -61,6 +61,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ## ✦ Design Philosophy & Architecture
 <br>
+
 ### ▸ Core Design Principles
 
 1. **Expressive and Intentional Code**  
