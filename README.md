@@ -34,8 +34,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
    - [Syntax Guide](#-syntax-guide)
    - [Responsive Styling](#-responsive-styling)
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)
-   - [Tokenization Strategy](#-tokenization-strategy)
-   - [Token Types](#-token-types)
+   - [Token Types](#-tokenization-and-token-types)
    - [Token Selection Guide](#-token-selection-guide)
    - [Best Practices](#-best-practices)
 5. [Configuration](#-configuration)
@@ -204,7 +203,7 @@ Allows complex, conditional styling for states, conditions, and other pseudo-cla
 ```html
 <div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
 ```
-
+<br>
 **Functional Flag [$]:**  
 
 Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
@@ -215,7 +214,17 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 <br>
 
-### ▸ Token Types
+### ▸ Tokenization and Token Types
+
+Elevate features two distinct token types:
+
+1. **Design System Tokens**  
+   - Global, immutable design constraints.  
+   - Centralized values, enforce system-wide consistency.
+
+2. **Syntax Tokens**  
+   - Property-specific structural validation.  
+   - Validate property values, provide type-safe transformations.
 
 <br>
 
