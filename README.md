@@ -294,7 +294,7 @@ You must import relevant design token files if used in a submap.
 
 ### ▸ Framework Configuration
 
-Configure Elevate in `elevate/config/`:
+Configure Elevate's general settings in `elevate/config/elevate.ts`:
 
 ```typescript
 // elevate/config/elevate.ts
@@ -307,7 +307,7 @@ const options = {
 export const config = options
 ```
 
-Import design tokens in the config:
+Import design system tokens in `elevate/config/designConfig.ts`
 
 ```typescript
 // elevate/config/designConfig.ts
