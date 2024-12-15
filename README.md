@@ -216,21 +216,31 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 ### ▸ Tokenization and Token Types
 
-Elevate features two distinct token types:
+<br>
 
-1. **Design System Tokens**  
+Elevate features three distinct token types:
+
+**Design System Tokens**  
    - Global, immutable design constraints.  
    - Centralized values, enforce system-wide consistency.
+<br>
 
-2. **Syntax Tokens**  
+**Syntax Tokens**  
    - Property-specific structural validation.  
    - Validate property values, provide type-safe transformations.
+   - Allow for syntax extensions and modification through submapping.
+
+**Pass Through Tokens**
+   - Unrestricted value entry.  
+   - No compile-time validation, for dynamic or flexible values.
+   - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
 
 <br>
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
    - **Location:** `design/` directory  
+   - **Configuration:** `elevate/config/designConfig.ts`
    - **Characteristics:** Centralized values, enforce system-wide consistency.
 
    **Example:**
@@ -247,10 +257,12 @@ Elevate features two distinct token types:
    export type ColorToken = keyof typeof colors;
    ```
 
+<br>
 2. **Syntax Tokens**  
    - **Purpose:** Property-specific structural validation.  
    - **Location:** `maps/` directory  
-   - **Characteristics:** Validate property values, provide type-safe transformations.
+   - **Configuration:** `elevate/maps/propertyAttributeMap.ts` and `elevate/maps`
+   - **Characteristics:** Validate property values, provide type-safe transformations, structure syntax.
 
    **Example:**
    ```typescript
