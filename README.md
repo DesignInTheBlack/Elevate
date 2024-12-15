@@ -229,7 +229,7 @@ Elevate features three distinct token types:
    - Property-specific structural validation.  
    - Validate property values, provide type-safe transformations.
    - Allow for syntax extensions and modification through submapping.
-
+<br>
 **Pass Through Tokens**
    - Unrestricted value entry.  
    - No compile-time validation, for dynamic or flexible values.
@@ -258,6 +258,7 @@ Elevate features three distinct token types:
    ```
 
 <br>
+
 2. **Syntax Tokens**  
    - **Purpose:** Property-specific structural validation.  
    - **Location:** `maps/` directory  
@@ -287,6 +288,7 @@ Elevate features three distinct token types:
    export type GridRowToken = `r-${NumericToken}`; 
    export type GridColumnToken = `c-${NumericToken}`;
    ```
+<br>
 
 3. **PassThroughToken**  
    - **Purpose:** Unrestricted value entry.  
