@@ -4,29 +4,27 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Features](#-features)
-3. [Design Philosophy & Architecture](#-design-philosophy--architecture)
-   - [The Elevate Web Design System (EWDS)](#-the-elevate-web-design-system-ewds)
-   - [Architectural Approach](#-architectural-approach)
-   - [Current Capabilities](#-current-capabilities)
-   - [Design Token Management](#-design-token-management)
-   - [Performance Characteristics](#-performance-characteristics)
-4. [Syntax and Usage](#-syntax-and-usage)
-   - [Quick Start](#-quick-start)
-   - [Syntax Guide](#-syntax-guide)
-   - [Responsive Styling](#-responsive-styling)
-   - [Contextual and Functional Flags](#-contextual-and-functional-flags)
-   - [Tokenization Strategy](#-tokenization-strategy)
-   - [Token Types](#-token-types)
-   - [Token Selection Guide](#-token-selection-guide)
-   - [Best Practices](#-best-practices)
-   - [Extending the Design System](#-extending-the-design-system)
-5. [Configuration](#-configuration)
-   - [Framework Configuration](#-framework-configuration)
-   - [Project Structure](#-project-structure)
-6. [Planned Roadmap](#planned-roadmap)
-7. [Technical Requirements](#technical-requirements)
-8. [Licensing](#licensing)
+2. [Features](#✦-features)
+3. [Design Philosophy & Architecture](#✦-design-philosophy--architecture)
+   - [The Elevate Web Design System (EWDS)](#▸-the-elevate-web-design-system-ewds)
+   - [Architectural Approach](#▸-architectural-approach)
+   - [Current Capabilities](#▸-current-capabilities)
+   - [Design Token Management](#▸-design-token-management)
+   - [Performance Characteristics](#▸-performance-characteristics)
+4. [Syntax and Usage](#✦-syntax-and-usage)
+   - [Quick Start](#▸-quick-start)
+   - [Syntax Guide](#▸-syntax-guide)
+   - [Responsive Styling](#▸-responsive-styling)
+   - [Contextual and Functional Flags](#▸-contextual-and-functional-flags)
+   - [Tokenization Strategy](#▸-tokenization-strategy)
+   - [Token Types](#▸-token-types)
+   - [Token Selection Guide](#▸-token-selection-guide)
+   - [Best Practices](#▸-best-practices)
+5. [Configuration](#✦-configuration)
+   - [Framework Configuration](#▸-framework-configuration)
+   - [Extending the Design System](#▸-extending-the-design-system)
+   - [Project Structure](#▸-project-structure)
+
 
 
 <br>
@@ -281,6 +279,48 @@ You must import relevant design token files if used in a submap.
 2. Use Syntax Tokens for structured properties.
 3. Minimize PassThroughToken usage.
 
+<br>
+
+## ✦ Configuration
+
+### ▸ Framework Configuration
+
+Configure Elevate in `elevate/config/`:
+
+```typescript
+// elevate/config/elevate.ts
+const options = {
+    Watch:'./',                // Directory to watch for changes
+    FileTypes: ['html', 'jsx', 'tsx', 'astro'], // File extensions to scan
+    Output:'./'                // Output directory for generated CSS
+}
+
+export const config = options
+```
+
+Import design tokens in the config:
+
+```typescript
+// elevate/config/designConfig.ts
+import { colors } from "../design/colors.js";
+import { spacing } from "../design/spacing.js";
+import { typography } from "../design/typography.js";
+
+export const designSystem = {
+    ColorToken: colors,
+    SpacingToken: spacing,
+    FontSizeToken: typography.size,
+    FontFamilyToken: typography.family,
+    LineHeightToken: typography.leading,
+    LetterSpacingToken: typography.tracking,
+    FontWeightToken: typography.weight,
+};
+```
+
+The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
+
+---
+
 ### ▸ Extending the Design System: A Comprehensive Guide
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
@@ -417,50 +457,7 @@ export const extendedColors = {
 
 <br>
 
-## ✦ Configuration
-
-### ▸ Framework Configuration
-
-Configure Elevate in `elevate/config/`:
-
-```typescript
-// elevate/config/elevate.ts
-const options = {
-    Watch:'./',                // Directory to watch for changes
-    FileTypes: ['html', 'jsx', 'tsx', 'astro'], // File extensions to scan
-    Output:'./'                // Output directory for generated CSS
-}
-
-export const config = options
-```
-
-Import design tokens in the config:
-
-```typescript
-// elevate/config/designConfig.ts
-import { colors } from "../design/colors.js";
-import { spacing } from "../design/spacing.js";
-import { typography } from "../design/typography.js";
-
-export const designSystem = {
-    ColorToken: colors,
-    SpacingToken: spacing,
-    FontSizeToken: typography.size,
-    FontFamilyToken: typography.family,
-    LineHeightToken: typography.leading,
-    LetterSpacingToken: typography.tracking,
-    FontWeightToken: typography.weight,
-};
-```
-
-The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
-
----
-
-
-<br>
-
-## ✦ Project Structure
+### ▸ Project Structure
 
 ```
 elevate/
