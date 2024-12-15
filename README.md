@@ -562,13 +562,13 @@ elevate/
 
 Elevate CSS redefines utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
 
----
+<br>
 
 ### ¶ Market Differentiation and Competitive Positioning
 
 Elevate CSS stands apart in the market of CSS frameworks by introducing a novel approach to styling that prioritizes **engineering rigor, design system integrity, and long-term maintainability**. Here's how Elevate differentiates itself:
 
----
+<br>
 
 #### **From Arbitrary Utilities to Rigorous Token Enforcement**
 
@@ -581,7 +581,7 @@ Elevate CSS stands apart in the market of CSS frameworks by introducing a novel 
 **Key Differentiator:**  
 Elevate CSS makes design tokens immutable rules, not optional guidelines, elevating the design system to a first-class citizen in your codebase.
 
----
+ <br>
 
 #### **From Class Bloat to Declarative, Semantic Syntax**
 
@@ -594,7 +594,7 @@ Elevate CSS makes design tokens immutable rules, not optional guidelines, elevat
 **Key Differentiator:**  
 Elevate’s syntax doubles as living documentation of your design system, making intent visible and self-validating.
 
----
+<br>
 
 #### **Compile-Time Validation for Guaranteed Correctness**
 
@@ -607,7 +607,7 @@ Elevate’s syntax doubles as living documentation of your design system, making
 **Key Differentiator:**  
 Elevate CSS enforces correctness by construction, ensuring that styling errors are caught early and automatically.
 
----
+<br>
 
 #### **From Utility Overload to Structured, Composable Logic**
 
@@ -620,7 +620,7 @@ Elevate CSS enforces correctness by construction, ensuring that styling errors a
 **Key Differentiator:**  
 Elevate turns ad-hoc class lists into a stable, composable styling system that grows with your project.
 
----
+<br>
 
 #### **True System Integration at Scale**
 
@@ -633,7 +633,7 @@ Elevate turns ad-hoc class lists into a stable, composable styling system that g
 **Key Differentiator:**  
 Elevate CSS grows with your design system, enforcing alignment and coherence as complexity increases.
 
----
+<br>
 
 #### **Engineering Rigor Meets Front-End Styling**
 
@@ -646,7 +646,7 @@ Elevate CSS grows with your design system, enforcing alignment and coherence as 
 **Key Differentiator:**  
 Elevate CSS transforms styling into a rigorously engineered system, ensuring long-term maintainability and reliability.
 
----
+<br>
 
 ### ¶ Competitive Positioning: TailwindCSS vs. Elevate CSS
 
@@ -660,7 +660,7 @@ Elevate CSS transforms styling into a rigorously engineered system, ensuring lon
 | **Developer Workflow**       | Rapid iteration                              | Intentional, error-proof engineering          |
 | **Output Efficiency**        | JIT-optimized CSS                            | Compile-time optimized, minimal CSS           |
 
----
+<br>
 
 ### ¶ Why Choose Elevate CSS?
 
@@ -675,6 +675,6 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 - **For Developers Who Value Clarity:**  
    Elevate’s semantic syntax reveals intent, making codebases easier to read, teach, and maintain.
 
----
+<br>
 
 **Elevate Your Code. Elevate The Web.**
