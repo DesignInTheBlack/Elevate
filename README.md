@@ -144,6 +144,8 @@ npm start
 <br>
 At the heart of the syntax are "utility strings", which are used to describe styling. 
 
+<br>
+
 **Direct Properties:**  
 <br>
 Define a single property with a value. Generally used for layout and positioning.
