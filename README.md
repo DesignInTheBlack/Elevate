@@ -64,6 +64,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ### ▸ Core Design Principles
 
+<br>
+
 1. **Expressive and Intentional Code**  
    Styling choices should clearly reflect design intent and serve as self-documenting expressions of design intention, ensuring intuitive understanding and maintainability.
 
@@ -75,6 +77,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ### ▸ Current Capabilities
 
+<br>
+
 - Responsive design syntax
 - Context-based styling
 - Breakpoint-aware class generation
@@ -82,6 +86,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 - Comprehensive design token system
 
 ### ▸ Architectural Approach
+
+<br>
 
 **Key Technical Innovations:**
 - **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
@@ -101,6 +107,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ### ▸ Performance Characteristics
 
+<br>
+
 **Compilation Approach:**
 - Generate static CSS at compile-time
 - Transforms HTML class attributes into optimized CSS
@@ -113,6 +121,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 <br>
 
 ### ▸ Quick Start
+
+<br>
 
 ```bash
 # Install dependencies
@@ -152,6 +162,8 @@ The order generally doesn't matter unless there's a token type collision. In tha
 
 ### ▸ Responsive Styling
 
+<br>
+
 Elevate enforces a mobile-first, organized syntax for responsive design:
 
 ```html
@@ -162,6 +174,8 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 - Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
 
 ### ▸ Contextual and Functional Flags
+
+<br>
 
 **Contextual Flag [@]:**  
 
@@ -182,9 +196,13 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 ### ▸ Tokenization Strategy
 
+<br>
+
 Elevate's tokenization approach ensures flexibility, type safety, and consistency.
 
 ### ▸ Token Types
+
+<br>
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
@@ -255,6 +273,8 @@ Elevate's tokenization approach ensures flexibility, type safety, and consistenc
 
 ### ▸ Token Selection Guide
 
+<br>
+
 **Decision Matrix:**
 ```
 Property Characteristics
@@ -270,6 +290,9 @@ Property Characteristics
 You must import relevant design token files if used in a submap.
 
 ### ▸ Best Practices
+
+<br>
+
 1. Prefer Design System Tokens.
 2. Use Syntax Tokens for structured properties.
 3. Minimize PassThroughToken usage.
@@ -281,6 +304,8 @@ You must import relevant design token files if used in a submap.
 <br>
 
 ### ▸ Framework Configuration
+
+<br>
 
 Configure Elevate's general settings in `elevate/config/elevate.ts`:
 
@@ -319,6 +344,8 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 ---
 
 ### ▸ Extending the Design System: A Comprehensive Guide
+
+<br>
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
@@ -454,6 +481,8 @@ export const extendedColors = {
 <br>
 
 ### ▸ Project Structure
+
+<br>
 
 ```
 elevate/
