@@ -281,7 +281,7 @@ Elevate features three distinct token types:
    ```
 <br>
 
-3. **PassThroughToken**  
+3. **PassThroughToken** 
    - **Purpose:** Unrestricted value entry.  
    - **Characteristics:** No compile-time validation, for dynamic or flexible values.
 
@@ -297,7 +297,7 @@ Elevate features three distinct token types:
    <div class="rotate:((90deg))"></div>
    ```
 
-   **※ PassThroughToken and CSS** 
+   **※ PassThroughToken and CSS** <br>
    You must pass through the value in the same way that you would write it in CSS.
    For example, preserving parentheses for values requiring them (e.g., URLs).
 
