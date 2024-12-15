@@ -1,5 +1,5 @@
 # Elevate CSS
-<br><br>
+<br>
 ## ⬜ Introduction
 
 Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
@@ -32,7 +32,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 8. [Licensing](#licensing)
 
 
-<br><br>
+<br>
 ## ⬜Features
 
 - **🛡️ Type-Safe CSS Generation**
@@ -56,7 +56,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
   - Automatic CSS state compilation
 
 
-<br><br>
+<br>
 ## ⬜ Design Philosophy & Architecture
 
 ### The Elevate Web Design System (EWDS)
@@ -120,7 +120,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 ---
 
 
-<br><br>
+<br>
 ## ⬜ Syntax and Usage
 
 ### Quick Start
@@ -417,7 +417,7 @@ export const extendedColors = {
 ---
 
 
-<br><br>
+<br>
 ## ⬜ Configuration
 
 ### Framework Configuration
@@ -459,7 +459,7 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 ---
 
 
-<br><br>
+<br>
 ## ⬜ Project Structure
 
 ```
