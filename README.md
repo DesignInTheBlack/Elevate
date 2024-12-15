@@ -1,7 +1,8 @@
 # Elevate CSS
 
-A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
+## ⬜ Introduction
 
+Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
 
 ## Table of Contents
 
@@ -30,11 +31,6 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
 7. [Technical Requirements](#technical-requirements)
 8. [Licensing](#licensing)
 
-
-## ⬜ Introduction
-
-Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
-
 ## ⬜Features
 
 - **🛡️ Type-Safe CSS Generation**
@@ -56,8 +52,6 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
   - Hover, focus, and custom states
   - Syntax: `@state:[property:modifier_property:modifier]`
   - Automatic CSS state compilation
-
----
 
 ## ⬜ Design Philosophy & Architecture
 
@@ -113,8 +107,6 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
 
----
-
 ## ⬜ Syntax and Usage
 
 ### Quick Start
@@ -167,6 +159,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 ### Contextual and Functional Flags
 
 **Contextual Flag [@]:**  
+
 Allows complex, conditional styling for states or conditions:
 
 ```html
@@ -174,13 +167,13 @@ Allows complex, conditional styling for states or conditions:
 ```
 
 **Functional Flag [$]:**  
+
 Ignore certain classes for CSS generation (e.g. for JavaScript hooks):
 
 ```html
 <div class="$mySelector">
 ```
 
----
 
 ### Tokenization Strategy
 
@@ -275,8 +268,6 @@ You must import relevant design token files if used in a submap.
 3. Minimize PassThroughToken usage.
 
 ### Extending the Design System: A Comprehensive Guide
-
----
 
 #### Token Extension Workflow
 
