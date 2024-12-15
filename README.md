@@ -109,7 +109,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 ### ▸ Performance Characteristics
 
 **Compilation Approach:**
-- Generates static CSS at compile-time
+- Generate static CSS at compile-time
 - Transforms HTML class attributes into optimized CSS
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
