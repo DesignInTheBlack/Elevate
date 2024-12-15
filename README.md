@@ -383,7 +383,7 @@ export const designSystem = {
 
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
----
+
 
 <br>
 
@@ -393,7 +393,7 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
----
+<br>
 
 ##### 1. Token File Creation
 
@@ -419,7 +419,7 @@ export type BrandColorToken = keyof typeof brandColors;
 - Provide clear, descriptive comments
 - Limit tokens to a single, cohesive concept
 
----
+<br>
 
 ##### 2. Design System Configuration
 
@@ -437,7 +437,7 @@ export const designSystem = {
 };
 ```
 
----
+<br>
 
 ##### 3. Property Attribute Mapping
 
@@ -476,7 +476,7 @@ export const propertyAttributeMap = {
 };
 ```
 
----
+<br>
 
 ##### 4. Token Usage Guidelines 
 
@@ -494,7 +494,7 @@ export const propertyAttributeMap = {
 - Use submaps for complex, related tokens or syntactic relationships.
 - Minimize the number of token types
 
----
+<br>
 
 ##### 5. Advanced Token Management 
 
@@ -507,7 +507,7 @@ export const extendedColors = {
 };
 ```
 
----
+<br>
 
 ##### Troubleshooting 
 
@@ -518,8 +518,6 @@ export const extendedColors = {
   3. All relevant **submaps** are updated for your use case.
   4. The design token or subsequent submap token are included in the **`propertyAttributeMap.ts`** mapping.
   5. Ensure **type consistency** across all definitions.
-
----
 
 
 <br>
