@@ -40,19 +40,19 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ## ✦ Features
 
-- **🛡️ Type-Safe CSS Generation**
+- **Type-Safe CSS Generation**
   - Compile-time token validation
   - Design system constraint enforcement
 
-- **🎨 Design System Integration**
+- **Design System Integration**
   - Token-based system for colors, spacing, breakpoints, and typography
   - Structured property-attribute relationships
 
-- **📱 Responsive Design**
+- **Responsive Design**
   - Intuitive and mobile-first syntax: `property:modifier /breakpoint/ property:modifier`
   - Automatic media query generation
 
-- **⚡ Context Management**
+- **Context Management**
   - Supporting pseudo class selectors
   - Syntax: `@context:[property:modifier_property:modifier]`
 
@@ -265,7 +265,7 @@ Elevate's tokenization approach ensures flexibility, type safety, and consistenc
    ```html
    <div class="rotate:((90deg))"></div>
    ```
-   
+
    **Note:** 
    Preserve parentheses for values requiring them (e.g., URLs).
 
@@ -338,7 +338,7 @@ The design system supports seamless token extension through a structured, type-s
 
 ---
 
-##### 1. Token File Creation 🎨
+##### 1. Token File Creation
 
 **Location:** `elevate/design/`  
 **File Naming Convention:** Use a descriptive, singular noun (e.g., `brandColors.ts`)
@@ -364,7 +364,7 @@ export type BrandColorToken = keyof typeof brandColors;
 
 ---
 
-##### 2. Design System Configuration 🔧
+##### 2. Design System Configuration
 
 **File:** `elevate/config/designConfig.ts`
 
@@ -382,7 +382,7 @@ export const designSystem = {
 
 ---
 
-##### 3. Property Attribute Mapping 🗺️
+##### 3. Property Attribute Mapping
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
 
@@ -421,7 +421,7 @@ export const propertyAttributeMap = {
 
 ---
 
-##### 4. Token Usage Guidelines 📋
+##### 4. Token Usage Guidelines 
 
 **Naming Conventions:**
 - Use clear, semantic names
@@ -439,7 +439,7 @@ export const propertyAttributeMap = {
 
 ---
 
-##### 5. Advanced Token Management 🚀
+##### 5. Advanced Token Management 
 
 **Token Inheritance:**
 ```typescript
@@ -452,7 +452,7 @@ export const extendedColors = {
 
 ---
 
-##### Troubleshooting 🔍
+##### Troubleshooting 
 
 **Common Issues:**
 - If a token doesn't map correctly, check:
