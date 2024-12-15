@@ -30,6 +30,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
    - [Framework Configuration](#-framework-configuration)
    - [Extending the Design System](#-extending-the-design-system)
    - [Project Structure](#-project-structure)
+6. [Why Elevate?](#-why-elevate)
 
 <br>
 
