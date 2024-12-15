@@ -60,7 +60,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 <br>
 
 ## ✦ Design Philosophy & Architecture
-
+<br>
 ### ▸ Core Design Principles
 
 1. **Expressive and Intentional Code**  
@@ -106,13 +106,10 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
 
-
-
-
 <br>
 
 ## ✦ Syntax and Usage
-
+<br>
 ### ▸ Quick Start
 
 ```bash
