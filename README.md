@@ -141,11 +141,17 @@ npm start
 <br>
 
 **Basic Usage:**  
-At the heart of the syntax are "utility strings", which are used to describe styling. A simple direct property example:
+At the heart of the syntax are "utility strings", which are used to describe styling. 
+
+<br>
+
+**Direct Properties:**  
 
 ```html
 <div class="block"> <!-- display: block -->
 ```
+
+<br>
 
 **Compound Properties:**  
 Build complex class definitions by chaining modifiers:
@@ -153,17 +159,19 @@ Build complex class definitions by chaining modifiers:
 ```html
 <div class="property:modifier:modifier:modifier">      
 ```
+<br>
 
 **Practical Examples:**
 ```html
 <div class="text:bold:purple">      <!-- Bold text with purple color -->
 <div class="color:purple">          <!-- Element color set to purple -->
 <div class="row:x-center:y-start">  <!-- Row layout with specific alignment -->
+<div class="absolute left:d12 z:10">  <!-- Absolute positioning, d12 from the left, and z-index of 10  -->
 ```
 <br>
 
 **※ Order of Modifiers:**  
-The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions occur.
+The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions can occur.
 
 <br>
 
@@ -177,8 +185,8 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 <div class="text:purple /md/ text:right /lg/ @hover:[text:green:right]"> 
 ```
 
-- Define universal classes first.
-- Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
+1. Define universal classes first.
+2. Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
 
 <br>
 
@@ -211,6 +219,8 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 Elevate features three distinct token types:
 
+<br>
+
 **Design System Tokens**  
    - Global, immutable design constraints.  
    - Centralized values, enforce system-wide consistency.
@@ -222,10 +232,11 @@ Elevate features three distinct token types:
    - Allow for syntax extensions and modification through submapping.
 <br>
 
-**Pass Through Tokens**
+**Pass-Through Tokens**
    - Unrestricted value entry.  
    - No compile-time validation, for dynamic or flexible values.
    - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
+   - Not recommended for general styling.
 
 <br>
 
@@ -282,7 +293,7 @@ Elevate features three distinct token types:
    ```
 <br>
 
-3. **PassThroughToken** 
+3. **Pass-Through Tokens** 
    - **Purpose:** Unrestricted value entry.  
    - **Characteristics:** No compile-time validation, for dynamic or flexible values.
 
@@ -299,7 +310,7 @@ Elevate features three distinct token types:
    ```
 <br>
 
-   **※ PassThroughToken and CSS** <br>
+   **※ Pass-Through Tokens and CSS** <br>
    You must pass through the value in the same way that you would write it in CSS.
    For example, preserving parentheses for values requiring them (e.g., URLs).
 
@@ -316,7 +327,7 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → Syntax Token
+│       │   ├── Yes → Syntax Token and a Submapping
 │       │   └── No → PassThrough Token
 ```
 <br>
@@ -376,7 +387,8 @@ export const designSystem = {
     FontWeightToken: typography.weight,
 };
 ```
-
+<br>
+**※ Design Token Imports** 
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
 
@@ -488,7 +500,7 @@ export const propertyAttributeMap = {
 **Performance Considerations:**
 - Keep token maps concise
 - Use submaps for complex, related tokens or syntactic relationships.
-- Minimize the number of token types
+- Minimize the number of token types as possible.
 
 <br>
 
