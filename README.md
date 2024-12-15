@@ -568,6 +568,8 @@ elevate/
 
 ## § Why Elevate?
 
+<br>
+
 Elevate CSS redefines utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
 
 <br>
