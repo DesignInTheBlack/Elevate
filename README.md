@@ -123,6 +123,8 @@ npm start
 
 ### ▸ Syntax Guide
 
+<br>
+
 **Basic Usage:**  
 At the heart of the syntax are "utility strings", which are used to describe styling. A simple direct property example:
 
@@ -274,6 +276,8 @@ You must import relevant design token files if used in a submap.
 <br>
 
 ## ✦ Configuration
+
+<br>
 
 ### ▸ Framework Configuration
 
@@ -436,12 +440,12 @@ export const extendedColors = {
 ##### Troubleshooting 
 
 **Common Issues:**
-- If a token doesn't map correctly, check:
-  1. Token file export
-  2. `designConfig.ts` import
-  3. Any submaps relevant to your use case
-  4. `propertyAttributeMap.ts` mapping
-  5. Type consistency
+- If a token doesn’t map correctly, verify the following:
+  1. The design token is properly **exported** in the token file.
+  2. The design token is correctly **imported** in `designConfig.ts`.
+  3. All relevant **submaps** are updated for your use case.
+  4. The design token or subsequent submap token are included in the **`propertyAttributeMap.ts`** mapping.
+  5. Ensure **type consistency** across all definitions.
 
 ---
 
