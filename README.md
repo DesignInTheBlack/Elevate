@@ -1,3 +1,5 @@
+```markup
+
 # Elevate CSS
 
 A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
@@ -22,6 +24,7 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
    - [Token Types](#token-types)
    - [Token Selection Guide](#token-selection-guide)
    - [Best Practices](#best-practices)
+   - [Extending the Design System](#extending-the-design-system)
 5. [Configuration](#configuration)
    - [Framework Configuration](#framework-configuration)
    - [Project Structure](#project-structure)
@@ -276,6 +279,125 @@ You must import relevant design token files if used in a submap.
 2. Use Syntax Tokens for structured properties.
 3. Minimize PassThroughToken usage.
 
+### Extending the Design System: A Comprehensive Guide
+
+#### Token Extension Workflow
+
+The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
+
+##### 1. Token File Creation
+
+**Location:** `elevate/design/`
+**File Naming Convention:** Use a descriptive, singular noun (e.g., `brandColors.ts`)
+
+**Example: Brand Color Tokens**
+```typescript
+// elevate/design/brandColors.ts
+export const brandColors = {
+  primary: '#3498db',   // Primary brand color
+  secondary: '#2ecc71', // Secondary accent color
+  tertiary: '#e74c3c'   // Tertiary highlight color
+} as const;
+
+// Generate a type from the token object
+export type BrandColorToken = keyof typeof brandColors;
+```
+
+**Key Principles:**
+- Use `as const` for strict type inference
+- Create a type using `keyof typeof`
+- Provide clear, descriptive comments
+- Limit tokens to a single, cohesive concept
+
+##### 2. Design System Configuration
+
+**File:** `elevate/config/designConfig.ts`
+
+**Integration Steps:**
+```typescript
+// Import your new tokens
+import { brandColors } from "../design/brandColors.js";
+
+// Extend the designSystem object
+export const designSystem = {
+  // Existing tokens...
+  BrandColorToken: brandColors, // Add your new token map
+};
+```
+
+##### 3. Property Attribute Mapping
+
+**File:** `elevate/maps/propertyAttributeMap.ts`
+
+**Mapping Strategies:**
+
+**A. Direct Token Mapping**
+```typescript
+export const propertyAttributeMap = {
+  // Simple, direct mapping
+  primaryBrand: {
+    "background-color": "BrandColorToken"
+  },
+  textBrand: {
+    "color": "BrandColorToken"
+  }
+};
+```
+
+**B. Submap for Complex Mappings**
+```typescript
+// Create a dedicated submap for nuanced token usage
+export const brandColorMap = {
+  primary: {
+    background: 'primary',
+    color: 'secondary',
+    border: 'tertiary'
+  }
+};
+
+// Reference the submap in propertyAttributeMap
+export const propertyAttributeMap = {
+  // Complex token mapping
+  brandVariant: brandColorMap
+};
+```
+
+##### 4. Token Usage Guidelines
+
+**Naming Conventions:**
+- Use clear, semantic names
+- Prefix with the token type (e.g., `BrandColorToken`)
+- Avoid generic names that might cause collisions
+
+**Type Safety Checks:**
+- Verify token existence before use
+- Use TypeScript's type system to prevent runtime errors
+- Leverage IDE autocompletion for token selection
+
+**Performance Considerations:**
+- Keep token maps concise
+- Use submaps for complex, related tokens
+- Minimize the number of token types
+
+##### 5. Advanced Token Management
+
+**Token Inheritance:**
+```typescript
+// Extend existing tokens
+export const extendedColors = {
+  ...colors,  // Spread existing colors
+  newShade: '#custom-color-value'
+};
+```
+
+**Troubleshooting:**
+- If a token doesn't map correctly, check:
+  1. Token file export
+  2. `designConfig.ts` import
+  3. Any submaps relevant to your use case
+  4. `propertyAttributeMap.ts` mapping
+  5. Type consistency
+
 ---
 
 ## Configuration
@@ -333,73 +455,6 @@ elevate/
 ├── design/     # Design system tokenization
 ├── maps/       # Property-attribute mappings
 └── README.md
+
 ```
-
----
-
-## Planned Roadmap
-
-**Near-Term Improvements:**
-- Expand CSS feature support
-- Expanded media query support
-- Pseudo-class support
-- Child selector support
-- Container query shorthand syntax and generation
-
----
-
-## Technical Requirements
-
-- Node.js >=18
-- TypeScript ^5.3.0
-- Chevrotain ^11.0.3
-
----
-
-## Licensing
-
-Proprietary software developed by Ken Pickett.  
-All rights reserved. Unauthorized distribution prohibited.
-
-**Elevate Your Code. Elevate the Web.**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```
