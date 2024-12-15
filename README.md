@@ -296,6 +296,7 @@ Elevate features three distinct token types:
    ```html
    <div class="rotate:((90deg))"></div>
    ```
+<br>
 
    **※ PassThroughToken and CSS** <br>
    You must pass through the value in the same way that you would write it in CSS.
@@ -317,6 +318,7 @@ Property Characteristics
 │       │   ├── Yes → Syntax Token
 │       │   └── No → PassThrough Token
 ```
+<br>
 
 **※ Design Token Imports**  
 You must import relevant design token files if used in a submap to ensure compile-time validation.
