@@ -1,8 +1,5 @@
-# Elevate CSS
+# Introducing Elevate CSS
 <br>
-
-## ⬜ Introduction
-
 Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
 
 ## Table of Contents
