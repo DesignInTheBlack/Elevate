@@ -356,6 +356,7 @@ const options = {
 
 export const config = options
 ```
+<br>
 
 Import design system tokens in `elevate/config/designConfig.ts`
 
