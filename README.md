@@ -316,7 +316,8 @@ Elevate features three distinct token types:
    ```
 <br>
 
-   **※ Pass-Through Tokens and CSS** <br>
+   **※ Pass-Through Tokens and CSS**
+   
    You must pass through the value in the same way that you would write it in CSS.
    For example, preserving parentheses for values requiring them (e.g., URLs).
 
