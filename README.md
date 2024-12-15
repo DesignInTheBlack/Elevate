@@ -2,9 +2,10 @@
 
 A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
 
----
+--
 
 ## Table of Contents
+
 1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Design Philosophy & Architecture](#design-philosophy--architecture)
@@ -30,13 +31,11 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
 7. [Technical Requirements](#technical-requirements)
 8. [Licensing](#licensing)
 
----
+--
 
 ## Introduction
 
 Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
-
----
 
 ## Features
 
@@ -412,7 +411,6 @@ export const extendedColors = {
   4. `propertyAttributeMap.ts` mapping
   5. Type consistency
 
----
 ---
 
 ## Configuration
