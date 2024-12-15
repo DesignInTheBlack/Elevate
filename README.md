@@ -74,7 +74,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 ### ¶ Current Capabilities
 
-<br>
+
 
 - Responsive design syntax
 - Context-based styling
@@ -86,7 +86,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 ### ¶ Architectural Approach
 
-<br>
+
 
 **Key Technical Innovations:**
 - **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
@@ -108,7 +108,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 ### ¶ Performance Characteristics
 
-<br>
+
 
 **Compilation Approach:**
 - Generate static CSS at compile-time
@@ -141,13 +141,13 @@ npm start
 <br>
 
 **Basic Usage:**  
-<br>
+
 At the heart of the syntax are "utility strings", which are used to describe styling. 
 
 <br>
 
 **Direct Properties:**  
-<br>
+
 Define a single property with a value. Generally used for layout and positioning.
 
 ```html
@@ -157,7 +157,7 @@ Define a single property with a value. Generally used for layout and positioning
 <br>
 
 **Compound Properties:** 
-<br>
+
 Build complex class definitions by chaining modifiers:
 
 ```html
@@ -166,7 +166,7 @@ Build complex class definitions by chaining modifiers:
 <br>
 
 **Practical Examples:**
-<br>
+
 ```html
 <div class="text:bold:purple">      <!-- Bold text with purple color -->
 <div class="color:purple">          <!-- Element color set to purple -->
@@ -176,6 +176,7 @@ Build complex class definitions by chaining modifiers:
 <br>
 
 **※ Order of Modifiers:**  
+
 The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions can occur.
 
 <br>
@@ -226,7 +227,7 @@ Elevate features three distinct token types:
 
 <br>
 
-**Design System Tokens**  
+**Design System Tokens**
    - Global, immutable design constraints.  
    - Centralized values, enforce system-wide consistency.
 <br>
@@ -338,6 +339,7 @@ Property Characteristics
 <br>
 
 **※ Design Token Imports**  
+
 You must import relevant design token files if used in a submap to ensure compile-time validation.
 
 <br>
@@ -346,8 +348,8 @@ You must import relevant design token files if used in a submap to ensure compil
 
 <br>
 
-1. Prefer Design System Tokens.
-2. Use Syntax Tokens for structured properties.
+1. Prefer Design System Tokens whenever possible.
+2. Use Syntax Tokens for structured properties or relationships.
 3. Minimize PassThroughToken usage.
 
 <br>
@@ -358,7 +360,7 @@ You must import relevant design token files if used in a submap to ensure compil
 
 ### ¶ Framework Configuration
 
-<br>
+
 
 Configure Elevate's general settings in `elevate/config/elevate.ts`:
 
@@ -395,6 +397,7 @@ export const designSystem = {
 <br>
 
 **※ Design Token Imports** 
+
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
 
@@ -402,8 +405,6 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 <br>
 
 ### ¶ Extending the Design System: A Comprehensive Guide
-
-<br>
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
