@@ -388,6 +388,7 @@ export const designSystem = {
 };
 ```
 <br>
+
 **※ Design Token Imports** 
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
