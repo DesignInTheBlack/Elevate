@@ -2,18 +2,7 @@
 
 <br>
 
-Elevate CSS is a compile-first utility framework designed to encode design intent directly into your codebase. By combining a token-driven architecture with a declarative, property-based syntax, Elevate ensures that every styling decision aligns with your design system, creating a foundation of consistency and long-term maintainability.
-
-**Design Integrity**<br>
-At its core, Elevate treats design tokens as enforceable contracts rather than suggestions. Every property and modifier maps directly to a pre-approved value, preventing off-scale or arbitrary choices. This strict adherence transforms your styling layer into an extension of your design system.
-
-**Expressive and Semantic Syntax**<br>
-Elevate’s utility string syntax (property:modifier) is purpose-built to reveal design intent. Each utility explicitly communicates its role within the system, ensuring code remains readable and self-documenting. Rather than a collection of classes, your styles tell a coherent story about what you're creating.
-
-**Built to Scale**<br>
-With compile-time validation and type safety, Elevate eliminates errors at their source and ensures styling logic evolves predictably. This approach allows your system to grow while remaining coherent, making it an ideal choice for projects with increasing complexity.
-
-Elevate CSS offers a structured, expressive, and maintainable approach to utility-first styling, bridging the gap between design and development with precision and clarity.
+Elevate CSS is a compile-first utility framework that transforms your styling layer into a seamless extension of your design system. With a token-driven architecture, expressive property:modifier syntax, and compile-time validation, Elevate ensures every styling decision is consistent, intentional, and scalable. By bridging the gap between design and development, Elevate empowers teams to create maintainable, error-free, and future-proof codebases with clarity and precision.
 
 <br>
 
