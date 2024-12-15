@@ -146,6 +146,7 @@ At the heart of the syntax are "utility strings", which are used to describe sty
 <br>
 
 **Direct Properties:**  
+Define a single property with a value. Generally used for layout and positioning.
 
 ```html
 <div class="block"> <!-- display: block -->
