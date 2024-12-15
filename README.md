@@ -1,4 +1,3 @@
-```markup
 
 # Elevate CSS
 
@@ -456,5 +455,4 @@ elevate/
 ├── maps/       # Property-attribute mappings
 └── README.md
 
-```
 ```
