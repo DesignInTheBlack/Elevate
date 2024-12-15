@@ -41,25 +41,20 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 ## ✦ Features
 
 - **🛡️ Type-Safe CSS Generation**
-  - Full TypeScript integration
   - Compile-time token validation
   - Design system constraint enforcement
 
 - **🎨 Design System Integration**
   - Token-based system for colors, spacing, breakpoints, and typography
   - Structured property-attribute relationships
-  - Enterprise-ready validation
 
 - **📱 Responsive Design**
-  - Mobile-first breakpoint system
-  - Intuitive syntax: `property:modifier /md/ property:modifier`
+  - Intuitive and mobile-first syntax: `property:modifier /breakpoint/ property:modifier`
   - Automatic media query generation
 
-- **⚡ State Management**
-  - Hover, focus, and custom states
-  - Syntax: `@state:[property:modifier_property:modifier]`
-  - Automatic CSS state compilation
-
+- **⚡ Context Management**
+  - Supporting pseudo class selectors
+  - Syntax: `@context:[property:modifier_property:modifier]`
 
 <br>
 
@@ -67,28 +62,33 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ### ▸ The Elevate Web Design System (EWDS)
 
-**Core Design Principles:**
-- Type-safe class parsing
-- Declarative syntax for styling
-- Intelligent breakpoint management
-- Minimal runtime overhead
+# Core Design Principles
+
+1. **Expressive and Intentional Code**  
+   Styling choices should clearly reflect design intent and serve as self-documenting expressions of design intention, ensuring intuitive understanding and maintainability.
+
+2. **Enforced Consistency**  
+   The design system is the single source of truth, rigorously upheld through strict typing and compile-time validation to eliminate off-scale values and unauthorized modifications.
+
+3. **Extensible and Reliable**  
+   The system must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build.
+
+### ▸ Architectural Approach
 
 **Key Technical Innovations:**
 - **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
 - **Mobile-First Design**: Intelligent breakpoint processing
 - **Declarative Syntax**: Transforms HTML class attributes into optimized CSS
 
-### ▸ Architectural Approach
-
 **Parsing Strategy:**
 1. **File Scanning**: Discover class attributes across project files
 2. **Lexical Analysis**: Tokenize class strings
-3. **Syntax Parsing**: Convert tokens to Abstract Syntax Trees (AST)
-4. **CSS Generation**: Transform AST into optimized CSS
+3. **Syntax Parsing**: Convert syntax to Concrete Syntax Trees (CST)
+4. **CSS Generation**: Transform CST into optimized CSS
 
 **Type Safety:**
-- Strict token definitions
-- Compile-time validation of design system tokens
+- Strict token definitions of design system as well as property-attribute relationships
+- Compile-time validation of design system tokens and relationships to CSS
 - TypeScript type constraints for design system tokens
 
 ---
@@ -164,7 +164,7 @@ Build complex class definitions by chaining modifiers:
 ```
 
 **Order of Modifiers:**  
-The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`.
+The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions occur.
 
 ### ▸ Responsive Styling
 
@@ -181,7 +181,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 
 **Contextual Flag [@]:**  
 
-Allows complex, conditional styling for states or conditions:
+Allows complex, conditional styling for states, conditions, and other pseudo-classes:
 
 ```html
 <div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
@@ -189,7 +189,7 @@ Allows complex, conditional styling for states or conditions:
 
 **Functional Flag [$]:**  
 
-Ignore certain classes for CSS generation (e.g. for JavaScript hooks):
+Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 ```html
 <div class="$mySelector">
@@ -265,7 +265,9 @@ Elevate's tokenization approach ensures flexibility, type safety, and consistenc
    ```html
    <div class="rotate:((90deg))"></div>
    ```
-   Use parentheses for values requiring them (e.g., URLs).
+   
+   **Note:** 
+   Preserve parentheses for values requiring them (e.g., URLs).
 
 ### ▸ Token Selection Guide
 
