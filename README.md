@@ -6,7 +6,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-## Table of Contents
+## § Table of Contents
 
 <br>
 
@@ -33,7 +33,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-## ✦ Features
+## § Features
 <br>
 
 - **Type-Safe CSS Generation**
@@ -54,15 +54,15 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-## ✦ Design Philosophy & Architecture
+## § Design Philosophy & Architecture
 <br>
 
-### ▸ Core Design Principles
+### ¶ Core Design Principles
 
 <br>
 
 1. **Expressive and Intentional**  
-   Styling choices shouldserve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability.
+   Styling choices should serve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability.
 
 2. **Consistency and Consideration**  
    The design system is the single source of truth, rigorously upheld through strict typing and compile-time validation to eliminate off-scale values and unauthorized modifications. 
@@ -72,7 +72,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-### ▸ Current Capabilities
+### ¶ Current Capabilities
 
 <br>
 
@@ -84,7 +84,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-### ▸ Architectural Approach
+### ¶ Architectural Approach
 
 <br>
 
@@ -106,7 +106,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-### ▸ Performance Characteristics
+### ¶ Performance Characteristics
 
 <br>
 
@@ -118,11 +118,11 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-## ✦ Syntax and Usage
+## § Syntax and Usage
 
 <br>
 
-### ▸ Quick Start
+### ¶ Quick Start
 
 <br>
 
@@ -136,7 +136,7 @@ npm start
 
 <br>
 
-### ▸ Syntax Guide
+### ¶ Syntax Guide
 
 <br>
 
@@ -162,12 +162,12 @@ Build complex class definitions by chaining modifiers:
 ```
 <br>
 
-**Order of Modifiers:**  
+**※ Order of Modifiers:**  
 The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions occur.
 
 <br>
 
-### ▸ Responsive Styling
+### ¶ Responsive Styling
 
 <br>
 
@@ -182,7 +182,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 
 <br>
 
-### ▸ Contextual and Functional Flags
+### ¶ Contextual and Functional Flags
 
 <br>
 
@@ -194,6 +194,7 @@ Allows complex, conditional styling for states, conditions, and other pseudo-cla
 <div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
 ```
 <br>
+
 **Functional Flag [$]:**  
 
 Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
@@ -204,7 +205,7 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 <br>
 
-### ▸ Tokenization and Token Types
+### ¶ Tokenization and Token Types
 
 <br>
 
@@ -301,7 +302,7 @@ Elevate features three distinct token types:
 
 <br>
 
-### ▸ Token Selection Guide
+### ¶ Token Selection Guide
 
 <br>
 
@@ -316,12 +317,12 @@ Property Characteristics
 │       │   └── No → PassThrough Token
 ```
 
-**Note:**  
-You must import relevant design token files if used in a submap.
+**※ Design system tokens must be imported in submaps**  
+You must import relevant design token files if used in a submap to ensure compile-time validation.
 
 <br>
 
-### ▸ Best Practices
+### ¶ Best Practices
 
 <br>
 
@@ -331,11 +332,11 @@ You must import relevant design token files if used in a submap.
 
 <br>
 
-## ✦ Configuration
+## § Configuration
 
 <br>
 
-### ▸ Framework Configuration
+### ¶ Framework Configuration
 
 <br>
 
@@ -377,7 +378,7 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 
 <br>
 
-### ▸ Extending the Design System: A Comprehensive Guide
+### ¶ Extending the Design System: A Comprehensive Guide
 
 <br>
 
@@ -512,7 +513,7 @@ export const extendedColors = {
 
 <br>
 
-### ▸ Project Structure
+### ¶ Project Structure
 
 <br>
 
