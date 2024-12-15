@@ -82,6 +82,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 3. **Extensible and Reliable**  
    The system must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build.
 
+<br>
+
 ### ▸ Current Capabilities
 
 <br>
@@ -91,6 +93,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 - Breakpoint-aware class generation
 - Intelligent buffer/container management
 - Comprehensive design token system
+
+<br>
 
 ### ▸ Architectural Approach
 
@@ -111,6 +115,8 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 - Strict token definitions of design system as well as property-attribute relationships
 - Compile-time validation of design system tokens and relationships to CSS
 - TypeScript type constraints for design system tokens
+
+<br>
 
 ### ▸ Performance Characteristics
 
@@ -166,7 +172,7 @@ Build complex class definitions by chaining modifiers:
 <div class="color:purple">          <!-- Element color set to purple -->
 <div class="row:x-center:y-start">  <!-- Row layout with specific alignment -->
 ```
-
+<br>
 **Order of Modifiers:**  
 The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions occur.
 
@@ -206,14 +212,6 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 ```html
 <div class="$mySelector">
 ```
-
-<br>
-
-### ▸ Tokenization Strategy
-
-<br>
-
-Elevate's tokenization approach ensures flexibility, type safety, and consistency.
 
 <br>
 
