@@ -38,9 +38,6 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
    - [Project Structure](#-project-structure)
 
 
-
-<br>
-
 ## ✦ Features
 
 - **🛡️ Type-Safe CSS Generation**
@@ -432,11 +429,10 @@ export const propertyAttributeMap = {
 **Type Safety Checks:**
 - Verify token existence before use
 - Use TypeScript's type system to prevent runtime errors
-- Leverage IDE autocompletion for token selection
 
 **Performance Considerations:**
 - Keep token maps concise
-- Use submaps for complex, related tokens
+- Use submaps for complex, related tokens or syntactic relationships.
 - Minimize the number of token types
 
 ---
