@@ -155,7 +155,9 @@ Define a single property with a value. Generally used for layout and positioning
 <br>
 
 **Compound Properties:** 
+
 <br>
+
 Build complex class definitions by chaining modifiers:
 
 ```html
