@@ -283,8 +283,6 @@ You must import relevant design token files if used in a submap.
 
 ### ▸ Extending the Design System: A Comprehensive Guide
 
-#### ▸ Token Extension Workflow
-
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
 ---
