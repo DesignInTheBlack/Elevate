@@ -141,11 +141,11 @@ npm start
 <br>
 
 **Basic Usage:**  
+<br>
 At the heart of the syntax are "utility strings", which are used to describe styling. 
 
+**Direct Properties:**  
 <br>
-
-**Direct Properties:**  <br>
 Define a single property with a value. Generally used for layout and positioning.
 
 ```html
@@ -154,7 +154,8 @@ Define a single property with a value. Generally used for layout and positioning
 
 <br>
 
-**Compound Properties:** <br>
+**Compound Properties:** 
+<br>
 Build complex class definitions by chaining modifiers:
 
 ```html
