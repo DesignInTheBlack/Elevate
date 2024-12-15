@@ -61,9 +61,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 ## ✦ Design Philosophy & Architecture
 
-### ▸ The Elevate Web Design System (EWDS)
-
-# Core Design Principles
+### ▸ Core Design Principles
 
 1. **Expressive and Intentional Code**  
    Styling choices should clearly reflect design intent and serve as self-documenting expressions of design intention, ensuring intuitive understanding and maintainability.
