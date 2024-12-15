@@ -72,6 +72,14 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 3. **Extensible and Reliable**  
    The system must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build.
 
+### ▸ Current Capabilities
+
+- Responsive design syntax
+- Context-based styling
+- Breakpoint-aware class generation
+- Intelligent buffer/container management
+- Comprehensive design token system
+
 ### ▸ Architectural Approach
 
 **Key Technical Innovations:**
@@ -90,30 +98,6 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 - Compile-time validation of design system tokens and relationships to CSS
 - TypeScript type constraints for design system tokens
 
----
-
-### ▸ Current Capabilities
-
-- Responsive design syntax
-- Context-based styling
-- Breakpoint-aware class generation
-- Intelligent buffer/container management
-- Comprehensive design token system
-
----
-
-### ▸ Design Token Management
-
-Elevate manages design system tokens across multiple domains:
-- Colors
-- Spacing (Detail, Content, Space scales)
-- Typography
-- Breakpoints
-
-Tokens are centralized within the `design/` directory, ensuring system-wide consistency and easy extensibility.
-
----
-
 ### ▸ Performance Characteristics
 
 **Compilation Approach:**
@@ -122,7 +106,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
 
----
+
 
 
 <br>
