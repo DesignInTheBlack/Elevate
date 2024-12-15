@@ -10,27 +10,29 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-1. [Introduction](#introduction)
+1. [Introduction](#-introduction)
 2. [Features](#-features)
-3. [Design Philosophy & Architecture](#-design-philosophy--architecture)
-   - [The Elevate Web Design System (EWDS)](#-the-elevate-web-design-system-ewds)
-   - [Architectural Approach](#-architectural-approach)
+3. [Design Philosophy and Architecture](#-design-philosophy-and-architecture)
+   - [Core Design Principles](#-core-design-principles)
    - [Current Capabilities](#-current-capabilities)
-   - [Design Token Management](#-design-token-management)
+   - [Architectural Approach](#-architectural-approach)
    - [Performance Characteristics](#-performance-characteristics)
 4. [Syntax and Usage](#-syntax-and-usage)
    - [Quick Start](#-quick-start)
    - [Syntax Guide](#-syntax-guide)
    - [Responsive Styling](#-responsive-styling)
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)
-   - [Token Types](#-tokenization-and-token-types)
+   - [Tokenization and Token Types](#-tokenization-and-token-types)
    - [Token Selection Guide](#-token-selection-guide)
    - [Best Practices](#-best-practices)
 5. [Configuration](#-configuration)
    - [Framework Configuration](#-framework-configuration)
-   - [Extending the Design System](#-extending-the-design-system)
+   - [Extending the Design System](#-extending-the-design-system-a-comprehensive-guide)
    - [Project Structure](#-project-structure)
-6. [Why Elevate?](#-why-elevate)
+6. [Why Elevate](#-why-elevate)
+   - [Market Differentiation and Competitive Positioning](#-market-differentiation-and-competitive-positioning)
+   - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)
+   - [Why Choose Elevate CSS](#-why-choose-elevate-css)
 
 <br>
 
