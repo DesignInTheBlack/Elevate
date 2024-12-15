@@ -2,9 +2,8 @@
 
 A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
 
----
 
-<h2 style="border: none;">⬜ Table of Contents</h2>
+## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Features](#features)
@@ -31,13 +30,12 @@ A strongly-typed utility CSS framework implementing the Elevate Web Design Syste
 7. [Technical Requirements](#technical-requirements)
 8. [Licensing](#licensing)
 
----
 
-<h2 style="border: none;">⬜ Introduction</h2>
+## ⬜ Introduction
 
 Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
 
-<h2 style="border: none;">⬜ Features</h2>
+## ⬜Features
 
 - **🛡️ Type-Safe CSS Generation**
   - Full TypeScript integration
@@ -61,7 +59,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 
 ---
 
-<h2 style="border: none;">⬜ Design Philosophy & Architecture</h2>
+## ⬜ Design Philosophy & Architecture
 
 ### The Elevate Web Design System (EWDS)
 
@@ -117,7 +115,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 
 ---
 
-<h2 style="border: none;">⬜ Syntax and Usage</h2>
+## ⬜ Syntax and Usage
 
 ### Quick Start
 
@@ -413,7 +411,7 @@ export const extendedColors = {
 
 ---
 
-<h2 style="border: none;">⬜ Configuration</h2>
+## ⬜ Configuration
 
 ### Framework Configuration
 
@@ -453,7 +451,7 @@ The `maps/` folder contains property-attribute mappings, including `propertyAttr
 
 ---
 
-<h2 style="border: none;">⬜ Project Structure</h2>
+## ⬜ Project Structure
 
 ```
 elevate/
