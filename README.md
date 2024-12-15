@@ -1,5 +1,7 @@
 # Introducing Elevate CSS
 
+<br>
+
 Elevate CSS is a compile-first utility framework designed to encode design intent directly into your codebase. By combining a token-driven architecture with a declarative, property-based syntax, Elevate ensures that every styling decision aligns with your design system, creating a foundation of consistency and long-term maintainability.
 
 **Design Integrity**<br>
@@ -13,7 +15,11 @@ With compile-time validation and type safety, Elevate eliminates errors at their
 
 Elevate CSS offers a structured, expressive, and maintainable approach to utility-first styling, bridging the gap between design and development with precision and clarity.
 
+<br>
+
 ## Table of Contents
+
+<br>
 
 1. [Introduction](#introduction)
 2. [Features](#-features)
@@ -37,6 +43,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
    - [Extending the Design System](#-extending-the-design-system)
    - [Project Structure](#-project-structure)
 
+<br>
 
 ## ✦ Features
 <br>
@@ -118,6 +125,7 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 <br>
 
 ## ✦ Syntax and Usage
+
 <br>
 
 ### ▸ Quick Start
@@ -131,6 +139,8 @@ npm install
 # Compile to CSS
 npm start
 ```
+
+<br>
 
 ### ▸ Syntax Guide
 
@@ -160,6 +170,8 @@ Build complex class definitions by chaining modifiers:
 **Order of Modifiers:**  
 The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions occur.
 
+<br>
+
 ### ▸ Responsive Styling
 
 <br>
@@ -172,6 +184,8 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 
 - Define universal classes first.
 - Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
+
+<br>
 
 ### ▸ Contextual and Functional Flags
 
@@ -193,12 +207,15 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 <div class="$mySelector">
 ```
 
+<br>
 
 ### ▸ Tokenization Strategy
 
 <br>
 
 Elevate's tokenization approach ensures flexibility, type safety, and consistency.
+
+<br>
 
 ### ▸ Token Types
 
@@ -271,6 +288,8 @@ Elevate's tokenization approach ensures flexibility, type safety, and consistenc
    **Note:** 
    Preserve parentheses for values requiring them (e.g., URLs).
 
+<br>
+
 ### ▸ Token Selection Guide
 
 <br>
@@ -288,6 +307,8 @@ Property Characteristics
 
 **Note:**  
 You must import relevant design token files if used in a submap.
+
+<br>
 
 ### ▸ Best Practices
 
@@ -342,6 +363,8 @@ export const designSystem = {
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
 ---
+
+<br>
 
 ### ▸ Extending the Design System: A Comprehensive Guide
 
