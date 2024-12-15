@@ -1,4 +1,3 @@
-
 # Elevate CSS
 
 A strongly-typed utility CSS framework implementing the Elevate Web Design System (EWDS) methodology. Elevate CSS provides compile-time validation, state management, and responsive design capabilities through a type-safe TypeScript implementation.
@@ -280,13 +279,17 @@ You must import relevant design token files if used in a submap.
 
 ### Extending the Design System: A Comprehensive Guide
 
+---
+
 #### Token Extension Workflow
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
-##### 1. Token File Creation
+---
 
-**Location:** `elevate/design/`
+##### 1. Token File Creation 🎨
+
+**Location:** `elevate/design/`  
 **File Naming Convention:** Use a descriptive, singular noun (e.g., `brandColors.ts`)
 
 **Example: Brand Color Tokens**
@@ -308,7 +311,9 @@ export type BrandColorToken = keyof typeof brandColors;
 - Provide clear, descriptive comments
 - Limit tokens to a single, cohesive concept
 
-##### 2. Design System Configuration
+---
+
+##### 2. Design System Configuration 🔧
 
 **File:** `elevate/config/designConfig.ts`
 
@@ -324,7 +329,9 @@ export const designSystem = {
 };
 ```
 
-##### 3. Property Attribute Mapping
+---
+
+##### 3. Property Attribute Mapping 🗺️
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
 
@@ -361,7 +368,9 @@ export const propertyAttributeMap = {
 };
 ```
 
-##### 4. Token Usage Guidelines
+---
+
+##### 4. Token Usage Guidelines 📋
 
 **Naming Conventions:**
 - Use clear, semantic names
@@ -378,7 +387,9 @@ export const propertyAttributeMap = {
 - Use submaps for complex, related tokens
 - Minimize the number of token types
 
-##### 5. Advanced Token Management
+---
+
+##### 5. Advanced Token Management 🚀
 
 **Token Inheritance:**
 ```typescript
@@ -389,7 +400,11 @@ export const extendedColors = {
 };
 ```
 
-**Troubleshooting:**
+---
+
+##### Troubleshooting 🔍
+
+**Common Issues:**
 - If a token doesn't map correctly, check:
   1. Token file export
   2. `designConfig.ts` import
@@ -397,6 +412,7 @@ export const extendedColors = {
   4. `propertyAttributeMap.ts` mapping
   5. Type consistency
 
+---
 ---
 
 ## Configuration
