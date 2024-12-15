@@ -39,13 +39,13 @@ Elevate CSS offers a structured, expressive, and maintainable approach to utilit
 
 
 ## ✦ Features
-
+<br>
 - **Type-Safe CSS Generation**
   - Compile-time token validation
   - Design system constraint enforcement
 
 - **Design System Integration**
-  - Token-based system for colors, spacing, breakpoints, and typography
+  - Token-based system for colors, spacing, typography, and breakpoints
   - Structured property-attribute relationships
 
 - **Responsive Design**
