@@ -1,5 +1,4 @@
 # Introducing Elevate CSS
-<br>
 Elevate CSS is a compile-time CSS generation framework that emphasizes type safety, declarative syntax, and minimal runtime overhead. By using a robust design token system and a mobile-first approach, Elevate ensures that every style rule is validated against design system constraints at compile-time, resulting in highly maintainable and consistent codebases.
 
 ## Table of Contents
@@ -59,7 +58,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 
 ## ⬜ Design Philosophy & Architecture
 
-### The Elevate Web Design System (EWDS)
+### ▸ The Elevate Web Design System (EWDS)
 
 **Core Design Principles:**
 - Type-safe class parsing
@@ -72,7 +71,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 - **Mobile-First Design**: Intelligent breakpoint processing
 - **Declarative Syntax**: Transforms HTML class attributes into optimized CSS
 
-### Architectural Approach
+### ▸ Architectural Approach
 
 **Parsing Strategy:**
 1. **File Scanning**: Discover class attributes across project files
@@ -87,7 +86,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 
 ---
 
-### Current Capabilities
+### ▸ Current Capabilities
 
 - Responsive design syntax
 - Context-based styling
@@ -97,7 +96,7 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 
 ---
 
-### Design Token Management
+### ▸ Design Token Management
 
 Elevate manages design system tokens across multiple domains:
 - Colors
@@ -109,7 +108,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 
 ---
 
-### Performance Characteristics
+### ▸ Performance Characteristics
 
 **Compilation Approach:**
 - Generates static CSS at compile-time
@@ -124,7 +123,7 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 
 ## ⬜ Syntax and Usage
 
-### Quick Start
+### ▸ Quick Start
 
 ```bash
 # Install dependencies
@@ -134,7 +133,7 @@ npm install
 npm start
 ```
 
-### Syntax Guide
+### ▸ Syntax Guide
 
 **Basic Usage:**  
 Use a "utility string" to describe styling. A simple direct property example:
@@ -160,7 +159,7 @@ Build complex class definitions by chaining modifiers:
 **Order of Modifiers:**  
 The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`.
 
-### Responsive Styling
+### ▸ Responsive Styling
 
 Elevate enforces a mobile-first, organized syntax for responsive design:
 
@@ -171,7 +170,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 - Define universal classes first.
 - Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
 
-### Contextual and Functional Flags
+### ▸ Contextual and Functional Flags
 
 **Contextual Flag [@]:**  
 
@@ -190,11 +189,11 @@ Ignore certain classes for CSS generation (e.g. for JavaScript hooks):
 ```
 
 
-### Tokenization Strategy
+### ▸ Tokenization Strategy
 
 Elevate's tokenization approach ensures flexibility, type safety, and consistency.
 
-### Token Types
+### ▸ Token Types
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
@@ -261,7 +260,7 @@ Elevate's tokenization approach ensures flexibility, type safety, and consistenc
    ```
    Use parentheses for values requiring them (e.g., URLs).
 
-### Token Selection Guide
+### ▸ Token Selection Guide
 
 **Decision Matrix:**
 ```
@@ -277,14 +276,14 @@ Property Characteristics
 **Note:**  
 You must import relevant design token files if used in a submap.
 
-### Best Practices
+### ▸ Best Practices
 1. Prefer Design System Tokens.
 2. Use Syntax Tokens for structured properties.
 3. Minimize PassThroughToken usage.
 
-### Extending the Design System: A Comprehensive Guide
+### ▸ Extending the Design System: A Comprehensive Guide
 
-#### Token Extension Workflow
+#### ▸ Token Extension Workflow
 
 The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
 
@@ -422,7 +421,7 @@ export const extendedColors = {
 
 ## ⬜ Configuration
 
-### Framework Configuration
+### ▸ Framework Configuration
 
 Configure Elevate in `elevate/config/`:
 
