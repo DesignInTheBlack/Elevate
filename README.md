@@ -61,13 +61,13 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-1. **Expressive and Intentional**  
+- **Expressive and Intentional**  
    Styling choices should serve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability.
 
-2. **Consistency and Consideration**  
+- **Consistency and Consideration**  
    The design system is the single source of truth, rigorously upheld through strict typing and compile-time validation to eliminate off-scale values and unauthorized modifications. 
 
-3. **Extensible and Reliable**  
+- **Extensible and Reliable**  
    The system must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build.
 
 <br>
