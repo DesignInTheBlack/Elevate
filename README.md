@@ -31,6 +31,8 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 7. [Technical Requirements](#technical-requirements)
 8. [Licensing](#licensing)
 
+
+
 ## ⬜Features
 
 - **🛡️ Type-Safe CSS Generation**
@@ -52,6 +54,8 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
   - Hover, focus, and custom states
   - Syntax: `@state:[property:modifier_property:modifier]`
   - Automatic CSS state compilation
+
+
 
 ## ⬜ Design Philosophy & Architecture
 
@@ -81,6 +85,8 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 - Compile-time validation of design system tokens
 - TypeScript type constraints for design system tokens
 
+---
+
 ### Current Capabilities
 
 - Responsive design syntax
@@ -88,6 +94,8 @@ Elevate CSS is a compile-time CSS generation framework that emphasizes type safe
 - Breakpoint-aware class generation
 - Intelligent buffer/container management
 - Comprehensive design token system
+
+---
 
 ### Design Token Management
 
@@ -99,6 +107,8 @@ Elevate manages design system tokens across multiple domains:
 
 Tokens are centralized within the `design/` directory, ensuring system-wide consistency and easy extensibility.
 
+---
+
 ### Performance Characteristics
 
 **Compilation Approach:**
@@ -106,6 +116,10 @@ Tokens are centralized within the `design/` directory, ensuring system-wide cons
 - Transforms HTML class attributes into optimized CSS
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
+
+---
+
+
 
 ## ⬜ Syntax and Usage
 
@@ -402,6 +416,8 @@ export const extendedColors = {
 
 ---
 
+
+
 ## ⬜ Configuration
 
 ### Framework Configuration
@@ -441,6 +457,8 @@ export const designSystem = {
 The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
 
 ---
+
+
 
 ## ⬜ Project Structure
 

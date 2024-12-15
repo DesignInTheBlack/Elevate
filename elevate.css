@@ -134,26 +134,6 @@ textarea:not([rows]) {
     }
 }
 
-.background\:\(url\(banana\)\) {
-
-background-image: url(banana);
-}
-
-.\@focus\:\[color\:white\]:focus {
-
-background-color: #F0EFF4;
-}
-
-.\@hover\:\[text\:dark\:bold_p\:d1\:d2\]:hover {
-
-color: #2C2638;
-font-weight: 700;
-padding-left: 0.25rem;
-padding-top: 0.5rem;
-padding-right: 0.25rem;
-padding-bottom: 0.5rem;
-}
-
 .text\:purple {
 
 color: #6665DD;
@@ -165,3 +145,28 @@ flex-direction:row;
 justify-content: center;
 }
 
+@media only screen and (min-width:64rem) {
+.\@hover\:\[text\:dark\:bold_p\:d1\:d2\]:hover {
+
+color: #2C2638;
+font-weight: 700;
+padding-left: 0.25rem;
+padding-top: 0.5rem;
+padding-right: 0.25rem;
+padding-bottom: 0.5rem;
+}
+
+.\@focus\:\[color\:white\]:focus {
+
+background-color: #F0EFF4;
+}
+
+}
+
+@media only screen and (min-width:80rem) {
+.background\:\(url\(banana\)\) {
+
+background-image: url(banana);
+}
+
+}
