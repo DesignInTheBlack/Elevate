@@ -145,7 +145,7 @@ At the heart of the syntax are "utility strings", which are used to describe sty
 
 <br>
 
-**Direct Properties:**  
+**Direct Properties:**  <br>
 Define a single property with a value. Generally used for layout and positioning.
 
 ```html
@@ -154,7 +154,7 @@ Define a single property with a value. Generally used for layout and positioning
 
 <br>
 
-**Compound Properties:**  
+**Compound Properties:** <br>
 Build complex class definitions by chaining modifiers:
 
 ```html
@@ -163,6 +163,7 @@ Build complex class definitions by chaining modifiers:
 <br>
 
 **Practical Examples:**
+<br>
 ```html
 <div class="text:bold:purple">      <!-- Bold text with purple color -->
 <div class="color:purple">          <!-- Element color set to purple -->
