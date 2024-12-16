@@ -423,8 +423,7 @@ The design system supports seamless token extension through a structured, type-s
 
 **※ Included Example**  
 
-By default, Elevate includes a basic example of extending the design system. Please see 'example.ts' and 'designConfig.ts' for details.
-
+By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `designConfig.ts` for more details.
 <br>
 
 #### 1. Token File Creation
