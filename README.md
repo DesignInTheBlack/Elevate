@@ -37,6 +37,9 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
    - [Market Differentiation and Competitive Positioning](#-market-differentiation-and-competitive-positioning)
    - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)
    - [Why Choose Elevate CSS](#-why-choose-elevate-css)
+7. [Product Roadmap](#-product-roadmap)
+8. [Licensing and Attribution](#-licensing)
+       
 
 <br>
 
@@ -184,7 +187,7 @@ Build complex class definitions by chaining modifiers:
 
 **※ Order of Modifiers:**  
 
-The order generally doesn't matter unless there's a token type collision. In that case, the first matching token is used. For multiple modifiers of the same type, consider defining a submap in `/maps`. By default, Elevate is structured so that no type collisions can occur.
+The order generally doesn't matter unless there's a token type collision. In that case, the first rule matching the token type is used. For multiple modifiers of the same type, Elevate suggests defining a submap in `/maps`. By default, Elevate is structured so that no type collisions can occur.
 
 <br>
 
@@ -684,6 +687,46 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 - **For Developers Who Value Clarity:**  
    Elevate’s semantic syntax reveals intent, making codebases easier to read, teach, and maintain.
+
+<br>
+
+## § Product Roadmap
+
+Elevate CSS is actively evolving to adapt to the evolving needs of the design and development community. 
+
+### ¶ Planned Features
+
+<br>
+
+- Child selector support
+- Expanded grid support with expressive syntax
+- Container query support
+- Logical property support for internationalization and flexible layouts
+- Accessibility-focused utilities such as `hidden:visually` and ARIA state helpers
+- Advanced selector composition for sibling selectors, combinators, and pseudo-classes
+- More to come, so check back regularly!
+
+<br>
+
+## § Licensing
+
+Elevate CSS is released as open-source software to empower developers to create scalable and maintainable design systems. The framework is provided with the intent to foster collaboration and community contributions, while retaining full ownership and rights by the original author.
+
+### ¶ Key Points
+
+- **Permitted Use**:  
+   The code can be used, modified, and distributed for personal or commercial projects under the terms of the license.
+
+- **Attribution**:  
+   Attribution to the original author is required in all derivative works.
+
+- **Restrictions**:  
+   Redistribution or modification of the code must retain this license and its terms.
+
+- **Ownership**:  
+   The name "Elevate CSS," its branding, and all related intellectual property remain solely owned by the original author.
+
+Elevate CSS’s licensing structure ensures that while the framework remains open-source, the rights and ownership stay intact with its creator. This allows for potential future commercialization or other endeavors as determined by the author.
 
 <br>
 
