@@ -4,6 +4,8 @@
 
 Elevate CSS is a compile-first utility framework that transforms your styling layer into a seamless extension of your design system. With a token-driven architecture, expressive utility string (property:modifier) syntax, and compile-time validation, Elevate ensures every styling decision is consistent, intentional, and scalable. By bridging the gap between design and development, Elevate empowers teams to create maintainable, error-free, and future-proof codebases with clarity and precision.
 
+<br>
+
 **※ Please Excuse Our Progress:**  
 
 In it's current iteration, Elevate CSS is a work in progress and subject to change. I welcome your feedback and suggestions for future enhancements as I take this project from a technical proof-of-concept to a full-fledged utility framework. 
@@ -424,6 +426,7 @@ The design system supports seamless token extension through a structured, type-s
 **※ Included Example**  
 
 By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `designConfig.ts` for more details.
+
 <br>
 
 #### 1. Token File Creation
