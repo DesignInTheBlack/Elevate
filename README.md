@@ -40,6 +40,8 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
    - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)
    - [Why Choose Elevate CSS](#-why-choose-elevate-css)
 7. [Product Roadmap](#-product-roadmap)
+   - [Planned Features](#-planned-features)
+   - [Selector Support](#-selector-support)
 8. [Licensing and Attribution](#-licensing)
        
 
@@ -723,6 +725,37 @@ Elevate CSS is actively evolving to adapt to the evolving needs of the design an
 - Accessibility-focused utilities such as `hidden:visually` and ARIA state helpers
 - Advanced selector composition for sibling selectors, combinators, and pseudo-classes
 - More to come, so check back regularly!
+
+<br>
+
+### ¶ Selector Support
+
+| **Selector Type**          | **Examples**                                | **Description**                                                             | **Framework Support** |
+|-----------------------------|---------------------------------------------|-----------------------------------------------------------------------------|------------------------|
+| **State Selectors**         | `:hover`, `:focus`, `:active`, `:visited`  | Styles elements based on user interactions (hover, focus, etc.).            | ✅ Supported           |
+|                             | `:disabled`                                | Applies styles to disabled elements.                                        | ✅ Supported           |
+| **Structural Pseudo-classes**| `:first-child`, `:last-child`, `:only-child`| Targets elements based on their structural position within the DOM.         | ✅ Supported           |
+|                             | `:empty`                                   | Matches elements with no children or content.                               | ✅ Supported           |
+|                             | `:nth-child(n)`, `:nth-of-type(n)`         | Targets elements based on their position among siblings.                    | ❌ Unsupported         |
+|                             | `:has()`                                   | Matches parents that contain specific children.                             | ❌ Unsupported         |
+| **Form and Input States**   | `:checked`, `:required`, `:optional`       | Targets form inputs based on validation or attribute states.                | ✅ Supported           |
+|                             | `:valid`, `:invalid`                       | Applies styles to valid or invalid form fields.                             | ✅ Supported           |
+|                             | `:in-range`, `:out-of-range`               | Matches inputs within or outside a specified range.                         | ✅ Supported           |
+| **Pseudo-elements**         | `::before`, `::after`                      | Inserts content before or after an element's actual content.                | ✅ Supported           |
+|                             | `::first-letter`, `::first-line`           | Styles the first letter or line of an element's content.                    | ✅ Supported           |
+|                             | `::placeholder`, `::selection`             | Applies styles to placeholder text or selected text.                        | ✅ Supported           |
+| **Attribute Selectors**     | `[attr=value]`, `[attr^=value]`            | Matches elements based on attribute values (exact, prefix, suffix, etc.).   | ❌ Unsupported         |
+|                             | `[attr*=value]`, `[attr~=value]`           | Matches elements where the attribute contains or is in a space-separated list.| ❌ Unsupported         |
+| **Combinators**             | `>`, `+`, `~`                              | Matches elements based on parent-child or sibling relationships.            | ❌ Unsupported         |
+| **Group Selectors**         | `:is()`, `:where()`                        | Matches elements using a list of selectors.                                 | ❌ Unsupported         |
+| **Target and Logical States**| `:target`                                  | Styles elements based on URL fragment targeting (e.g., `#section`).         | ❌ Unsupported         |
+|                             | `:lang()`, `:dir()`                        | Matches elements based on language or text direction.                       | ❌ Unsupported         |
+| **Universal Selectors**     | `*`                                        | Matches all elements.                                                       | ❌ Unsupported         |
+| **Type Selectors**          | `div`, `p`, `span`                         | Matches all elements of a specific type.                                    | ❌ Unsupported         |
+| **ID Selectors**            | `#id`                                      | Matches elements with a specific `id`.                                      | ❌ Unsupported         |
+| **Class Selectors**         | `.class`                                   | Matches elements with a specific `class`.                                   | ❌ Unsupported         |
+| **Descendant Selectors**    | `ancestor descendant`                      | Matches elements nested within an ancestor.                                 | ❌ Unsupported         |
+| **Negation Selectors**      | `:not(selector)`                           | Matches elements that do not match a given selector.                        | ❌ Unsupported         |
 
 <br>
 

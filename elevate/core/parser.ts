@@ -10,7 +10,7 @@ import { toAst } from "./utility.js";
 // ║                 2. TOKEN DEFINITIONS                               ║
 // ║ Define core tokens using Chevrotain's `createToken`.               ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z][a-zA-Z0-9_-]+:/ });
+const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z0-9-]+:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ name: "DirectProperty", pattern: /[a-zA-Z][a-zA-Z0-9_-]*/ });
 const PassProperty = createToken({ 

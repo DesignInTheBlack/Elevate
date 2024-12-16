@@ -174,8 +174,12 @@ export const propertyAttributeMap = {
         "border-style": "BorderStyleToken",
     },
 
-    background: {
+    'bg-img': {
         "background-image":"PassThroughToken"
+    },
+
+    'bg-color': {
+        'background-color': "ColorToken"
     },
     
     grid: {

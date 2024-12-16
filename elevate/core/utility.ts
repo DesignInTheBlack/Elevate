@@ -15,7 +15,6 @@ import { grid } from '../maps/grid.js';
 import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
 import { spacing, SpacingToken } from "../design/spacing.js";
 import { buffer } from '../maps/buffer.js';
-
 import { designSystem } from '../config/designConfig.js';
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  SETUP AND CONFIGURATION                           ║
@@ -107,10 +106,13 @@ function handleDirectProperties(cst: any, context?: { fileName: string }) {
 
 // Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
 function handleStatefulStrings(cst: any, context?: { fileName: string }) {
-    const stateMatch = cst.className.match(/@(\w+):/); // Captures the term after `@` and before `:`
-    const subtermsMatch = cst.className.match(/\[([^\]]+)\]/); // Captures terms inside `[]`
-    // Extract the state correctly
+    // More robust state extraction
+    const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+):/);
+    const subtermsMatch = cst.className.match(/\[([^\]]+)\]/);
+    
+    // Extract the state, ensuring it's the full state including hyphens
     let state = stateMatch ? stateMatch[1] : null;
+    
     // Extract the subterms
     let subterms = subtermsMatch ? subtermsMatch[1].split(/_/).map(term => term.trim()) : []
     let newterms = subterms.map((item) => {
@@ -118,13 +120,15 @@ function handleStatefulStrings(cst: any, context?: { fileName: string }) {
         return item.modifiers
     });
     let modifiers = newterms.flat();
+    
     let fauxAST = {
         name: 'propertyDefinition',
         children: null,
-        state,
+        state, // Use the full state, including hyphens
         className: cst.className,
         modifiers
     }
+    
     return fauxAST
 }
 

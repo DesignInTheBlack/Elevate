@@ -164,7 +164,7 @@ background-color: #F0EFF4;
 }
 
 @media only screen and (min-width:80rem) {
-.background\:\(url\(banana\)\) {
+.bg-img\:\(url\(banana\)\) {
 
 background-image: url(banana);
 }
