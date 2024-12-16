@@ -535,6 +535,16 @@ export const extendedColors = {
 
 <br>
 
+#### Helpful Tips
+
+**Extension Considerations:**
+- As you begin extending Elevate to fit your use case, consider the following:
+  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories.
+  2. If you're feeling confused about submapping, examine the existing submappings that allow Elevate to work.
+  3. You can effectively create your own use case specific syntax for your project via submapping, but do so with care and consideration.
+
+<br>
+
 #### Troubleshooting 
 
 **Common Issues:**
