@@ -421,7 +421,7 @@ The design system supports seamless token extension through a structured, type-s
 
 <br>
 
-##### 1. Token File Creation
+#### 1. Token File Creation
 
 **Location:** `elevate/design/`  
 **File Naming Convention:** Use a descriptive, singular noun (e.g., `brandColors.ts`)
@@ -447,7 +447,7 @@ export type BrandColorToken = keyof typeof brandColors;
 
 <br>
 
-##### 2. Design System Configuration
+#### 2. Design System Configuration
 
 **File:** `elevate/config/designConfig.ts`
 
@@ -465,7 +465,7 @@ export const designSystem = {
 
 <br>
 
-##### 3. Property Attribute Mapping
+#### 3. Property Attribute Mapping
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
 
@@ -504,7 +504,7 @@ export const propertyAttributeMap = {
 
 <br>
 
-##### 4. Token Usage Guidelines 
+#### 4. Token Usage Guidelines 
 
 **Naming Conventions:**
 - Use clear, semantic names
@@ -522,7 +522,7 @@ export const propertyAttributeMap = {
 
 <br>
 
-##### 5. Advanced Token Management 
+#### 5. Advanced Token Management 
 
 **Token Inheritance:**
 ```typescript
@@ -535,7 +535,7 @@ export const extendedColors = {
 
 <br>
 
-##### Troubleshooting 
+#### Troubleshooting 
 
 **Common Issues:**
 - If a token doesn’t map correctly, verify the following:
