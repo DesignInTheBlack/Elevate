@@ -86,19 +86,9 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 <br>
 
-### ¶ Current Capabilities
-
-- Responsive design syntax
-- Context-based styling
-- Breakpoint-aware class generation
-- Intelligent container management
-- Comprehensive design token system
-
-<br>
-
 ### ¶ Architectural Approach
 
-
+<br>
 
 **Key Technical Innovations:**
 - **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
@@ -120,12 +110,21 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ### ¶ Performance Characteristics
 
-
-
 **Compilation Approach:**
 - Compile time optimized CSS generation
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
+
+<br>
+
+
+### ¶ Current Capabilities
+
+- Responsive design syntax
+- Context-based styling
+- Breakpoint-aware class generation
+- Intelligent container management
+- Comprehensive design token system
 
 <br>
 
@@ -200,7 +199,7 @@ You can write text:red:bold or text:bold:red and the order doesn't matter. We'll
 Elevate enforces a mobile-first, organized syntax for responsive design:
 
 ```html
-<div class="text:purple /md/ text:right /lg/ @hover:[text:green:right]"> 
+<div class="text:purple p:d1:d2 /md/ text:right /lg/ @hover:[text:green:right]"> 
 ```
 
 1. Define universal classes on the far left.
