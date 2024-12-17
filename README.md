@@ -155,7 +155,7 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of Elevate's syntax are "utility strings", which are used to describe styling and which also serve as the basis for CSS generation. They also double as the class attribute in HTML. 
+At the heart of Elevate's syntax are "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the class attribute in HTML. 
 <br>
 
 **Direct Properties:**  
