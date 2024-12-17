@@ -113,7 +113,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is recommended that you familiarize yourself with the framework's documentation and examples in full as it provides a deeper understanding of Elevate's capabilities, functionality, and best practices as well as how to best leverage the framework for your specific needs.
 
 <details>
-<summary>Click Here To Expand</summary>
+<summary>Click Here To Read More</summary>
 
 <br>
 
@@ -357,8 +357,10 @@ You must import relevant design token files if used in a rule file to ensure com
 
 ## § Configuration
 
+Elevate CSS is designed with a powerful, flexible configuration system that allows deep customization while maintaining strict design system integrity. With great power, however, comes great responsibility. Take time to thoroughly review and align the configuration options with your project's specific design requirements and architectural goals. For a comprehensive understanding, dive into the detailed documentation below.
+
 <details>
-<summary>Click Here To Expand</summary>
+<summary>Click Here To Read More</summary>
 
 <br>
 
@@ -440,7 +442,7 @@ export const rulesMaster = {
 Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <details>
-<summary>Click Here To Expand</summary>
+<summary>Click Here To Read More</summary>
 <br>
 
 **※ Included Example**  
@@ -648,7 +650,7 @@ elevate/
 Elevate CSS redefines utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
 
 <details>
-<summary>Click Here To Expand</summary>
+<summary>Click Here To Read More</summary>
 
 <br>
 
@@ -772,7 +774,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 Elevate CSS is actively evolving to adapt to the evolving needs of the design and development community. With that said, here are some of the key features being worked on and planned for the near future:
 
 <details>
-<summary>Click Here To Expand</summary>
+<summary>Click Here To Read More</summary>
 
 ### ¶ Planned Features
 
