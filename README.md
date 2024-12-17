@@ -112,9 +112,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is HIGHLY RECOMMENDED that you familiarize yourself with the configuration section as well as it provides a deeper understanding of Elevate's capabilities, functionality, and best practices as well as how to best leverage the framework for your specific needs.
 
-<details>
-<summary>Click Here To Read More</summary>
-
 <br>
 
 ### ¶ Installation and Usage
@@ -215,6 +212,12 @@ Exempt certain classes from CSS generation (e.g. for JavaScript interactions):
 ```html
 <div class="$mySelector">
 ```
+
+<br>
+
+<details>
+<summary>Click Here To Read More</summary>
+
 
 <br>
 
@@ -627,16 +630,12 @@ export type textTransformToken = keyof typeof text.transform;
 ```
 elevate/
 ├── config/     # Framework configuration
-│   ├── designConfig.ts
-│   └── elevate.ts
+│  
 ├── core/       # Core parsing and compilation logic
-│   ├── index.ts
-│   ├── parser.ts
-│   ├── scan.js
-│   └── utility.ts
+│  
 ├── design/     # Design system tokenization
-├── maps/       # Property-attribute mappings
-└── README.md
+│  
+└── rules/      # Syntax mapping rules
 
 ```
 <br>
