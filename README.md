@@ -58,7 +58,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 - **Design System Integration**
   - Token-based system for colors, spacing, typography, and breakpoints
   - Structured property-attribute relationships
-  
+
 
 - **Responsive Design**
   - Intuitive and mobile-first syntax: `property:modifier /breakpoint/ property:modifier`
@@ -429,6 +429,8 @@ export const rulesMaster = {
 
 ### ¶ Extending Elevate: A Comprehensive Guide
 
+<details>
+<summary>Click Here To Expand</summary>
 Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <br>
@@ -605,7 +607,7 @@ export type textTransformToken = keyof typeof text.transform;
   3. All relevant **rules** are updated for your use case.
   4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`**.
   5. Ensure **type consistency** across all definitions.
-
+</details>
 <br>
 
 ### ¶ Project Structure
