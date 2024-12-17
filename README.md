@@ -189,12 +189,6 @@ Build complex class definitions by chaining modifiers:
 ```
 <br>
 
-**※ Order of Modifiers:**  
-
-The order generally doesn't matter unless there's a token type collision. In that case, the first rule matching the token type is used. For multiple modifiers of the same type, Elevate suggests defining a submap in `/maps`. By default, Elevate is structured so that no type collisions can occur.
-
-<br>
-
 ### ¶ Responsive Styling
 
 <br>
