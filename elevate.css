@@ -169,4 +169,9 @@ background-color: #F0EFF4;
 background-image: url(banana);
 }
 
+.z\:20 {
+
+z-index: 20;
+}
+
 }

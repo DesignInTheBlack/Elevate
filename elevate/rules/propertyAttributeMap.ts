@@ -132,21 +132,21 @@ export const propertyAttributeMap = {
     row: {
         "justify-content": "x",  // x maps to justify-content in row
         "align-items": "y",       // y maps to align-items in row
-        "flex-wrap": "FlexWrapToken" ,
+        "flex-wrap": "FlexWrapRule" ,
     },
     
     col: {
         "align-items": "x",      // x maps to align-items in stack 
         "justify-content": "y",   // y maps to justify-content in stack
-        "flex-wrap": "FlexWrapToken" ,
+        "flex-wrap": "FlexWrapRule" ,
     },
 
     item: {
-        "flex-basis": "FlexBasisToken",
-        "flex-grow": "FlexGrowToken",
-        "flex-shrink": "FlexShrinkToken",
-        "align-self": "FlexSelfToken",
-        "order": "FlexOrderToken"
+        "flex-basis": "FlexBasisRule",
+        "flex-grow": "FlexGrowRule",
+        "flex-shrink": "FlexShrinkRule",
+        "align-self": "FlexSelfRule",
+        "order": "FlexOrderRule"
     },
 
     // Typography
@@ -156,10 +156,10 @@ export const propertyAttributeMap = {
         "font-family": "FontFamilyToken",
         "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
-        "text-align": "TextAlignToken",
+        "text-align": "TextAlignRule",
         "max-width": "MeasureToken",
         "font-weight": "FontWeightToken",
-        "text-transform": "TextTransformToken"
+        "text-transform": "TextTransformRule"
     },
 
     color: {
@@ -168,10 +168,10 @@ export const propertyAttributeMap = {
 
     border: {
         "border-color": "ColorToken",
-        "border-width": "BorderWidthToken",
-        "border-radius": "BorderRadiusToken",
-        "outline-width": "BorderWidthToken",
-        "border-style": "BorderStyleToken",
+        "border-width": "BorderWidthRule",
+        "border-radius": "BorderRadiusRule",
+        "outline-width": "BorderWidthRule",
+        "border-style": "BorderStyleRule",
     },
 
     'bg-img': {
@@ -183,9 +183,9 @@ export const propertyAttributeMap = {
     },
     
     grid: {
-        "grid-template-columns": "GridColumnToken",
-        "grid-template-rows": "GridRowToken",
-        "grid-gap": "GridGapToken",
+        "grid-template-columns": "GridColumnRule",
+        "grid-template-rows": "GridRowRule",
+        "grid-gap": "GridGapRule",
     }
 
 

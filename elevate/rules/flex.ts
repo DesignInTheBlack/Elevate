@@ -25,18 +25,18 @@ export const flex = {
       "y-baseline": "baseline"
   },
 
-  flexGrowToken: {
+  flexGrowRule: {
       "g-0": "0",
       "g-1": "1",
       "g-auto": "auto"
   },
 
-  flexShrinkToken: {
+  flexShrinkRule: {
       "s-0": "0",
       "s-1": "1"
   },
 
-  flexSelfToken: {
+  flexSelfRule: {
       "self-start": "flex-start",
       "self-end": "flex-end",
       "self-center": "center",
@@ -44,7 +44,7 @@ export const flex = {
       "self-auto": "auto"
   },
 
-  flexOrderToken: {
+  flexOrderRule: {
       "order-first": "-1",
       "order-0": "0",
       "order-1": "1",
@@ -53,11 +53,11 @@ export const flex = {
       "order-last": "999"
   },
 
-  flexBasisToken: {
+  flexBasisRule: {
       "basis-": "SpacingToken"
   },
 
- flexWrapToken: {
+ flexWrapRule: {
      "wrap": "wrap",
      "nowrap": "nowrap",
      "reverse": "wrap-reverse"
@@ -65,12 +65,12 @@ export const flex = {
 
 } as const;
 
-export type FlexToken = keyof typeof flex;
-export type FlexGrowToken = keyof typeof flex.flexGrowToken;
-export type FlexWrapToken = keyof typeof flex.flexWrapToken
-export type FlexShrinkToken = keyof typeof flex.flexShrinkToken;
-export type FlexSelfToken = keyof typeof flex.flexSelfToken;
-export type FlexOrderToken = keyof typeof flex.flexOrderToken;
-export type FlexBasisToken = keyof typeof flex.flexBasisToken
+export type FlexRules = keyof typeof flex;
+export type FlexGrowRule = keyof typeof flex.flexGrowRule;
+export type FlexWrapRule = keyof typeof flex.flexWrapRule;
+export type FlexShrinkRule = keyof typeof flex.flexShrinkRule;
+export type FlexSelfRule = keyof typeof flex.flexSelfRule;
+export type FlexOrderRule = keyof typeof flex.flexOrderRule;
+export type FlexBasisRule = keyof typeof flex.flexBasisRule;
 
 

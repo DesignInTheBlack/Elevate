@@ -21,10 +21,7 @@ export const border = {
     }
 } as const;
 
-export type BorderToken = keyof typeof border;
-export type BorderWidthToken = `w-${SpacingToken}`;
-export type BorderRadiusToken = `r-${SpacingToken}`;
-export type BorderStyleToken = keyof typeof border.style;
-
-// import { SpacingToken } from '../design/spacing.js';
-//export type FlexBasisToken = `basis-${SpacingToken}`;
+export type BorderRules = keyof typeof border;
+export type BorderWidthRule = `w-${SpacingToken}`;
+export type BorderRadiusRule = `r-${SpacingToken}`;
+export type BorderStyleRule = keyof typeof border.style;

@@ -15,7 +15,7 @@ export const grid = {
  }
 } as const;
 
-export type GridToken = keyof typeof grid;
-export type GridGapToken = `g-${SpacingToken}`; // This looks correct
-export type GridRowToken = `r-${NumericToken}`; // More flexible numeric typing
-export type GridColumnToken = `c-${NumericToken}`; // More flexible numeric typing
+export type GridRules = keyof typeof grid;
+export type GridGapRule = `g-${SpacingToken}`; // This looks correct
+export type GridRowRule = `r-${NumericToken}`; // More flexible numeric typing
+export type GridColumnRule = `c-${NumericToken}`; // More flexible numeric typing

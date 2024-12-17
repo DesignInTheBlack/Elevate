@@ -15,5 +15,5 @@ export const text = {
 
 } as const;
 
-export type textAlignToken = keyof typeof text.align;
-export type textTransformToken = keyof typeof text.transform;
+export type textAlignRule = keyof typeof text.align;
+export type textTransformRule = keyof typeof text.transform;
