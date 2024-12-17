@@ -6,14 +6,12 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
+
+## § Table of Contents
+<br>
 **※ Please Excuse Our Progress:**  
 
 In it's current iteration, Elevate CSS is a work in progress and subject to change. I welcome your feedback and suggestions for future enhancements as I take this project from a technical proof-of-concept to a full-fledged utility framework. 
-
-<br>
-
-## § Table of Contents
-
 <br>
 
 1. [Introduction](#-introduction)
