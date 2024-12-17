@@ -1,4 +1,4 @@
-# Introducing Elevate CSS
+# Elevate CSS: The Design Driven Utility Framework
 
 <br>
 
