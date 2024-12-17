@@ -422,11 +422,13 @@ In order to do so, it provides multiple configurations.
 
 **※ Included Example**  
 
-By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `designConfig.ts` for more details.
+By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `design.ts` for more details.
 
 <br>
 
 #### 1. Token File Creation
+
+The most straightforward way to add a new token type is to create a new file in the `design/` directory. 
 
 **Location:** `elevate/design/`  
 **File Naming Convention:** Use a descriptive, singular noun (e.g., `brandColors.ts`)
@@ -449,6 +451,8 @@ export type ExampleToken = keyof typeof example;
 <br>
 
 #### 2. Design System Configuration
+
+If all you want to do is add a new token type, you can simply import it in `elevate/config/design.ts` and add it to the `designSystem` object. For capability with the existing rules, you can spread the new token type into the existing token categories.
 
 **File:** `elevate/config/design.ts`
 
@@ -475,6 +479,38 @@ export const designSystem = {
 <br>
 
 #### 3. Mapping Rules
+
+Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
+consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
+
+**※ Token Collisions and How to Avoid Them**  
+
+Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly in the property attribute map. It does so through a sophisticated "first match wins" strategy whereby a token passed "slots" to the first CSS declaration that expects a token of that type in your property. 
+
+<br>
+
+```typescript
+    // Typography
+    text: {
+        "font-size": "FontSizeToken",
+        "color": "ColorToken",
+        "font-family": "FontFamilyToken",
+        "line-height": "LineHeightToken",
+        "letter-spacing": "LetterSpacingToken",
+        "text-align": "TextAlignToken",
+        "max-width": "MeasureToken",
+        "font-weight": "FontWeightToken",
+        "text-transform": "TextTransformToken"
+    },
+
+    //You can write text:red:bold or text:bold:red and the order doesn't matter.
+```
+
+<br>
+
+However, if you have two CSS declarations that share a common token type, you might run into a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary token to allow the system to differentiate and then use that intermediary token in the property attribute map. That's the powerful affordance of rules in Elevate.
+
+
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
 
