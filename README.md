@@ -764,7 +764,10 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 ## § Product Roadmap
 
-Elevate CSS is actively evolving to adapt to the evolving needs of the design and development community. 
+Elevate CSS is actively evolving to adapt to the evolving needs of the design and development community. With that said, here are some of the key features being worked on and planned for the near future:
+
+<details>
+<summary>Click Here To Expand</summary>
 
 ### ¶ Planned Features
 
@@ -810,6 +813,8 @@ Elevate CSS is actively evolving to adapt to the evolving needs of the design an
 | **Negation Selectors**      | `:not(selector)`                           | Matches elements that do not match a given selector.                        | ❌ Unsupported         |
 
 <br>
+
+</details>
 
 ## § Licensing
 
