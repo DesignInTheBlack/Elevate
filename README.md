@@ -825,6 +825,8 @@ The framework is actively evolving to adapt to the evolving needs of the design 
 
 </details>
 
+<br>
+
 ## § Licensing
 
 Elevate CSS is released as open-source software to empower developers to create scalable and maintainable design systems. The framework is provided with the intent to foster collaboration and community contributions, while retaining full ownership and rights by the original author.
