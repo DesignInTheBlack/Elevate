@@ -351,9 +351,9 @@ Property Characteristics
 ```
 <br>
 
-**※ Design Token Imports**  
+**※ Design Tokens In Syntax Mapping Rules**  
 
-You must import relevant design token files if used in a rule to ensure compile-time validation.
+You must import relevant design token files if used in a rule file to ensure compile-time validation.
 
 <br>
 
@@ -452,11 +452,11 @@ Elevate is designed to be extensible and adaptable, allowing you to easily add n
 
 **※ Included Example**  
 
-By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `design.ts` for more details.
+By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `design.ts`.
 
 <br>
 
-#### 1. Token File Creation
+#### 1. Design Token File Creation
 
 The most straightforward way to add a new token type is to create a new file in the `design/` directory. 
 
@@ -480,9 +480,9 @@ export type ExampleToken = keyof typeof example;
 
 <br>
 
-#### 2. Design System Configuration
+#### 2. Design Token Integration
 
-If all you want to do is add a new design token type, you can simply import it in `elevate/config/design.ts` and add it to the `designSystem` object. For capability with the existing rules, you can spread the new token type into the existing token categories.
+When you create a new design token file, you must import it in `elevate/config/design.ts` and add it to the `designSystem` object. For compatability with the existing rules, you can spread the new token type into the existing token categories.
 
 **File:** `elevate/config/design.ts`
 
@@ -508,10 +508,11 @@ export const designSystem = {
 
 <br>
 
-#### 3. Syntax Rule Creation
+#### 3. Syntax Mapping Rule Creation
 
 Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
+Elevate suggests reading this section with care as it is a critical aspect of Elevate's design philosophy and architecture.
 
 **※ Token Collisions and How to Avoid Them**  
 
@@ -538,8 +539,7 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 
 <br>
 
-However, if you have two CSS declarations that share a common token type, you might run into a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary token to allow the system to differentiate and then use that intermediary token in the property attribute map. That's the powerful affordance of rules in Elevate.
-
+However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary token to allow the system to differentiate and then use that intermediary token in the property attribute map. That's the powerful affordance of rules in Elevate. 
 
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
@@ -548,11 +548,36 @@ However, if you have two CSS declarations that share a common token type, you mi
 
 **A. Direct Token Mapping**
 ```typescript
-
+//Typically defined directly in the property attribute map for simplicity
+ 'max-w': {
+        "max-width": "SpacingToken",
+    },
 ```
 
-**B. Submap for Complex Rule Mappings**
+**B. Submap for Syntax Extension or to Avoid Token Collisions**
 ```typescript
+//Typically defined in a rule file, exported as a syntax mapping rule, which is then referred to in the property attribute map.
+ 'text': {
+        "font-size": "FontSizeToken",
+export const text = {
+    align: {
+        'left': 'left',
+        'center': 'center',
+        'right': 'right',
+        'justify': 'justify'
+      },
+
+      transform: {
+        'uppercase': 'uppercase',
+        'lowercase': 'lowercase',
+        'capitalize': 'capitalize'
+      }
+
+
+} as const;
+
+export type textAlignToken = keyof typeof text.align;
+export type textTransformToken = keyof typeof text.transform;
 
 ```
 
