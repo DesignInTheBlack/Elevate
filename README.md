@@ -216,7 +216,7 @@ Exempt certain classes from CSS generation (e.g. for JavaScript interactions):
 <br>
 
 <details>
-<summary>Click Here To Read More</summary>
+<summary>Click Here To Continue Reading</summary>
 
 
 <br>
