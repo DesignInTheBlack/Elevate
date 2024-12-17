@@ -88,8 +88,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ### ¶ Current Capabilities
 
-
-
 - Responsive design syntax
 - Context-based styling
 - Breakpoint-aware class generation
@@ -189,6 +187,12 @@ Build complex class definitions by chaining modifiers:
 ```
 <br>
 
+**※ Modifiers are Order Agnostic**  
+
+You can write text:red:bold or text:bold:red and the order doesn't matter. We'll get to why this is important later.
+
+<br>
+
 ### ¶ Responsive Styling
 
 <br>
@@ -240,24 +244,17 @@ Elevate is powered by two distinct elements:
    - Centralized values, enforce system-wide consistency.
 <br>
 
-**Mapping Rules**  
+**Syntax Rule Mappings**  
    - Property-specific structural validation.  
    - Validate property values, provide type-safe transformations.
    - Allow for syntax extensions and modification through submapping.
 <br>
 
-**Pass-Through Tokens**
-   - Unrestricted value entry.  
-   - No compile-time validation, for dynamic or flexible values.
-   - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
-   - Not recommended for general styling.
-
-<br>
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
    - **Location:** `design/` directory  
-   - **Configuration:** `elevate/config/designConfig.ts`
+   - **Configuration:** `elevate/config/design.ts`
    - **Characteristics:** Centralized values, enforce system-wide consistency.
 
    **Example:**
@@ -276,15 +273,15 @@ Elevate is powered by two distinct elements:
 
 <br>
 
-2. **Mapping Rules**  
-   - **Purpose:** Property-specific structural validation.  
+2. **Syntax Rule Mappings**  
+   - **Purpose:** Property-specific structural validation and syntax construction or extension.  
    - **Location:** `rules/` directory  
-   - **Configuration:** `elevate/maps/propertyAttributeMap.ts` and `elevate/rules`
+   - **Configuration:** `elevate/rules/propertyAttributeMap.ts` and `elevate/config/rules.ts`
    - **Characteristics:** Validate property values, provide type-safe transformations, and structure syntax.
 
    **Example:**
    ```typescript
-   // maps/grid.ts
+   // rules/grid.ts
    import { SpacingToken } from '../design/spacing.js';
    import { NumericToken } from '../maps/numeric.js';
 
@@ -307,12 +304,16 @@ Elevate is powered by two distinct elements:
    ```
 <br>
 
+
+
    **※ A Very Special Design Token**
 
-   **Pass-Through Tokens** 
-   - **Purpose:** Unrestricted value entry.  
-   - **Characteristics:** No compile-time validation, for dynamic or flexible values.
-
+   **Pass-Through Tokens**  
+   - Unrestricted value entry.  
+   - No compile-time validation, for dynamic or flexible values.
+   - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
+   - Not recommended for general styling.
+   <br>
    **Example:**
    ```typescript
    // propertyAttributeMap.ts
@@ -326,8 +327,8 @@ Elevate is powered by two distinct elements:
    ```
 <br>
 
-   Please note that you must pass through the value in the same way that you would write it in CSS.
-   For example, preserving parentheses for values requiring them (e.g., URLs).
+Please note that you must pass through the value in the same way that you would write it in CSS.
+For example, preserving parentheses for values requiring them (e.g., URLs).
 
 <br>
 
@@ -358,7 +359,7 @@ You must import relevant design token files if used in a rule to ensure compile-
 <br>
 
 1. Prefer Design System Tokens whenever possible.
-2. Use Mapping Rules for structured properties or relationships.
+2. Use Syntax Rule Mappings for structured properties, relationships, or syntax extension.
 3. Minimize PassThroughToken usage.
 
 <br>
@@ -405,12 +406,44 @@ export const designSystem = {
 ```
 <br>
 
+Import and distribute syntax rule mappings in `elevate/config/rules.ts`
+
+```typescript
+
+//Rule Submap Imports Defined in 'Maps' Directory.
+import { flex } from '../rules/flex.js';
+import { border } from '../rules/border.js';
+import { text } from '../rules/text.js';
+import { grid } from '../rules/grid.js';
+import { numeric } from '../rules/numeric.js';
+
+//Token Type Definitions
+export const rulesMaster = {
+    TextAlignToken: text.align,
+    TextTransformToken: text.transform,
+    BreakPointToken: breakpoints,
+    xAxis: flex.xAxis,
+    yAxis: flex.yAxis,
+    BorderWidthToken: border.width,
+    BorderRadiusToken: border.radius,
+    BorderStyleToken: border.style,
+    FlexGrowToken: flex.flexGrowToken,
+    FlexShrinkToken: flex.flexShrinkToken,
+    FlexSelfToken: flex.flexSelfToken,
+    FlexOrderToken: flex.flexOrderToken,
+    FlexBasisToken: flex.flexBasisToken,
+    NumericToken: numeric.NumericToken,
+    GridGapToken: grid.gap,
+    GridRowToken: grid.row,
+    GridColumnToken: grid.column
+};
+
+```
+
 
 ### ¶ Extending Elevate: A Comprehensive Guide
 
-Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable.
-
-In order to do so, it provides multiple configurations.
+Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <br>
 
@@ -446,7 +479,7 @@ export type ExampleToken = keyof typeof example;
 
 #### 2. Design System Configuration
 
-If all you want to do is add a new token type, you can simply import it in `elevate/config/design.ts` and add it to the `designSystem` object. For capability with the existing rules, you can spread the new token type into the existing token categories.
+If all you want to do is add a new design token type, you can simply import it in `elevate/config/design.ts` and add it to the `designSystem` object. For capability with the existing rules, you can spread the new token type into the existing token categories.
 
 **File:** `elevate/config/design.ts`
 
@@ -472,7 +505,7 @@ export const designSystem = {
 
 <br>
 
-#### 3. Mapping Rules
+#### 3. Syntax Rule Creation
 
 Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
