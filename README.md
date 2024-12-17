@@ -357,6 +357,9 @@ You must import relevant design token files if used in a rule file to ensure com
 
 ## § Configuration
 
+<details>
+<summary>Click Here To Expand</summary>
+
 <br>
 
 ### ¶ Framework Configuration
@@ -635,6 +638,8 @@ elevate/
 
 ```
 <br>
+
+</details>
 
 ## § Why Elevate?
 
