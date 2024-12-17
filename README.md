@@ -357,7 +357,7 @@ You must import relevant design token files if used in a rule file to ensure com
 
 ## § Configuration
 
-Elevate CSS is designed with a powerful, flexible configuration system that allows deep customization while maintaining strict design system integrity. With great power, however, comes great responsibility. Take time to thoroughly review and align the configuration options with your project's specific design requirements and architectural goals. For a comprehensive understanding, dive into the detailed documentation below.
+Elevate is designed with a powerful, flexible configuration system that allows deep customization while maintaining strict design system integrity. With great power, however, comes great responsibility. Take time to thoroughly review and align the configuration options with your project's specific design requirements and architectural goals. For a comprehensive understanding, dive into the detailed documentation below.
 
 <details>
 <summary>Click Here To Read More</summary>
@@ -647,7 +647,7 @@ elevate/
 
 <br>
 
-Elevate CSS redefines utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
+The goal of Elevate CSS is to revolutionize the world of utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
 
 <details>
 <summary>Click Here To Read More</summary>
@@ -771,7 +771,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 ## § Product Roadmap
 
-Elevate CSS is actively evolving to adapt to the evolving needs of the design and development community. With that said, here are some of the key features being worked on and planned for the near future:
+The framework is actively evolving to adapt to the evolving needs of the design and development community. With that said, here are some of the key features being worked on and planned for the near future:
 
 <details>
 <summary>Click Here To Read More</summary>
