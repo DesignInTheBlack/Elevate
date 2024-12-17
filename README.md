@@ -73,7 +73,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ### ¶ Core Design Principles
 
-<br>
 
 - **Expressive and Intentional**  
    Styling choices should serve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability of the codebase.
@@ -88,7 +87,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ### ¶ Architectural Approach
 
-<br>
 
 **Key Technical Innovations:**
 - **Compile-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
