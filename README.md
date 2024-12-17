@@ -114,7 +114,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 **Type Safety:**
 - Strict token definitions of design system as well as property-attribute relationships
 - Compile-time validation of design system tokens and relationships to CSS
-- TypeScript type constraints for design system tokens
+- TypeScript type constraints for design system tokens and syntax rules
 
 <br>
 
@@ -123,18 +123,19 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 
 **Compilation Approach:**
-- Generate static CSS at compile-time
-- Transforms HTML class attributes into optimized CSS
+- Compile time optimizedCSS generation
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
 
 <br>
 
-## § Syntax and Usage
+## § Quick Start Guide
+
+This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is recommended that you familiarize yourself with the framework's documentation and examples in full. 
 
 <br>
 
-### ¶ Quick Start
+### ¶ Installation and Usage
 
 <br>
 
@@ -154,8 +155,7 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of the syntax are "utility strings", which are used to describe styling. 
-
+At the heart of Elevate's syntax are "utility strings", which are used to describe styling and which also serve as the basis for CSS generation. They also double as the class attribute in HTML. 
 <br>
 
 **Direct Properties:**  
@@ -189,7 +189,7 @@ Build complex class definitions by chaining modifiers:
 
 **※ Modifiers are Order Agnostic**  
 
-You can write text:red:bold or text:bold:red and the order doesn't matter. We'll get to why this is important later.
+You can write text:red:bold or text:bold:red and the order doesn't matter. We'll get to the how and why later.
 
 <br>
 
@@ -203,7 +203,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 <div class="text:purple /md/ text:right /lg/ @hover:[text:green:right]"> 
 ```
 
-1. Define universal classes first.
+1. Define universal classes on the far left.
 2. Add breakpoint-specific adjustments after a `/breakpoint/` indicator.
 
 <br>
@@ -214,11 +214,16 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 
 **Contextual Flag [@]:**  
 
-Allows complex, conditional styling for states, conditions, and other pseudo-classes:
+Allows complex, conditional styling for states, conditions, and other pseudo-classes or pseudo-elements.:
 
 ```html
 <div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
 ```
+
+<br>
+
+For More Information: [See Currently Supported Selectors](#-selector-support)
+
 <br>
 
 **Functional Flag [$]:**  
