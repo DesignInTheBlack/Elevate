@@ -53,10 +53,12 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 - **Type-Safe CSS Generation**
   - Compile-time token validation
   - Design system constraint enforcement
+  - No tree shaking necessary
 
 - **Design System Integration**
   - Token-based system for colors, spacing, typography, and breakpoints
   - Structured property-attribute relationships
+  
 
 - **Responsive Design**
   - Intuitive and mobile-first syntax: `property:modifier /breakpoint/ property:modifier`
@@ -103,25 +105,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 - Strict token definitions of design system as well as property-attribute relationships
 - Compile-time validation of design system tokens and relationships to CSS
 - TypeScript type constraints for design system tokens and syntax rules
-
-<br>
-
-### ¶ Performance Characteristics
-
-- Compile time optimized CSS generation
-- Zero runtime JavaScript overhead
-- No tree shaking necessary
-
-<br>
-
-
-### ¶ Current Capabilities
-
-- Responsive design syntax
-- Context-based styling
-- Breakpoint-aware class generation
-- Intelligent container management
-- Comprehensive design token system
 
 <br>
 
