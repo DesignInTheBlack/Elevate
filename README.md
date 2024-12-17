@@ -18,30 +18,30 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 1. [Introduction](#-introduction)
 2. [Features](#-features)
-3. [Design Philosophy and Architecture](#-design-philosophy-and-architecture)
-   - [Core Design Principles](#-core-design-principles)
-   - [Current Capabilities](#-current-capabilities)
-   - [Architectural Approach](#-architectural-approach)
-   - [Performance Characteristics](#-performance-characteristics)
-4. [Syntax and Usage](#-syntax-and-usage)
-   - [Quick Start](#-quick-start)
-   - [Syntax Guide](#-syntax-guide)
-   - [Responsive Styling](#-responsive-styling)
-   - [Contextual and Functional Flags](#-contextual-and-functional-flags)
-   - [Tokenization and Token Types](#-tokenization-and-token-types)
-   - [Token Selection Guide](#-token-selection-guide)
-   - [Best Practices](#-best-practices)
-5. [Configuration](#-configuration)
-   - [Framework Configuration](#-framework-configuration)
-   - [Extending the Design System](#-extending-the-design-system-a-comprehensive-guide)
-   - [Project Structure](#-project-structure)
-6. [Why Elevate](#-why-elevate)
-   - [Market Differentiation and Competitive Positioning](#-market-differentiation-and-competitive-positioning)
-   - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)
-   - [Why Choose Elevate CSS](#-why-choose-elevate-css)
-7. [Product Roadmap](#-product-roadmap)
-   - [Planned Features](#-planned-features)
-   - [Selector Support](#-selector-support)
+3. [Design Philosophy & Architecture](#-design-philosophy--architecture)  
+   - [Core Design Principles](#-core-design-principles)  
+   - [Architectural Approach](#-architectural-approach)  
+   - [Performance Characteristics](#-performance-characteristics)  
+   - [Current Capabilities](#-current-capabilities)  
+4. [Syntax and Usage](#-syntax-and-usage)  
+   - [Quick Start](#-quick-start)  
+   - [Syntax Guide](#-syntax-guide)  
+   - [Responsive Styling](#-responsive-styling)  
+   - [Contextual and Functional Flags](#-contextual-and-functional-flags)  
+   - [Design Tokens and Rules](#-design-tokens-and-rules)  
+   - [Token Selection Guide](#-token-selection-guide)  
+   - [Best Practices](#-best-practices)  
+5. [Configuration](#-configuration)  
+   - [Framework Configuration](#-framework-configuration)  
+   - [Extending Elevate: A Comprehensive Guide](#-extending-elevate-a-comprehensive-guide)  
+   - [Project Structure](#-project-structure)  
+6. [Why Elevate](#-why-elevate)  
+   - [Market Differentiation and Competitive Positioning](#-market-differentiation-and-competitive-positioning)  
+   - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)  
+   - [Why Choose Elevate CSS](#-why-choose-elevate-css)  
+7. [Product Roadmap](#-product-roadmap)  
+   - [Planned Features](#-planned-features)  
+   - [Selector Support](#-selector-support)  
 8. [Licensing and Attribution](#-licensing)
        
 
@@ -513,6 +513,8 @@ export const designSystem = {
 Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
 Elevate suggests reading this section with care as it is a critical aspect of Elevate's design philosophy and architecture.
+
+<br>
 
 **※ Token Collisions and How to Avoid Them**  
 
