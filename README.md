@@ -233,11 +233,11 @@ Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
 
 <br>
 
-### ¶ Tokenization and Token Types
+### ¶ Design Tokens and Rules
 
 <br>
 
-Elevate features three distinct token types:
+Elevate is powered by two distinct elements:
 
 <br>
 
@@ -246,7 +246,7 @@ Elevate features three distinct token types:
    - Centralized values, enforce system-wide consistency.
 <br>
 
-**Syntax Tokens**  
+**Mapping Rules**  
    - Property-specific structural validation.  
    - Validate property values, provide type-safe transformations.
    - Allow for syntax extensions and modification through submapping.
@@ -282,11 +282,11 @@ Elevate features three distinct token types:
 
 <br>
 
-2. **Syntax Tokens**  
+2. **Mapping Rules**  
    - **Purpose:** Property-specific structural validation.  
-   - **Location:** `maps/` directory  
-   - **Configuration:** `elevate/maps/propertyAttributeMap.ts` and `elevate/maps`
-   - **Characteristics:** Validate property values, provide type-safe transformations, structure syntax.
+   - **Location:** `rules/` directory  
+   - **Configuration:** `elevate/maps/propertyAttributeMap.ts` and `elevate/rules`
+   - **Characteristics:** Validate property values, provide type-safe transformations, and structure syntax.
 
    **Example:**
    ```typescript
@@ -313,7 +313,9 @@ Elevate features three distinct token types:
    ```
 <br>
 
-3. **Pass-Through Tokens** 
+   **※ A Very Special Design Token**
+
+   **Pass-Through Tokens** 
    - **Purpose:** Unrestricted value entry.  
    - **Characteristics:** No compile-time validation, for dynamic or flexible values.
 
@@ -330,9 +332,7 @@ Elevate features three distinct token types:
    ```
 <br>
 
-   **※ Pass-Through Tokens and CSS**
-
-   You must pass through the value in the same way that you would write it in CSS.
+   Please note that you must pass through the value in the same way that you would write it in CSS.
    For example, preserving parentheses for values requiring them (e.g., URLs).
 
 <br>
@@ -348,14 +348,14 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → Syntax Token and a Submapping
+│       │   ├── Yes → Mapping Rule and Property-Attribute Map Entry
 │       │   └── No → PassThrough Token
 ```
 <br>
 
 **※ Design Token Imports**  
 
-You must import relevant design token files if used in a submap to ensure compile-time validation.
+You must import relevant design token files if used in a rule to ensure compile-time validation.
 
 <br>
 
@@ -364,7 +364,7 @@ You must import relevant design token files if used in a submap to ensure compil
 <br>
 
 1. Prefer Design System Tokens whenever possible.
-2. Use Syntax Tokens for structured properties or relationships.
+2. Use Mapping Rules for structured properties or relationships.
 3. Minimize PassThroughToken usage.
 
 <br>
@@ -391,7 +391,7 @@ export const config = options
 ```
 <br>
 
-Import design system tokens in `elevate/config/designConfig.ts`
+Import and distribute design system tokens in `elevate/config/design.ts`
 
 ```typescript
 // elevate/config/designConfig.ts
@@ -411,17 +411,12 @@ export const designSystem = {
 ```
 <br>
 
-**※ Design Token Imports** 
 
-The `maps/` folder contains property-attribute mappings, including `propertyAttributeMap.js` and any feature-specific syntax maps.
+### ¶ Extending Elevate: A Comprehensive Guide
 
+Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable.
 
-
-<br>
-
-### ¶ Extending the Design System: A Comprehensive Guide
-
-The design system supports seamless token extension through a structured, type-safe process. Follow these detailed steps to introduce new tokens:
+In order to do so, it provides multiple configurations.
 
 <br>
 
@@ -438,15 +433,11 @@ By default, Elevate includes a basic example of extending the design system. Ple
 
 **Example: Brand Color Tokens**
 ```typescript
-// elevate/design/brandColors.ts
-export const brandColors = {
-  primary: '#3498db',   // Primary brand color
-  secondary: '#2ecc71', // Secondary accent color
-  tertiary: '#e74c3c'   // Tertiary highlight color
-} as const;
+export const example = {
+    'example':'#39FF14'
+} as const
 
-// Generate a type from the token object
-export type BrandColorToken = keyof typeof brandColors;
+export type ExampleToken = keyof typeof example;
 ```
 
 **Key Principles:**
@@ -459,23 +450,31 @@ export type BrandColorToken = keyof typeof brandColors;
 
 #### 2. Design System Configuration
 
-**File:** `elevate/config/designConfig.ts`
+**File:** `elevate/config/design.ts`
 
 **Integration Steps:**
 ```typescript
-// Import your new tokens
-import { brandColors } from "../design/brandColors.js";
+//Design Token Imports Defined in 'Design' Directory.
+import { example } from "../design/example.js";
+import { colors } from "../design/colors.js";
+import { spacing } from "../design/spacing.js";
+import { typography } from "../design/typography.js";
 
-// Extend the designSystem object
+//Token Type Definitions
 export const designSystem = {
-  // Existing tokens...
-  BrandColorToken: brandColors, // Add your new token map
+    ColorToken: { ...colors, ...example },
+    SpacingToken: spacing,
+    FontSizeToken: typography.size,
+    FontFamilyToken: typography.family,
+    LineHeightToken: typography.leading,
+    LetterSpacingToken: typography.tracking,
+    FontWeightToken: typography.weight,
 };
 ```
 
 <br>
 
-#### 3. Property Attribute Mapping
+#### 3. Mapping Rules
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
 
@@ -483,33 +482,12 @@ export const designSystem = {
 
 **A. Direct Token Mapping**
 ```typescript
-export const propertyAttributeMap = {
-  // Simple, direct mapping
-  primaryBrand: {
-    "background-color": "BrandColorToken"
-  },
-  textBrand: {
-    "color": "BrandColorToken"
-  }
-};
+
 ```
 
-**B. Submap for Complex Mappings**
+**B. Submap for Complex Rule Mappings**
 ```typescript
-// Create a dedicated submap for nuanced token usage
-export const brandColorMap = {
-  primary: {
-    background: 'primary',
-    color: 'secondary',
-    border: 'tertiary'
-  }
-};
 
-// Reference the submap in propertyAttributeMap
-export const propertyAttributeMap = {
-  // Complex token mapping
-  brandVariant: brandColorMap
-};
 ```
 
 <br>
@@ -526,22 +504,9 @@ export const propertyAttributeMap = {
 - Use TypeScript's type system to prevent runtime errors
 
 **Performance Considerations:**
-- Keep token maps concise
-- Use submaps for complex, related tokens or syntactic relationships.
+- Use rules for complex, related tokens or syntactic relationships.
 - Minimize the number of token types as possible.
 
-<br>
-
-#### 5. Advanced Token Management 
-
-**Token Inheritance:**
-```typescript
-// Extend existing tokens
-export const extendedColors = {
-  ...colors,  // Spread existing colors
-  newShade: '#custom-color-value'
-};
-```
 
 <br>
 
@@ -549,9 +514,9 @@ export const extendedColors = {
 
 **Extension Considerations:**
 - As you begin extending Elevate to fit your use case, consider the following:
-  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories.
-  2. If you're feeling confused about submapping, examine the existing submappings that allow Elevate to work.
-  3. You can effectively create your own use case specific syntax for your project via submapping, but do so with care and consideration.
+  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts`.
+  2. If you're feeling confused about how rules work, examine the existing rules that allow Elevate to work out of the box.
+  3. You can effectively create your own use case specific syntax for your project via rules, but do so with care and consideration.
 
 <br>
 
@@ -560,11 +525,10 @@ export const extendedColors = {
 **Common Issues:**
 - If a token doesn’t map correctly, verify the following:
   1. The design token is properly **exported** in the token file.
-  2. The design token is correctly **imported** in `designConfig.ts`.
-  3. All relevant **submaps** are updated for your use case.
-  4. The design token or subsequent submap token are included in the **`propertyAttributeMap.ts`** mapping.
+  2. The design token is correctly **imported** in `design.ts`.
+  3. All relevant **rules** are updated for your use case.
+  4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`**.
   5. Ensure **type consistency** across all definitions.
-
 
 <br>
 
