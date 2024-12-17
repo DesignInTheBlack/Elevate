@@ -112,6 +112,9 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is recommended that you familiarize yourself with the framework's documentation and examples in full as it provides a deeper understanding of Elevate's capabilities, functionality, and best practices as well as how to best leverage the framework for your specific needs.
 
+<details>
+<summary>Click Here To Expand</summary>
+
 <br>
 
 ### ¶ Installation and Usage
@@ -350,6 +353,8 @@ You must import relevant design token files if used in a rule file to ensure com
 
 <br>
 
+</details>
+
 ## § Configuration
 
 <br>
@@ -431,6 +436,7 @@ export const rulesMaster = {
 
 <details>
 <summary>Click Here To Expand</summary>
+<br>
 Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <br>
