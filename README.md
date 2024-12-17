@@ -123,7 +123,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 
 **Compilation Approach:**
-- Compile time optimizedCSS generation
+- Compile time optimized CSS generation
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
 
