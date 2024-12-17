@@ -354,6 +354,7 @@ You must import relevant design token files if used in a rule file to ensure com
 <br>
 
 </details>
+<br>
 
 ## § Configuration
 
@@ -642,6 +643,8 @@ elevate/
 
 </details>
 
+<br>
+
 ## § Why Elevate?
 
 The goal of Elevate CSS is to introduce a new standard in the world of utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, compile-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
@@ -765,6 +768,8 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 <br>
 
 </details>
+
+<br>
 
 ## § Product Roadmap
 
