@@ -108,7 +108,6 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ### ¶ Performance Characteristics
 
-**Compilation Approach:**
 - Compile time optimized CSS generation
 - Zero runtime JavaScript overhead
 - No tree shaking necessary
@@ -225,7 +224,7 @@ For More Information: [See Currently Supported Selectors](#-selector-support)
 
 **Functional Flag [$]:**  
 
-Ignore certain classes for CSS generation (e.g. for JavaScript interactions):
+Exempt certain classes from CSS generation (e.g. for JavaScript interactions):
 
 ```html
 <div class="$mySelector">
@@ -316,7 +315,9 @@ Elevate is powered by two distinct elements:
    - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
    - Not recommended for general styling.
    <br>
+
    **Example:**
+
    ```typescript
    // propertyAttributeMap.ts
    rotate: {
@@ -345,7 +346,7 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → Mapping Rule and Property-Attribute Map Entry
+│       │   ├── Yes → SyntaxMapping Rule and Property-Attribute Map Entry
 │       │   └── No → PassThrough Token
 ```
 <br>
@@ -371,8 +372,6 @@ You must import relevant design token files if used in a rule to ensure compile-
 <br>
 
 ### ¶ Framework Configuration
-
-
 
 Configure Elevate's general settings in `elevate/config/elevate.ts`:
 
