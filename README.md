@@ -110,7 +110,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 
 ## § Quick Start Guide
 
-This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is HIGHLY RECOMMENDED that you familiarize yourself with the configuration section as well as it provides a deeper understanding of Elevate's capabilities, functionality, and best practices as well as how to best leverage the framework for your specific needs.
+This quick start guide is included to give you an opportunity to dive right into the world of Elevate CSS. With that said, however, it is **highly recommended** that you familiarize yourself with the **configuration** section as well as it provides a deeper understanding of Elevate's capabilities, functionality, and best practices as well as how to best leverage the framework for your specific needs.
 
 <br>
 
