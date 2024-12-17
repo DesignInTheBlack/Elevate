@@ -772,7 +772,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 ## § Product Roadmap
 
-The framework is actively evolving to adapt to the evolving needs of the design and development community. With that said, here are some of the key features being worked on and planned for the near future:
+The framework is actively evolving to adapt to the evolving needs of the design and development community. Currently, Elevate CSS is a proof-of-concept framework that aims to redefine utility-first CSS approaches. It is in an early, experimental stage and I warmly welcome community feedback, contributions, and insights. Our goal is to collaborate with developers and designers to refine and improve the framework, addressing real-world challenges:
 
 <details>
 <summary>Click Here To Read More</summary>
