@@ -6,8 +6,8 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 <br>
 
-
 ## § Table of Contents
+
 <br>
 **※ Please Excuse Our Progress:**  
 
