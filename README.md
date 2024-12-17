@@ -449,7 +449,6 @@ Elevate is designed to be extensible and adaptable, allowing you to easily add n
 
 By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `design.ts`.
 
-<br>
 
 #### 1. Design Token File Creation
 
@@ -507,8 +506,8 @@ export const designSystem = {
 
 Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
+<br>
 Elevate suggests reading this section with care as it is a critical aspect of Elevate's design philosophy and architecture.
-
 <br>
 
 **※ Token Collisions and How to Avoid Them**  
@@ -604,7 +603,7 @@ export type textTransformToken = keyof typeof text.transform;
 - As you begin extending Elevate to fit your use case, consider the following:
   1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts`.
   2. If you're feeling confused about how rules work, examine the existing rules that allow Elevate to work out of the box.
-  3. You can effectively create your own use case specific syntax for your project via rules, but do so with care and consideration.
+  3. You can effectively create your own use case specific syntax for your project via rules, but do so with care and consideration if you do.
 
 <br>
 
