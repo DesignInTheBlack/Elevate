@@ -1,5 +1,5 @@
 import { SpacingToken } from '../design/spacing.js';
-import { NumericToken } from './numeric.js';
+import { NumericToken } from '../etc/numeric.js';
 
 export const grid = {
  gap: {

@@ -7,7 +7,7 @@ import { spacing } from "../design/spacing.js";
 import { typography } from "../design/typography.js";
 
 //Elevate Utility Tokens
-import { numeric } from '../rules/numeric.js';
+import { numeric } from '../etc/numeric.js';
 
 //Token Type Definitions
 export const designSystem = {

@@ -3,14 +3,14 @@ import fs from 'fs';
 import { config } from '../config/elevate.js';
 import { elevateCompiler } from './parser.js';
 //CSS Reset & Utility Tokens
-import { cssReset } from '../rules/reset.js';
-import { numeric } from '../rules/numeric.js';
+import { cssReset } from '../etc/reset.js';
+import { numeric } from '../etc/numeric.js';
 //Core Syntax Mapping
 import { propertyAttributeMap, propertyMap } from "../rules/propertyAttributeMap.js";
 //Design Tokens
 import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
 import { spacing, SpacingToken } from "../design/spacing.js";
-import { buffer } from '../rules/buffer.js';
+import { buffer } from '../etc/buffer.js';
 import { designSystem } from '../config/design.js';
 import { rulesMaster } from '../config/rules.js';
 
