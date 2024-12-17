@@ -63,7 +63,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
   - Automatic media query generation
 
 - **Context Management**
-  - Supporting pseudo class selectors
+  - Supporting pseudo-class and pseudo-element selectors
   - Syntax: `@context:[property:modifier_property:modifier]`
 
 <br>
@@ -76,13 +76,13 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 <br>
 
 - **Expressive and Intentional**  
-   Styling choices should serve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability.
+   Styling choices should serve as self-documenting expressions of design intention, ensuring intuitive understanding and long-term maintainability of the codebase.
 
 - **Consistency and Consideration**  
    The design system is the single source of truth, rigorously upheld through strict typing and compile-time validation to eliminate off-scale values and unauthorized modifications. 
 
 - **Extensible and Reliable**  
-   The system must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build.
+   Elevate must support growth and adaptation while maintaining simplicity, with styling validated before runtime to guarantee alignment with the design system on every build. 
 
 <br>
 
@@ -91,7 +91,7 @@ In it's current iteration, Elevate CSS is a work in progress and subject to chan
 - Responsive design syntax
 - Context-based styling
 - Breakpoint-aware class generation
-- Intelligent buffer/container management
+- Intelligent container management
 - Comprehensive design token system
 
 <br>
