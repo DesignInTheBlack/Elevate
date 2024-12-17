@@ -3,19 +3,17 @@ import fs from 'fs';
 import { config } from '../config/elevate.js';
 import { elevateCompiler } from './parser.js';
 //CSS Reset & Utility Tokens
-import { cssReset } from '../maps/reset.js';
-import { numeric } from '../maps/numeric.js';
-//Syntax Maps
-import { propertyAttributeMap, propertyMap } from "../maps/propertyAttributeMap.js";
-import { flex } from '../maps/flex.js';
-import { border } from '../maps/border.js';
-import { text } from '../maps/text.js';
-import { grid } from '../maps/grid.js';
+import { cssReset } from '../rules/reset.js';
+import { numeric } from '../rules/numeric.js';
+//Core Syntax Mapping
+import { propertyAttributeMap, propertyMap } from "../rules/propertyAttributeMap.js";
 //Design Tokens
 import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
 import { spacing, SpacingToken } from "../design/spacing.js";
-import { buffer } from '../maps/buffer.js';
-import { designSystem } from '../config/designConfig.js';
+import { buffer } from '../rules/buffer.js';
+import { designSystem } from '../config/design.js';
+import { rulesMaster } from '../config/rules.js';
+
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  SETUP AND CONFIGURATION                           ║
 // ║ Includes foundational setup, such as error handling and token maps.║
@@ -29,23 +27,7 @@ process.on('uncaughtException', (err) => {
 
 const types = {
     ...designSystem,
-    TextAlignToken: text.align,
-    TextTransformToken: text.transform,
-    BreakPointToken: breakpoints,
-    xAxis: flex.xAxis,
-    yAxis: flex.yAxis,
-    BorderWidthToken: border.width,
-    BorderRadiusToken: border.radius,
-    BorderStyleToken: border.style,
-    FlexGrowToken: flex.flexGrowToken,
-    FlexShrinkToken: flex.flexShrinkToken,
-    FlexSelfToken: flex.flexSelfToken,
-    FlexOrderToken: flex.flexOrderToken,
-    FlexBasisToken: flex.flexBasisToken,
-    NumericToken: numeric.NumericToken,
-    GridGapToken: grid.gap,
-    GridRowToken: grid.row,
-    GridColumnToken: grid.column
+    ...rulesMaster
 };
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   CST TO AST CONVERSION                            ║
