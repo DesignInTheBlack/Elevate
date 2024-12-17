@@ -434,11 +434,10 @@ export const rulesMaster = {
 
 ### ¶ Extending Elevate: A Comprehensive Guide
 
-<details>
-<summary>Click Here To Expand</summary>
-<br>
 Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
+<details>
+<summary>Click Here To Expand</summary>
 <br>
 
 **※ Included Example**  
