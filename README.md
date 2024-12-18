@@ -780,6 +780,8 @@ The framework is actively evolving to adapt to the evolving needs of the design 
 
 <br>
 
+- Statis Analysis and Compile Time Guarantees 
+- IDE Integration for Syntax Highlighting and Autocomplete
 - Child selector support
 - Expanded grid support with expressive syntax
 - Container query support
