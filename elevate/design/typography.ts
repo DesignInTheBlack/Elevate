@@ -44,9 +44,9 @@ export const typography = {
     },
   
     family: {
-      sans: 'Sk-Modernist',
-      mono: 'Sk-Modernist-Mono',
-      serif: 'PlayfairDisplay'
+      sans: '',
+      mono: '',
+      serif: ''
     },
 
     weight: {
@@ -57,12 +57,5 @@ export const typography = {
       bold: '700'
     }
     
-  } as const;
+  } 
   
-  // For TypeScript type safety and autocomplete
-  export type FontSizeToken = keyof typeof typography.size;
-  export type LineHeightToken = keyof typeof typography.leading;
-  export type LetterSpacingToken = keyof typeof typography.tracking;
-  export type MeasureToken = keyof typeof typography.measure;
-  export type FontFamilyToken = keyof typeof typography.family;
-  export type FontWeightToken = keyof typeof typography.weight;
