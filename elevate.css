@@ -134,6 +134,15 @@ textarea:not([rows]) {
     }
 }
 
+.\@hover\:\[text\:dark_p\:d1\]:hover {
+
+color: #2C2638;
+padding-left: 0.25rem;
+padding-top: 0.25rem;
+padding-right: 0.25rem;
+padding-bottom: 0.25rem;
+}
+
 .border\:r-d4 {
 
 border-radius: 1rem;

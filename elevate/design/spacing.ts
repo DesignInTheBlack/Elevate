@@ -52,6 +52,5 @@ export const spacing = {
     'viewheight':"100vh",
     'viewwidth':"100vw"
 
-} as const;
+} 
 
-export type SpacingToken = keyof typeof spacing;

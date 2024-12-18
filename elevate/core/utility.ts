@@ -12,13 +12,13 @@ import { cssReset } from '../etc/reset.js';
 import { numeric } from '../etc/numeric.js';
 
 //Core Syntax Mapping
-import { propertyAttributeMap, propertyMap } from "../rules/propertyAttributeMap.js";
+import { propertyAttributeMap } from "../rules/propertyAttributeMap.js";
 
 //Import BreakPoints
-import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
+import { breakpoints} from "../design/breakpoints.js";
 
 //Import Spacing
-import { spacing, SpacingToken } from "../design/spacing.js";
+import { spacing } from "../design/spacing.js";
 
 //Import Buffer Map
 import { buffer } from '../etc/buffer.js';

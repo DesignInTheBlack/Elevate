@@ -191,5 +191,3 @@ export const propertyAttributeMap = {
 
 } 
 
-export type propertyMap = keyof typeof propertyAttributeMap;
-export const propertyKeys = Object.keys(propertyAttributeMap) as propertyMap[];
