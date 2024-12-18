@@ -149,4 +149,10 @@ padding-right: 0.25rem;
 padding-bottom: 0.25rem;
 }
 
+.grid\:gap-d4\:col-4 {
+
+grid-gap: 1rem;
+grid-template-columns: 4;
+}
+
 }
