@@ -20,8 +20,8 @@ import { breakpoints} from "../design/breakpoints.js";
 //Import Spacing
 import { spacing } from "../design/spacing.js";
 
-//Import Buffer Map
-import { buffer } from '../etc/buffer.js';
+//Import Contain Map
+import { contain } from '../etc/contain.js';
 
 //Import Design System
 import { designSystem } from '../config/design.js';
@@ -63,12 +63,12 @@ export function toAst(cst: any, context?: { fileName: string }) {
         utilityAST = handleDirectProperties(cst,context)
     }
 
-    else if (cst.children.passBlock) {
+    else if (cst.children.PassthroughBlock) {
         utilityAST = handlePassThrough(cst)
     }
 
-    else if (cst.children.stateBlock) {
-        utilityAST = handleStatefulStrings(cst,context)
+    else if (cst.children.ContextBlock) {
+        utilityAST = handleContextFlags(cst,context)
     }
     else {
         utilityAST = handleCompoundProperties(cst, context);
@@ -103,7 +103,7 @@ function handleDirectProperties(cst: any, context?: { fileName: string }) {
 }
 
 // Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
-function handleStatefulStrings(cst: any, context?: { fileName: string }) {
+function handleContextFlags(cst: any, context?: { fileName: string }) {
     // More robust state extraction
     const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+):/);
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/);
@@ -416,14 +416,14 @@ export function getBreakpointPriority(breakpoint: string): number {
 // ║        Handles final CSS content output to a file.                 ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-// Writes the compiled CSS content, along with reset and buffer styles, to the elevate.css output file.
+// Writes the compiled CSS content, along with reset and contain styles, to the elevate.css output file.
 export function writeToFile(content: string) {
     const filePath = `${config.Output}/elevate.css`; // Define the file path
     // Clear or create the file
     fs.writeFileSync(filePath, '', 'utf8'); // Ensures a clean slate
-    //Compose Buffer CSS
-    let bufferString = '';
-    Object.entries(buffer).forEach(([key, value]) => {
+    //Compose Contain CSS
+    let containString = '';
+    Object.entries(contain).forEach(([key, value]) => {
         // Type-safe casting to preserve the types
         const breakpointKey = key as BreakpointToken;
         const spacingValue = value as SpacingToken;
@@ -433,15 +433,15 @@ export function writeToFile(content: string) {
         // Create CSS entry
         let newEntry = `
 @media only screen and (min-width:${minWidth}) {
-.buffer {
+.contain {
     padding-left: ${padding};
     padding-right: ${padding};
     }
 }`;
-        bufferString += newEntry;
+        containString += newEntry;
     });
     // Combine the reset CSS with the provided content
-    const completeContent = `${cssReset}\n\n${bufferString}\n\n${content}`;
+    const completeContent = `${cssReset}\n\n${containString}\n\n${content}`;
     // Write to the file
     fs.writeFile(filePath, completeContent, (err: any) => {
         if (err) {

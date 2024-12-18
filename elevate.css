@@ -74,61 +74,61 @@ textarea:not([rows]) {
 
 
 @media only screen and (min-width:20rem) {
-.buffer {
+.contain {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     }
 }
 @media only screen and (min-width:30rem) {
-.buffer {
+.contain {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     }
 }
 @media only screen and (min-width:40rem) {
-.buffer {
+.contain {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
     }
 }
 @media only screen and (min-width:48rem) {
-.buffer {
+.contain {
     padding-left: 2rem;
     padding-right: 2rem;
     }
 }
 @media only screen and (min-width:64rem) {
-.buffer {
+.contain {
     padding-left: 2rem;
     padding-right: 2rem;
     }
 }
 @media only screen and (min-width:80rem) {
-.buffer {
+.contain {
     padding-left: 2rem;
     padding-right: 2rem;
     }
 }
 @media only screen and (min-width:96rem) {
-.buffer {
+.contain {
     padding-left: 2rem;
     padding-right: 2rem;
     }
 }
 @media only screen and (min-width:120rem) {
-.buffer {
+.contain {
     padding-left: 16rem;
     padding-right: 16rem;
     }
 }
 @media only screen and (min-width:160rem) {
-.buffer {
+.contain {
     padding-left: 16rem;
     padding-right: 16rem;
     }
 }
 @media only screen and (min-width:240rem) {
-.buffer {
+.contain {
     padding-left: 16rem;
     padding-right: 16rem;
     }

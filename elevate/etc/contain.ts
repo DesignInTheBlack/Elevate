@@ -1,5 +1,5 @@
 
-export const buffer = {
+export const contain = {
     '2xs': 'd5',
     'xs': 'd5',
     'sm': 'd5',

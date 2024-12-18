@@ -52,15 +52,15 @@ const lexer = new Lexer(tokens, {
 // ╚════════════════════════════════════════════════════════════════════╝
 class ElevateParser extends CstParser {
     // Declare propertyDefinition explicitly for TypeScript compliance
-    public propertyDefinition!: () => CstNode;
-    public stateBlock!: () => CstNode;
-    public passBlock!: () => CstNode;
+    public PropertyDefinition!: () => CstNode;
+    public ContextBlock!: () => CstNode;
+    public PassthroughBlock!: () => CstNode;
 
     constructor() {
         super(tokens);
         const $ = this;
 
-        $.RULE("stateBlock", () => {
+        $.RULE("ContextBlock", () => {
             $.CONSUME(State);
             $.CONSUME(openState);
             $.MANY(() => {
@@ -73,21 +73,21 @@ class ElevateParser extends CstParser {
         });
 
 
-        $.RULE("passBlock", () => {
+        $.RULE("PassthroughBlock", () => {
             $.CONSUME(Property);
             $.CONSUME(PassProperty)
         });
 
-        $.RULE("propertyDefinition", () => {
+        $.RULE("PropertyDefinition", () => {
             $.OR([
                 {
                     ALT: () => {
-                        $.SUBRULE($.stateBlock);
+                        $.SUBRULE($.ContextBlock);
                     }
                 },
                 {
                     ALT: () => {
-                        $.SUBRULE($.passBlock);
+                        $.SUBRULE($.PassthroughBlock);
                     }
                 },
                 {
@@ -133,7 +133,7 @@ export const elevateCompiler = (className: string,context?: { fileName: string }
     parser.input = result.tokens;
 
     // Parse input using the primary rule
-    const cst = parser.propertyDefinition();
+    const cst = parser.PropertyDefinition();
     (cst as any).className = className;
 
     // Parsing Error Handling 
