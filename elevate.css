@@ -134,6 +134,12 @@ textarea:not([rows]) {
     }
 }
 
+.border\:r-d4 {
+
+border-radius: 1rem;
+}
+
+@media only screen and (min-width:64rem) {
 .\@hover\:\[text\:dark_p\:d1\]:hover {
 
 color: #2C2638;
@@ -143,8 +149,4 @@ padding-right: 0.25rem;
 padding-bottom: 0.25rem;
 }
 
-.border\:r-d4 {
-
-border-radius: 1rem;
 }
-

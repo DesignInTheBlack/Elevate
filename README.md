@@ -534,10 +534,7 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 
 <br>
 
-However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property attribute map as. That's the powerful affordance of rules in Elevate. 
-
-
-**File:** `elevate/maps/propertyAttributeMap.ts`
+However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property attribute map as seen above.
 
 **Mapping Strategies:**
 
@@ -547,6 +544,8 @@ However, if you have two CSS declarations that share a common token type, you mi
  'max-w': {
         "max-width": "SpacingToken",
     },
+
+//propertyAttributeMap.ts
 ```
 
 **B. Submap for Syntax Extension or to Avoid Token Collisions**
@@ -565,24 +564,23 @@ export const text = {
         'lowercase': 'lowercase',
         'capitalize': 'capitalize'
       }
-
-
 } 
 
+//text.ts in the rules directory
 ```
 
 <br>
 
-#### 4. Token Usage Guidelines 
+#### 4. Token and Rule Usage Guidelines 
 
 **Naming Conventions:**
 - Use clear, semantic names
-- Prefix with the token type (e.g., `BrandColorToken`)
+- Prefix with the token type or Rule Purpose (e.g., `BrandColorToken` or `TextAlignRule`)
 - Avoid generic names that might cause collisions
 
 **Performance Considerations:**
-- Use rules for complex, related tokens or syntactic relationships.
-- Minimize the number of token types as possible.
+- Use rules for complex, related tokens or syntactic relatationships or expanding the syntax.
+- Minimize the number of token types and rules as possible to minimize complexity.
 
 
 <br>
@@ -592,8 +590,8 @@ export const text = {
 **Extension Considerations:**
 - As you begin extending Elevate to fit your use case, consider the following:
   1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts`.
-  2. If you're feeling confused about how rules work, examine the existing rules that allow Elevate to work out of the box.
-  3. You can effectively create your own use case specific syntax for your project via rules, but do so with care and consideration if you do.
+  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to intermediary rules to CSS declarations in the property attribute map.
+  3. You can effectively create your own use case specific syntax for your project via these intermediary rules, but do so with care and consideration if you do.
 
 <br>
 
@@ -602,9 +600,9 @@ export const text = {
 **Common Issues:**
 - If a token doesn’t map correctly, verify the following:
   1. The design token is properly **exported** in the token file.
-  2. The design token is correctly **imported** in `design.ts`.
-  3. All relevant **rules** are updated for your use case.
-  4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`**.
+  2. The design token is correctly **imported** and *configured* in `design.ts`.
+  3. All relevant **rules** are updated for your use case and structured correctly.
+  4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`** in an entry for the property you are trying to map.
   5. Ensure **consistency** across all definitions.
 </details>
 <br>
