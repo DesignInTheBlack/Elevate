@@ -1,6 +1,5 @@
 
 //Design System Token Imports Defined in 'Design' Directory.
-
 import { example } from "../design/example.js";
 import { colors } from "../design/colors.js";
 import { spacing } from "../design/spacing.js";
@@ -18,7 +17,5 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
-
-    //System Tokens
     NumericToken: numeric.NumericToken,
 };
