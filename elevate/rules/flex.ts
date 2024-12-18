@@ -22,18 +22,18 @@ export const flex = {
       "y-baseline": "baseline"
   },
 
-  flexGrowRule: {
+  Grow: {
       "g-0": "0",
       "g-1": "1",
       "g-auto": "auto"
   },
 
-  flexShrinkRule: {
+  Shrink: {
       "s-0": "0",
       "s-1": "1"
   },
 
-  flexSelfRule: {
+  Self: {
       "self-start": "flex-start",
       "self-end": "flex-end",
       "self-center": "center",
@@ -41,7 +41,7 @@ export const flex = {
       "self-auto": "auto"
   },
 
-  flexOrderRule: {
+  Order: {
       "order-first": "-1",
       "order-0": "0",
       "order-1": "1",
@@ -50,11 +50,11 @@ export const flex = {
       "order-last": "999"
   },
 
-  flexBasisRule: {
+  Basis: {
       "basis-": "SpacingToken"
   },
 
- flexWrapRule: {
+ Wrap: {
      "wrap": "wrap",
      "nowrap": "nowrap",
      "reverse": "wrap-reverse"

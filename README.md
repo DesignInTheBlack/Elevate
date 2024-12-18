@@ -268,8 +268,6 @@ Elevate is powered by two distinct elements:
    **Example:**
    ```typescript
    // rules/grid.ts
-   import { SpacingToken } from '../design/spacing.js';
-   import { NumericToken } from '../maps/numeric.js';
 
    export const grid = {
      gap: {
@@ -281,12 +279,8 @@ Elevate is powered by two distinct elements:
      column: {
        "col-": "NumericToken"
      }
-   } as const;
+   } 
 
-   export type GridToken = keyof typeof grid;
-   export type GridGapToken = `g-${SpacingToken}`; 
-   export type GridRowToken = `r-${NumericToken}`; 
-   export type GridColumnToken = `c-${NumericToken}`;
    ```
 <br>
 
@@ -331,7 +325,7 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → SyntaxMapping Rule and Property-Attribute Map Entry
+│       │   ├── Yes → Rule and Property-Attribute Map Entry
 │       │   └── No → PassThrough Token
 ```
 <br>
@@ -404,7 +398,6 @@ Import and distribute syntax rule mappings in `elevate/config/rules.ts`
 
 ```typescript
 
-
 //Rule Submap Imports Defined in 'Maps' Directory.
 import { flex } from '../rules/flex.js';
 import { border } from '../rules/border.js';
@@ -422,11 +415,11 @@ export const rulesMaster = {
     BorderWidthRule: border.width,
     BorderRadiusRule: border.radius,
     BorderStyleRule: border.style,
-    FlexGrowRule: flex.flexGrowRule,
-    FlexShrinkRule: flex.flexShrinkRule,
-    FlexSelfRule: flex.flexSelfRule,
-    FlexOrderRule: flex.flexOrderRule,
-    FlexBasisRule: flex.flexBasisRule,
+    FlexGrowRule: flex.Grow,
+    FlexShrinkRule: flex.Shrink,
+    FlexSelfRule: flex.Self,
+    FlexOrderRule: flex.Order,
+    FlexBasisRule: flex.Basis,
     GridGapRule: grid.gap,
     GridRowRule: grid.row,
     GridColumnRule: grid.column
@@ -465,16 +458,15 @@ export const example = {
 ```
 
 **Key Principles:**
-- Use `as const` for strict type inference
-- Create a type using `keyof typeof`
 - Provide clear, descriptive comments
 - Limit tokens to a single, cohesive concept
+
 
 <br>
 
 #### 2. Design Token Integration
 
-When you create a new design token file, you must import it in `elevate/config/design.ts` and add it to the `designSystem` object. For compatability with the existing rules, you can spread the new token type into the existing token categories.
+When you create a new design token file, you must import it in `elevate/config/design.ts` and add it to the `designSystem` object. For compatability with the existing token types and rules, you can spread the new token type into the existing token categories.
 
 **File:** `elevate/config/design.ts`
 
