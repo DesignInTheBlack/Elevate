@@ -77,14 +77,14 @@ export function toAst(cst: any, context?: { fileName: string }) {
 }
 
 // Processes direct property classes, mapping a single property to its modifiers and returns an AST.
-function handleDirectProperties(cst: any, context?: { fileName: string }) {
+function handleDirectProperties(cst: any, context?: { fileName: string, lineNumber: number }) {
     const directProp = cst.children.DirectProperty[0].image;
 
     const propMap = propertyAttributeMap[directProp];
 
     if (!propMap) {
         throw new Error(
-    `\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName}` : ''}
+    `\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
     💡 Troubleshooting Tips:
     1. Verify the property "${directProp}" is correctly defined in your property map
@@ -103,7 +103,7 @@ function handleDirectProperties(cst: any, context?: { fileName: string }) {
 }
 
 // Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
-function handleContextFlags(cst: any, context?: { fileName: string }) {
+function handleContextFlags(cst: any, context?: { fileName: string, lineNumber: number }) {
     // More robust state extraction
     const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+):/);
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/);
@@ -131,7 +131,7 @@ function handleContextFlags(cst: any, context?: { fileName: string }) {
 }
 
 // Handles pass-through blocks by mapping a property and its modifier directly to a CSS rule.
-function handlePassThrough(cst: any, context?: { fileName: string }) {
+function handlePassThrough(cst: any, context?: { fileName: string, lineNumber: number }) {
     const passThroughMatch = cst.className.match(/^([^:]+):(.*)/);
     if (passThroughMatch) {
         const property = passThroughMatch[1];
@@ -153,19 +153,18 @@ function handlePassThrough(cst: any, context?: { fileName: string }) {
 }
 
 // Handles compound property classes by extracting their modifiers and constructing a stateless class AST.
-function handleCompoundProperties(cst: any, context?: { fileName: string }) {
+function handleCompoundProperties(cst: any, context?: { fileName: string, lineNumber: number }) {
     // Extract property from CST
     const property = cst.children.Property[0].image;
 
     // Validate property before processing
     if (!(property in propertyAttributeMap)) {
         throw new Error(
-            `\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName}` : ''}
+            `\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
     
     💡 Troubleshooting Tips:
-    1. Verify the property name matches the design system
-    2. Check for typos in your class name
-    3. Ensure the property is defined in the propertyAttributeMap
+    1. Check for typos in your class name
+    2. Ensure the property is defined in the propertyAttributeMap
 
     For more information, refer to the Elevate CSS documentation.\n`
         );
@@ -215,7 +214,7 @@ function constructRule(modType: string, property: string, modifier: string, cont
 // ╚════════════════════════════════════════════════════════════════════╝
 
 // Determines the type of a given modifier (token) by checking known token maps and patterns.
-export function getModifierType(modifier: string, context?: { fileName: string }): string {
+export function getModifierType(modifier: string, context?: { fileName: string, lineNumber: number }): string {
 
     // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
     const cleanedModifier = modifier.includes(':') 
@@ -244,7 +243,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
         return "NumericToken";
     }
     throw new Error(
-        `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+        `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
     
     💡 Troubleshooting Tips:
     1. Verify the modifier is correctly defined in your design tokens
@@ -256,7 +255,7 @@ export function getModifierType(modifier: string, context?: { fileName: string }
 }
 
 // Retrieves the actual CSS value for a given modifier by resolving it through token types and handlers.
-export function getModifierValue(modifier: string, context?: { fileName: string }): string {
+export function getModifierValue(modifier: string, context?: { fileName: string, lineNumber: number }): string {
     const modifierType = getModifierType(modifier, context);
 
      if (modifierType === "PassThroughToken") {
@@ -292,7 +291,7 @@ function getAxisSpecificValue(modifier: string): string {
         return types.yAxis[modifier];
     }
     throw new Error(
-        `\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName}` : ''}
+        `\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
  
     💡 Troubleshooting Tips:
     1. Verify the modifier syntax matches the design system
@@ -334,7 +333,7 @@ function handlePrefixModifier(modifier: string, context?: { fileName: string }):
 function validateAndRetrievePrefixValue(
     tokenType: string,
     value: string,
-    context?: { fileName: string }
+    context?: { fileName: string,lineNumber: number }
 ): string {
     // Special handling for NumericToken
     if (tokenType === "NumericToken") {
@@ -354,7 +353,7 @@ function validateAndRetrievePrefixValue(
             .map(group => group.join(', '))
             .join('\n    ');
             throw new Error(
-    `\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName}` : ''}
+    `\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
     💡 Troubleshooting Tips:
     1. Examine your prefix value and ensure it matches the expected token type

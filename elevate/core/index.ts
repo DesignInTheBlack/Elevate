@@ -72,7 +72,7 @@ const main = async () => {
                         lastBreak = classString;
                         return;
                     }
-                    let classObject = elevateCompiler(classString,{ fileName: instance.file });
+                    let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
                    
 

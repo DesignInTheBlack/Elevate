@@ -119,7 +119,7 @@ class ElevateParser extends CstParser {
 // ║                   6. COMPILER FUNCTION                            ║
 // ║ Define the `elevateCompiler` function to process input classes.   ║
 // ╚════════════════════════════════════════════════════════════════════╝
-export const elevateCompiler = (className: string,context?: { fileName: string }): any => {
+export const elevateCompiler = (className: string,context?: { fileName: string, lineNumber: number }): any => {
     const parser = new ElevateParser();
     const result = lexer.tokenize(className);
 
