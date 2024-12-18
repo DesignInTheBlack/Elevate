@@ -513,7 +513,7 @@ Elevate suggests reading this section with care as it is a critical aspect of El
 
 **※ Token Collisions and How to Avoid Them**  
 
-Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly in the property attribute map. It does so through a sophisticated "first match wins" strategy whereby a token passed "slots" to the first CSS declaration that expects a token of that type in your property. 
+Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly in the property attribute map. It does so through a "first match wins" strategy whereby a modifier passed "slots" to the first CSS declaration that expects a token or rule of that type in the property attribute map.
 
 <br>
 
@@ -525,18 +525,18 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
         "font-family": "FontFamilyToken",
         "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
-        "text-align": "TextAlignToken",
+        "text-align": "TextAlignRule",
         "max-width": "MeasureToken",
         "font-weight": "FontWeightToken",
-        "text-transform": "TextTransformToken"
-    },
+        "text-transform": "TextTransformRule"
+    }
 
     //You can write text:red:bold or text:bold:red and the order doesn't matter.
 ```
 
 <br>
 
-However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary token to allow the system to differentiate and then use that intermediary token in the property attribute map. That's the powerful affordance of rules in Elevate. 
+However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property attribute map as. That's the powerful affordance of rules in Elevate. 
 
 
 **File:** `elevate/maps/propertyAttributeMap.ts`
@@ -554,8 +554,6 @@ However, if you have two CSS declarations that share a common token type, you mi
 **B. Submap for Syntax Extension or to Avoid Token Collisions**
 ```typescript
 //Typically defined in a rule file, exported as a syntax mapping rule, which is then referred to in the property attribute map.
- 'text': {
-        "font-size": "FontSizeToken",
 export const text = {
     align: {
         'left': 'left',
@@ -571,10 +569,7 @@ export const text = {
       }
 
 
-} as const;
-
-export type textAlignToken = keyof typeof text.align;
-export type textTransformToken = keyof typeof text.transform;
+} 
 
 ```
 
@@ -586,10 +581,6 @@ export type textTransformToken = keyof typeof text.transform;
 - Use clear, semantic names
 - Prefix with the token type (e.g., `BrandColorToken`)
 - Avoid generic names that might cause collisions
-
-**Type Safety Checks:**
-- Verify token existence before use
-- Use TypeScript's type system to prevent runtime errors
 
 **Performance Considerations:**
 - Use rules for complex, related tokens or syntactic relationships.
@@ -616,7 +607,7 @@ export type textTransformToken = keyof typeof text.transform;
   2. The design token is correctly **imported** in `design.ts`.
   3. All relevant **rules** are updated for your use case.
   4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`**.
-  5. Ensure **type consistency** across all definitions.
+  5. Ensure **consistency** across all definitions.
 </details>
 <br>
 
@@ -739,11 +730,11 @@ Elevate CSS transforms styling into a rigorously engineered system, enabling **l
 
 | **Feature/Philosophy**      | **TailwindCSS**                               | **Elevate CSS**                                |
 |-----------------------------|-----------------------------------------------|-----------------------------------------------|
-| **Core Philosophy**          | Utility-first pragmatism                     | Design-driven, token-validated at build time  |
+| **Core Philosophy**          | Utility-first pragmatism                     | Design-driven, validated at build time  |
 | **Design System Adherence**  | Theming encouraged but optional              | Immutable token validation                    |
 | **Error Handling**           | Runtime reliance, visual QA                  | Build-time validation                         |
 | **Code Readability**         | Verbose class lists                          | Declarative, semantic syntax                  |
-| **Scalability**              | Relies on team discipline                    | Token-driven consistency and validation       |
+| **Scalability**              | Relies on team discipline                    | Token and rule driven consistency and validation       |
 | **Developer Workflow**       | Rapid iteration                              | Intentional, error-proof engineering          |
 | **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS             |
 
