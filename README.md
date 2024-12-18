@@ -637,7 +637,7 @@ The goal of Elevate CSS is to introduce a new standard in the world of utility-f
 
 <br>
 
-### **Market Differentiation and Competitive Positioning**
+### ¶ **Market Differentiation and Competitive Positioning**
 
 Elevate CSS introduces an **engineering-first approach** to front-end styling, differentiating itself from frameworks like TailwindCSS by prioritizing **design system integrity, maintainability, and build-time validation**. Here’s how Elevate CSS stands apart:
 
