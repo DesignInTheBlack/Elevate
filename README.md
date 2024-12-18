@@ -382,7 +382,7 @@ import { colors } from "../design/colors.js";
 import { spacing } from "../design/spacing.js";
 import { typography } from "../design/typography.js";
 
-//Elevate Utility Tokens
+//Elevate Number Validation
 import { numeric } from '../etc/numeric.js';
 
 //Token Type Definitions
@@ -394,7 +394,7 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
-    NumericToken: numeric.NumericToken,
+    NumericToken: numeric,
 };
 ```
 <br>
@@ -477,11 +477,14 @@ When you create a new design token file, you must import it in `elevate/config/d
 
 **Integration Steps:**
 ```typescript
-//Design Token Imports Defined in 'Design' Directory.
+//Design System Token Imports Defined in 'Design' Directory.
 import { example } from "../design/example.js";
 import { colors } from "../design/colors.js";
 import { spacing } from "../design/spacing.js";
 import { typography } from "../design/typography.js";
+
+//Elevate Number Validation
+import { numeric } from '../etc/numeric.js';
 
 //Token Type Definitions
 export const designSystem = {
@@ -492,6 +495,7 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
+    NumericToken: numeric,
 };
 ```
 

@@ -14,6 +14,5 @@ export const numeric = {
             return num.toString();
         }
     }
-} as const;
+} 
 
-export type NumericToken = ReturnType<typeof numeric.NumericToken.validate>;

@@ -5,7 +5,7 @@ import { colors } from "../design/colors.js";
 import { spacing } from "../design/spacing.js";
 import { typography } from "../design/typography.js";
 
-//Elevate Utility Tokens
+//Elevate Number Validation
 import { numeric } from '../etc/numeric.js';
 
 //Token Type Definitions
@@ -17,5 +17,5 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
-    NumericToken: numeric.NumericToken,
+    NumericToken: numeric,
 };
