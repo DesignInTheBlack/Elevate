@@ -1,4 +1,3 @@
-import { SpacingToken } from '../design/spacing.js';
 
 export const border = {
     width: {
@@ -19,9 +18,5 @@ export const border = {
         "none": "none",
         "hidden": "hidden"
     }
-} as const;
+} 
 
-export type BorderRules = keyof typeof border;
-export type BorderWidthRule = `w-${SpacingToken}`;
-export type BorderRadiusRule = `r-${SpacingToken}`;
-export type BorderStyleRule = keyof typeof border.style;

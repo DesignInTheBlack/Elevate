@@ -1,17 +1,32 @@
 import fs from 'fs';
 //Configuration Options
 import { config } from '../config/elevate.js';
+
+//Compiler
 import { elevateCompiler } from './parser.js';
-//CSS Reset & Utility Tokens
+
+//Import CSS Reset
 import { cssReset } from '../etc/reset.js';
+
+//Import Numeric Validation
 import { numeric } from '../etc/numeric.js';
+
 //Core Syntax Mapping
 import { propertyAttributeMap, propertyMap } from "../rules/propertyAttributeMap.js";
-//Design Tokens
+
+//Import BreakPoints
 import { breakpoints, BreakpointToken } from "../design/breakpoints.js";
+
+//Import Spacing
 import { spacing, SpacingToken } from "../design/spacing.js";
+
+//Import Buffer Map
 import { buffer } from '../etc/buffer.js';
+
+//Import Design System
 import { designSystem } from '../config/design.js';
+
+//Import Rules
 import { rulesMaster } from '../config/rules.js';
 
 // ╔════════════════════════════════════════════════════════════════════╗
@@ -26,6 +41,7 @@ process.on('uncaughtException', (err) => {
 });
 
 const types = {
+
     ...designSystem,
     ...rulesMaster
 };

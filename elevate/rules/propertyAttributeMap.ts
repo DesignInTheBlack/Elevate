@@ -189,7 +189,7 @@ export const propertyAttributeMap = {
     }
 
 
-} as const;
+} 
 
 export type propertyMap = keyof typeof propertyAttributeMap;
 export const propertyKeys = Object.keys(propertyAttributeMap) as propertyMap[];

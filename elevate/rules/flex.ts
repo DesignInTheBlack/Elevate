@@ -1,6 +1,3 @@
-// import { SpacingToken } from '../design/spacing.js';
-//export type FlexBasisToken = `basis-${SpacingToken}`;
-//Consider this approach for listing applicable values for token specific instances
 
 export const flex = {
   xAxis: {
@@ -63,14 +60,8 @@ export const flex = {
      "reverse": "wrap-reverse"
  }
 
-} as const;
+} 
 
-export type FlexRules = keyof typeof flex;
-export type FlexGrowRule = keyof typeof flex.flexGrowRule;
-export type FlexWrapRule = keyof typeof flex.flexWrapRule;
-export type FlexShrinkRule = keyof typeof flex.flexShrinkRule;
-export type FlexSelfRule = keyof typeof flex.flexSelfRule;
-export type FlexOrderRule = keyof typeof flex.flexOrderRule;
-export type FlexBasisRule = keyof typeof flex.flexBasisRule;
+
 
 

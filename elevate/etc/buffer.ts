@@ -1,8 +1,5 @@
-// buffer.ts
-import { type SpacingToken } from '../design/spacing.js';
-import { type BreakpointToken } from '../design/breakpoints.js';
 
-export const buffer: Record<BreakpointToken, SpacingToken> = {
+export const buffer = {
     '2xs': 'd5',
     'xs': 'd5',
     'sm': 'd5',
@@ -14,5 +11,3 @@ export const buffer: Record<BreakpointToken, SpacingToken> = {
     '4xl': 'c12',
     '5xl': 'c12'
 };
-
-export type BufferRule = typeof buffer;
