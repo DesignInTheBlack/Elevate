@@ -29,7 +29,8 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Syntax Guide](#-syntax-guide)  
    - [Responsive Styling](#-responsive-styling)  
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)  
-   - [Design Tokens and Rules](#-design-tokens-and-rules)  
+   - [Design Tokens and Rules](#-design-tokens-and-rules)
+   - [Special Tokens](#-special-tokens)    
    - [Token Selection Guide](#-token-selection-guide)  
    - [Best Practices](#-best-practices)  
 5. [Configuration](#-configuration)  
@@ -286,7 +287,9 @@ Elevate is powered by two distinct elements:
 
 
 
- ### ¶ Special Tokens*
+ ### ¶ Special Tokens
+
+ <br>
 
    **Pass-Through Tokens**  
    - Unrestricted value entry.  
