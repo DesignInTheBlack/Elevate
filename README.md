@@ -467,6 +467,7 @@ Elevate is designed to be extensible and adaptable, allowing you to easily add n
 
 By default, Elevate includes a basic example of extending the design system. Please see `example.ts` and `design.ts`.
 
+<br>
 
 #### 1. Design Token File Creation
 
