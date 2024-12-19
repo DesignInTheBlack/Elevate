@@ -469,7 +469,7 @@ By default, Elevate includes a basic example of extending the design system. Ple
 
 <br>
 
-#### 1. Design Token File Creation
+#### Design Token File Creation
 
 The most straightforward way to add a new token type is to create a new file in the `design/` directory. 
 
@@ -490,7 +490,7 @@ export const example = {
 
 <br>
 
-#### 2. Design Token Integration
+#### Design Token Integration
 
 When you create a new design token file, you must import it in `elevate/config/design.ts` and add it to the `designSystem` object. For compatability with the existing token types and rules, you can spread the new token type into the existing token categories.
 
@@ -520,7 +520,7 @@ export const designSystem = {
 
 <br>
 
-#### 3. Syntax Mapping Rule Creation
+#### Syntax Mapping Rule Creation
 
 Mapping new rules allows for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
@@ -556,6 +556,8 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 <br>
 
 However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the declaration map as seen above.
+
+<br>
 
 **Mapping Strategies:**
 
@@ -600,7 +602,7 @@ export const border = {
 
 <br>
 
-#### 4. Token and Rule Usage Guidelines 
+#### Token and Rule Usage Guidelines 
 
 **Naming Conventions:**
 - Use clear, semantic names
