@@ -786,7 +786,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 ## § Product Roadmap
 
-The framework is actively evolving to adapt to the needs of the design and development community. Currently, Elevate CSS is a proof-of-concept framework that aims to reimagine utility-first CSS approaches. It is in an early, experimental stage and I warmly welcome community feedback, contributions, and insights. My goal is to collaborate with developers and designers to refine and improve the framework, addressing real-world challenges:
+The framework is actively evolving to adapt to the needs of the design and development community. Currently, Elevate CSS is a proof-of-concept framework that hopes to reimagine utility-first CSS approaches. It is in an early, experimental stage and I warmly welcome community feedback, contributions, and insights. My goal is to collaborate with developers and designers to refine and improve the framework, addressing real-world challenges:
 
 <details>
 <summary>Click Here To Read More</summary>
@@ -795,15 +795,15 @@ The framework is actively evolving to adapt to the needs of the design and devel
 
 <br>
 
-- Statis Analysis and Compile Time Guarantees 
-- IDE Integration for Syntax Highlighting and Autocomplete
+- Consider Static Analysis and Compile Time Guarantees 
+- IDE Integration for Syntax Highlighting and Autocomplete (Potentially Via LSP)
 - Child selector support
 - Expanded grid support with expressive syntax
 - Container query support
 - Logical property support for internationalization and flexible layouts
 - Accessibility-focused utilities such as `hidden:visually` and ARIA state helpers
 - Advanced selector composition for sibling selectors, combinators, and pseudo-classes
-- More to come, so check back regularly!
+- Potentially some of **your** ideas and more to come, so check back regularly or get involved!
 
 <br>
 
