@@ -134,9 +134,8 @@ textarea:not([rows]) {
     }
 }
 
-.row\:x-center {
-display:flex;
-flex-direction:row;
-justify-content: center;
+.bg-color\:dark {
+
+background-color: #2C2638;
 }
 

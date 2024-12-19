@@ -12,7 +12,7 @@ import { cssReset } from '../etc/reset.js';
 import { numeric } from '../etc/numeric.js';
 
 //Core Syntax Mapping
-import { propertyAttributeMap } from "../rules/propertyAttributeMap.js";
+import { declarationMap } from "../config/declarationMap.js";
 
 //Import BreakPoints
 import { breakpoints} from "../design/breakpoints.js";
@@ -80,7 +80,7 @@ export function toAst(cst: any, context?: { fileName: string }) {
 function handleDirectProperties(cst: any, context?: { fileName: string, lineNumber: number }) {
     const directProp = cst.children.DirectProperty[0].image;
 
-    const propMap = propertyAttributeMap[directProp];
+    const propMap = declarationMap[directProp];
 
     if (!propMap) {
         throw new Error(
@@ -158,13 +158,13 @@ function handleCompoundProperties(cst: any, context?: { fileName: string, lineNu
     const property = cst.children.Property[0].image;
 
     // Validate property before processing
-    if (!(property in propertyAttributeMap)) {
+    if (!(property in declarationMap)) {
         throw new Error(
             `\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
     
     💡 Troubleshooting Tips:
     1. Check for typos in your class name
-    2. Ensure the property is defined in the propertyAttributeMap
+    2. Ensure the property is defined in the declaration map
 
     For more information, refer to the Elevate CSS documentation.\n`
         );
@@ -202,7 +202,7 @@ function processModifiers(cst: any, context?: { fileName: string }) {
 // Constructs a single CSS rule line by combining a property and a resolved modifier value.
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
     return (
-        getRuleName(modType, property, propertyAttributeMap) +
+        getRuleName(modType, property, declarationMap) +
         ": " +
         getModifierValue(modifier, context)
     );
@@ -382,7 +382,7 @@ function directionExpansion(modifiers: any[]): any[] {
 export function getRuleName(
     modifier: string,
     property: string,
-    keys: typeof propertyAttributeMap
+    keys: typeof declarationMap
 ): string {
     function isPropertyIncluded(property: string): property is propertyMap {
         return property in keys;

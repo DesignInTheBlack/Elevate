@@ -2,7 +2,7 @@
 
 <br>
 
-Elevate CSS is a compile-first utility framework that transforms your styling layer into a seamless extension of your design system. With a token-driven architecture, expressive utility string (property:modifier) syntax, and build-time validation, Elevate ensures every styling decision is consistent, intentional, and scalable. By bridging the gap between design and development, Elevate empowers teams to create maintainable, error-free, and future-proof codebases with clarity and precision.
+Elevate CSS is a compile-first utility framework that transforms your styling layer into a seamless extension of your design system. With a token-driven architecture, expressive and expandable utility string (property:modifier) syntax, and build-time validation, Elevate ensures every styling decision is consistent, intentional, and scalable. By bridging the gap between design and development, Elevate empowers teams to create maintainable, error-free, and future-proof codebases with clarity and precision.
 
 <br>
 
@@ -12,7 +12,7 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 
 **※ Please Excuse Our Progress:**  
 
-In it's current iteration (v0.1-alpha), Elevate CSS is a work in progress and subject to change. I welcome your feedback and suggestions for future enhancements as I take this project from a technical proof-of-concept to a full-fledged utility framework. 
+In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and subject to change. I welcome your feedback and suggestions for future enhancements as I take this project from a technical proof-of-concept to a full-fledged utility framework. 
 
 <br>
 <br>
@@ -51,13 +51,14 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a work in progress and su
 <br>
 
 - **Build-Time Validation**
-  - Elevate validates utility strings, tokens, and rules during the build process.
+  - Elevate validates utility strings, design system tokens, and syntax rules during the build process.
   - Ensures class definitions conform to your design system before CSS is generated.
-  - Errors like invalid properties or tokens are caught at build time, producing error-free CSS.
+  - Errors like invalid syntax or tokens are caught at build time, producing error-free CSS.
 
 - **Strict Design Integration**
   - Token-based system for colors, spacing, typography, and breakpoints
   - Structured property-attribute relationships
+  - Extensible syntax that grows with your design system
 
 
 - **Responsive Design**
@@ -83,7 +84,7 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a work in progress and su
    The design system is the single source of truth, rigorously upheld through build-time validation to eliminate off-scale values and unauthorized modifications. 
 
 - **Extensible and Reliable**  
-   Elevate must support growth and adaptation while maintaining simplicity, with styling validated at build-time to guarantee alignment with the design system on every build. 
+   Elevate must support growth and adaptation while maintaining simplicity, with syntax validated at build-time to guarantee alignment with the design system on every build. 
 
 <br>
 
@@ -130,7 +131,7 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of Elevate's syntax are "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the class attribute in HTML. 
+At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate.
 <br>
 
 **Direct Properties:**  
@@ -189,7 +190,7 @@ Elevate enforces a mobile-first, organized syntax for responsive design:
 
 **Contextual Flag [@]:**  
 
-Allows complex, conditional styling for states, conditions, and other pseudo-classes or pseudo-elements.:
+Allows complex, conditional styling for states, conditions, and other pseudo-classes or pseudo-elements:
 
 ```html
 <div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
@@ -225,22 +226,22 @@ Elevate is powered by two distinct elements:
 
 <br>
 
-**Design System Tokens**
+**Design System Tokens (Tokens)**
    - Global, immutable design constraints.  
    - Centralized values, enforce system-wide consistency.
 <br>
 
-**Syntax Rule Mappings**  
+**Syntax Rule Mappings (Rules)**  
    - Property-specific structural validation.  
    - Validate property values, provide transformations.
-   - Allow for syntax extensions and modification through submapping.
+   - Allow for syntax extensions and modification through syntax rule mapping.
 <br>
 
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
    - **Location:** `design/` directory  
-   - **Configuration:** `elevate/config/design.ts`
+   - **Configuration:** `elevate/config/design.ts` and `elevate/design`
    - **Characteristics:** Centralized values, enforce system-wide consistency.
 
    **Example:**
@@ -261,8 +262,8 @@ Elevate is powered by two distinct elements:
 2. **Syntax Rule Mappings**  
    - **Purpose:** Property-specific structural validation and syntax construction or extension.  
    - **Location:** `rules/` directory  
-   - **Configuration:** `elevate/rules/propertyAttributeMap.ts` and `elevate/config/rules.ts`
-   - **Characteristics:** Validate property values, provide transformations, and structure syntax.
+   - **Configuration:** `elevate/config/declarationMap.ts`, `elevate/config/rules.ts` and `elevate/rules`
+   - **Characteristics:** Validate property values, provide transformations, and structure or extend syntax.
 
    **Example:**
    ```typescript
@@ -285,7 +286,7 @@ Elevate is powered by two distinct elements:
 
 
 
-   **※ A Very Special Design Token**
+ ### ¶ Special Tokens*
 
    **Pass-Through Tokens**  
    - Unrestricted value entry.  
@@ -313,6 +314,28 @@ For example, preserving parentheses for values requiring them (e.g., URLs).
 
 <br>
 
+  **Numeric Tokens**  
+   - For numeric values.  
+   - Build-time validation ensures that the value is a valid number.
+   - Primarily used for CSS rules that require numeric values.
+
+   <br>
+
+   **Example:**
+
+   ```typescript
+   //Declaration Map
+   // =============================
+    // Z-Index
+    // =============================
+    z: { "z-index": "NumericToken" }
+   ```
+
+   ```html
+   <div class="z:20"></div>
+   ```
+<br>
+
 ### ¶ Token Selection Guide
 
 <br>
@@ -327,12 +350,6 @@ Property Characteristics
 │       │   ├── Yes → Rule and Property-Attribute Map Entry
 │       │   └── No → PassThrough Token
 ```
-<br>
-
-**※ Design Tokens In Syntax Mapping Rules**  
-
-You must import relevant design token files if used in a rule file to ensure build-time validation.
-
 <br>
 
 ### ¶ Best Practices
@@ -482,8 +499,6 @@ import { example } from "../design/example.js";
 import { colors } from "../design/colors.js";
 import { spacing } from "../design/spacing.js";
 import { typography } from "../design/typography.js";
-
-//Elevate Number Validation
 import { numeric } from '../etc/numeric.js';
 
 //Token Type Definitions
@@ -503,7 +518,7 @@ export const designSystem = {
 
 #### 3. Syntax Mapping Rule Creation
 
-Mapping rules allow for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
+Mapping new rules allows for you to extend Elevate to better fit your use case or to model your design system's syntax in a way that is
 consistent, maintainable, and appropriate to the product you are creating. You are essentially defining an intermediary token type that can be used in place of a design token type. 
 <br>
 Elevate suggests reading this section with care as it is a critical aspect of Elevate's design philosophy and architecture.
@@ -530,17 +545,19 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
     }
 
     //You can write text:red:bold or text:bold:red and the order doesn't matter.
+
+    //Note the distinction between "rules" and "tokens".
 ```
 
 <br>
 
-However, if you have two CSS declarations that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property attribute map as seen above.
+However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the declaration map as seen above.
 
 **Mapping Strategies:**
 
 **A. Direct Token Mapping**
 ```typescript
-//Typically defined directly in the property attribute map for simplicity
+//Typically defined directly in the declaration map, with a design token type mapped directly to a CSS declaration.
  'max-w': {
         "max-width": "SpacingToken",
     },
@@ -548,25 +565,33 @@ However, if you have two CSS declarations that share a common token type, you mi
 //propertyAttributeMap.ts
 ```
 
-**B. Submap for Syntax Extension or to Avoid Token Collisions**
+**B. Syntax Rule Mapping for Syntax Extension or to Avoid Token Collisions**
 ```typescript
-//Typically defined in a rule file, exported as a syntax mapping rule, which is then referred to in the property attribute map.
-export const text = {
-    align: {
-        'left': 'left',
-        'center': 'center',
-        'right': 'right',
-        'justify': 'justify'
-      },
 
-      transform: {
-        'uppercase': 'uppercase',
-        'lowercase': 'lowercase',
-        'capitalize': 'capitalize'
-      }
+//Typically defined in a rule file, imported as a syntax mapping rule in rules.ts, which is then referred to in the declaration map.
+
+export const border = {
+    width: {
+        "w-": "SpacingToken"
+    },
+    radius: {
+        "r-": "SpacingToken"
+    },
+    style: {
+        "solid": "solid",
+        "dashed": "dashed",
+        "dotted": "dotted",
+        "double": "double",
+        "groove": "groove",
+        "ridge": "ridge",
+        "inset": "inset",
+        "outset": "outset",
+        "none": "none",
+        "hidden": "hidden"
+    }
 } 
 
-//text.ts in the rules directory
+//border.ts in the rules directory
 ```
 
 <br>
@@ -589,10 +614,9 @@ export const text = {
 
 **Extension Considerations:**
 - As you begin extending Elevate to fit your use case, consider the following:
-  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts`.
-  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to intermediary rules to CSS declarations in the property attribute map.
-  3. You can effectively create your own use case specific syntax for your project via these intermediary rules, but do so with care and consideration if you do.
-
+  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts` for maximum compatibility with the default declarations in the declaration map.
+  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to intermediary rules to CSS declarations in the declaration map.
+  3. You can effectively create your own use case specific syntax for your project via these intermediary rules, but do so with care and consideration if you do. Elevate recommends using the existing rules for maximum compatibility whenever possible.
 <br>
 
 #### Troubleshooting 
@@ -600,9 +624,9 @@ export const text = {
 **Common Issues:**
 - If a token doesn’t map correctly, verify the following:
   1. The design token is properly **exported** in the token file.
-  2. The design token is correctly **imported** and *configured* in `design.ts`.
+  2. The design token is correctly **imported** and **configured** in `design.ts`.
   3. All relevant **rules** are updated for your use case and structured correctly.
-  4. The design token or subsequent rules are included in **`propertyAttributeMap.ts`** in an entry for the property you are trying to map.
+  4. The design token or subsequent rules are included in **`declarationMap.ts`** in an entry for the property you are trying to map.
   5. Ensure **consistency** across all definitions.
 </details>
 <br>
@@ -613,9 +637,9 @@ export const text = {
 
 ```
 elevate/
-├── config/     # Framework configuration
+├── config/     # Framework configuration files
 │  
-├── core/       # Core parsing and compilation logic
+├── core/       # Core scanning, parsing, and compilation logic
 │  
 ├── design/     # Design system tokenization
 │  
@@ -647,7 +671,7 @@ Elevate CSS introduces an **engineering-first approach** to front-end styling, d
    TailwindCSS provides immense flexibility but lacks mechanisms to **enforce design system constraints**. Developers can easily introduce arbitrary values (e.g., `px-3.5`, `text-[14px]`), leading to **inconsistent styling** and design drift.
 
 - **Elevate’s Innovation:**  
-   Elevate CSS enforces strict adherence to **immutable design tokens** for properties like color, spacing, and typography. By validating styles **at build time**, it ensures that every property and modifier aligns with the design system, eliminating guesswork and inconsistencies.
+   Elevate CSS enforces strict adherence to **immutable design tokens** for properties like color, spacing, and typography. By validating styles **at build time**, it ensures that every property and modifier aligns with the design system, eliminating guesswork and inconsistencies. Decisions made are **considered** decisions and accesible to everyone.
 
 **Key Differentiator:**  
 Elevate turns your design tokens into **enforceable rules**, not optional guidelines, ensuring design consistency across projects.
@@ -657,7 +681,7 @@ Elevate turns your design tokens into **enforceable rules**, not optional guidel
 #### **Build-Time Validation for Guaranteed Correctness**
 
 - **Market Problem:**  
-   TailwindCSS relies on **manual checks** and runtime visibility to catch issues like typos or invalid class names (`bg-blu-500`). This reactive approach increases QA overhead and technical debt.
+   TailwindCSS relies on **manual checks** and runtime visibility to catch issues like typos or invalid class names (`bg-blu-500`). This reactive approach increases QA overhead as well as technical debt over time.
 
 - **Elevate’s Innovation:**  
    Elevate validates **all utility strings and tokens during the build process**, catching errors like misspelled classes or unauthorized modifiers **before production**. Incorrect styles fail the build, ensuring only valid and consistent styles are shipped.
@@ -670,23 +694,23 @@ Elevate acts as a **compiler for CSS**, enforcing correctness at build time and 
 #### **From Class Bloat to Declarative, Semantic Syntax**
 
 - **Market Problem:**  
-   Tailwind's utility-first approach leads to **verbose, hard-to-read class lists** that obscure design intent (`bg-blue-500 px-4 py-2 text-sm`). Maintaining and auditing these class stacks becomes challenging, especially in large projects.
+   Tailwind's utility-first approach leads to **verbose, hard-to-read class lists** that obscure design intent (`bg-blue-500 px-4 py-2 text-sm`) and are rarely thoughtfully organized. Maintaining and auditing these class stacks becomes challenging, especially in large projects.
 
 - **Elevate’s Innovation:**  
-   Elevate adopts a **property:modifier syntax** (e.g., `text:purple:bold space:y-2`) that maps directly to pre-approved design tokens. This concise syntax makes classes self-explanatory, reducing cognitive overhead and improving code readability.
+   Elevate adopts a **property:modifier syntax** (e.g., `text:purple:bold space:y-2`) that maps directly to pre-approved design tokens and structures your responsive styling in a **semantic, declarative way**. This concise syntax makes classes self-explanatory, reducing cognitive overhead and improving code readability.
 
 **Key Differentiator:**  
-Elevate’s declarative syntax doubles as **living documentation** of your design system, making design intent visible and maintainable.
+Elevate’s declarative syntax doubles as **living documentation** of your design system, making design intent visible, perceivable, most importantly - maintainable.
 
 <br>
 
 #### **From Utility Overload to Structured, Composable Logic**
 
 - **Market Problem:**  
-   Tailwind's atomic classes provide flexibility but lack a conceptual framework, leaving teams to define their own conventions. This becomes unsustainable as projects and teams scale.
+   Tailwind's atomic classes provide flexibility but lack a conceptual framework, leaving teams to define their own conventions. This becomes unsustainable as projects and teams scale or change.
 
 - **Elevate’s Innovation:**  
-   Elevate organizes styles around meaningful categories (e.g., `text`, `grid`, `space`) and validates modifiers against strictly defined design tokens. This structured approach builds a coherent vocabulary over time, making the system easier to scale and maintain.
+   Elevate organizes styles around meaningful categories (e.g., `text`, `grid`, `space`) and validates modifiers against strictly defined design tokens. This structured approach helps you to build a coherent vocabulary over time, making the system easier to scale and maintain.
 
 **Key Differentiator:**  
 Elevate transforms ad-hoc class lists into a **stable, composable styling system** that grows with your project.
@@ -702,7 +726,7 @@ Elevate transforms ad-hoc class lists into a **stable, composable styling system
    Elevate treats the design system as the **foundation of all styling decisions**. Breakpoints, states, and tokens are managed as **runtime-validated constants**, ensuring that changes propagate consistently throughout the codebase. This enables large teams to scale their design systems without sacrificing alignment or maintainability.
 
 **Key Differentiator:**  
-Elevate CSS integrates deeply with your design system, ensuring **coherence and scalability** as complexity grows.
+Elevate CSS integrates deeply with your design system, ensuring **coherence and scalability** as complexity grows over time.
 
 <br>
 
@@ -712,7 +736,7 @@ Elevate CSS integrates deeply with your design system, ensuring **coherence and 
    CSS frameworks often prioritize flexibility, relying on intuition and human judgment to maintain consistency. This creates friction for teams that value predictable workflows, reliable validation, and build-time guarantees.
 
 - **Elevate’s Innovation:**  
-   By leveraging **structured token and rule definitions**, AST parsing, and **compiler-driven validation**, Elevate brings engineering principles to front-end styling. Developers benefit from a predictable, reliable workflow that aligns with modern software practices.
+   By leveraging **structured token and rule definitions** and **compiler-driven validation**, Elevate brings engineering principles to front-end styling. Developers benefit from a predictable, reliable workflow that aligns with modern software practices and keeps you in sync with your design system.
 
 **Key Differentiator:**  
 Elevate CSS transforms styling into a rigorously engineered system, enabling **long-term maintainability and reliability**.
@@ -729,8 +753,8 @@ Elevate CSS transforms styling into a rigorously engineered system, enabling **l
 | **Error Handling**           | Runtime reliance, visual QA                  | Build-time validation                         |
 | **Code Readability**         | Verbose class lists                          | Declarative, semantic syntax                  |
 | **Scalability**              | Relies on team discipline                    | Token and rule driven consistency and validation       |
-| **Developer Workflow**       | Rapid iteration                              | Intentional, error-proof engineering          |
-| **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS             |
+| **Developer Workflow**       | Rapid iteration                              | Intentional, error-resistant engineering          |
+| **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS, no tree shaking necessary           |
 
 
 <br>
@@ -746,7 +770,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
    By strictly enforcing tokens and validating at build-time, Elevate guarantees that every style adheres to the system.
 
 - **For Developers Who Value Clarity:**  
-   Elevate’s semantic syntax reveals intent, making codebases easier to read, teach, and maintain.
+   Elevate’s semantic syntax reveals intent, making codebases easier to read, to teach, and to maintain.
 
 <br>
 
@@ -756,7 +780,7 @@ Elevate CSS introduces a new standard for utility-first frameworks by prioritizi
 
 ## § Product Roadmap
 
-The framework is actively evolving to adapt to the evolving needs of the design and development community. Currently, Elevate CSS is a proof-of-concept framework that aims to redefine utility-first CSS approaches. It is in an early, experimental stage and I warmly welcome community feedback, contributions, and insights. Our goal is to collaborate with developers and designers to refine and improve the framework, addressing real-world challenges:
+The framework is actively evolving to adapt to the needs of the design and development community. Currently, Elevate CSS is a proof-of-concept framework that aims to reimagine utility-first CSS approaches. It is in an early, experimental stage and I warmly welcome community feedback, contributions, and insights. Our goal is to collaborate with developers and designers to refine and improve the framework, addressing real-world challenges:
 
 <details>
 <summary>Click Here To Read More</summary>
@@ -814,7 +838,7 @@ The framework is actively evolving to adapt to the evolving needs of the design 
 
 ## § Licensing
 
-Elevate CSS is released as open-source software to empower developers to create scalable and maintainable design systems. The framework is provided with the intent to foster collaboration and community contributions, while retaining full ownership and rights by the original author.
+Elevate CSS is released as open-source software to empower developers and designers. The framework is provided with the intent to foster collaboration and community contributions, while retaining full ownership and rights by the original author.
 
 ### ¶ Key Points
 
@@ -830,7 +854,7 @@ Elevate CSS is released as open-source software to empower developers to create 
 - **Ownership**:  
    The name "Elevate CSS," its branding, and all related intellectual property remain solely owned by the original author.
 
-Elevate CSS’s licensing structure ensures that while the framework remains open-source, the rights and ownership stay intact with its creator. This allows for potential future commercialization or other endeavors as determined by the author.
+Elevate CSS’s licensing structure ensures that while the framework remains open-source, the rights and ownership stay intact with its creator. This allows for potential future commercialization or other endeavors as determined by the author and future contributors.
 
 <br>
 

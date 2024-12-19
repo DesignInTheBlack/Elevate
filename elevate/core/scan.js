@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+//Configuration Options
+import { config } from '../config/elevate.js';
 
 /**
  * Recursively search for files of specific extensions within a directory
@@ -88,7 +90,7 @@ const extractClasses = (content, classList, filePath) => {
  * @param {Array<string>} fileTypes - File extensions to scan for (e.g., ['html', 'jsx', 'tsx'])
  * @returns {Array<Object>} - Array of objects with file, line number, and class lists
  */
-export function findClassAttributes(startDir = process.cwd(), fileTypes = ['html', 'jsx', 'tsx', 'astro']) {
+export function findClassAttributes(startDir = process.cwd(), fileTypes = config.FileTypes) {
     try {
         return searchFiles(startDir, fileTypes);
     } catch (err) {
