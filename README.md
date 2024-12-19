@@ -703,7 +703,7 @@ Elevate acts as a **compiler for CSS**, enforcing correctness at build time and 
    Tailwind's utility-first approach leads to **verbose, hard-to-read class lists** that obscure design intent (`bg-blue-500 px-4 py-2 text-sm`) and are rarely thoughtfully organized. Maintaining and auditing these class stacks becomes challenging, especially in large projects.
 
 - **Elevate’s Innovation:**  
-   Elevate adopts a **property:modifier syntax** (e.g., `text:purple:bold space:y-2`) that maps directly to pre-approved design tokens and structures your responsive styling in a **semantic, declarative way**. This concise syntax makes classes self-explanatory, reducing cognitive overhead and improving code readability.
+   Elevate adopts a **property:modifier syntax** (e.g., `text:purple:bold space:d2`) that maps directly to pre-approved design tokens and structures your responsive styling in a **semantic, declarative way**. This concise syntax makes classes self-explanatory, reducing cognitive overhead and improving code readability.
 
 **Key Differentiator:**  
 Elevate’s declarative syntax doubles as **living documentation** of your design system, making design intent visible, perceivable, most importantly - maintainable.
