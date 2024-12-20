@@ -447,6 +447,7 @@ Elevate is designed to be extensible and adaptable, allowing you to easily add n
 #### Expanding the Design System
 
 If your goal is to simply integrate your design system into elevate, you can follow these steps:
+
 <br>
 
 1. Add new design system tokens to the `elevate/design` directory.
@@ -468,6 +469,7 @@ export const BrandColors = {
 } 
 
 ```
+
 <br>
 
 2. Import the new tokens into `elevate/config/design.ts`. 
@@ -506,8 +508,10 @@ As you integrate your design system, you may want to create product specific or 
 1. Create a new file in the `elevate/rules` directory.
 
 <br>
+
 **※ Rule Files and Modifier Syntax**  
 When creating a new rule file, it is important to remember that you are defining the syntax of the modifier and not the property. In the case below, we're specifying that for our new example property (brand), we want to add new rules and we're articulating how those modifiers should be written as well as the types of token they will expect. 
+
 <br>
 
 ```
