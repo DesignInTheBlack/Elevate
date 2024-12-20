@@ -88,21 +88,21 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate through the expression of property and modifier combinations.
+At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate through the expression of property and modifier combinations - which are validated against the design system and a series of rules at build-time to ensure consistency.
 
 <br>
 
 **The Format**:
 
 ```html
-<div class = "property:modifier:modifier">
+<div class = "property:modifier">
 ```
 
 <br>
 
 **Direct Properties:**  
 
-Define a single property with a value. Generally used for layout and positioning.
+Direct properties are properties that do not require any modifier and that define a single CSS declaration. Generally used for layout and positioning.
 
 ```html
 <div class="block"> <!-- display: block -->
@@ -112,10 +112,20 @@ Define a single property with a value. Generally used for layout and positioning
 
 **Compound Properties:** 
 
-Build complex class definitions by chaining modifiers:
+Compound properties are properties that require one or more modifiers to be applied. These properties are used to create more complex CSS declarations.
 
 ```html
-<div class="property:modifier:modifier:modifier">      
+
+<div class="text:dark:bold:left">     
+
+<!--
+.text\:dark\:bold\:left {
+color: #2C2638;
+font-weight: 700;
+text-align: left;
+}
+-->
+
 ```
 
 <br>
@@ -141,7 +151,7 @@ You can write text:red:bold or text:bold:red and the order doesn't matter. We'll
 
 <br>
 
-Elevate enforces a mobile-first, organized syntax for responsive design:
+Elevate affords and enforces a mobile-first, organized syntax for responsive design:
 
 ```html
 <div class="text:purple p:d1:d2 /md/ text:right /lg/ @hover:[text:green:right]"> 
@@ -190,21 +200,9 @@ Exempt certain classes from CSS generation (e.g. for JavaScript interactions):
 
 <br>
 
-Elevate is powered by two distinct elements:
+Elevate's systems are driven by two distinct elements:
 
 <br>
-
-**Design System Tokens (Tokens)**
-   - Global, immutable design constraints.  
-   - Centralized values, enforce system-wide consistency.
-<br>
-
-**Syntax Rule Mappings (Rules)**  
-   - Property-specific structural validation.  
-   - Validate property values, provide transformations.
-   - Allow for syntax extensions and modification through syntax rule mapping.
-<br>
-
 
 1. **Design System Tokens**  
    - **Purpose:** Global, immutable design constraints.  
@@ -230,7 +228,7 @@ Elevate is powered by two distinct elements:
 2. **Syntax Rule Mappings**  
    - **Purpose:** Property-specific structural validation and syntax construction or extension.  
    - **Location:** `rules/` directory  
-   - **Configuration:** `elevate/config/declarationMap.ts`, `elevate/config/rules.ts` and `elevate/rules`
+   - **Configuration:**  `elevate/config/rules.ts` and `elevate/rules`
    - **Characteristics:** Validate property values, provide transformations, and structure or extend syntax.
 
    **Example:**
@@ -256,6 +254,8 @@ Elevate is powered by two distinct elements:
 
  ### ¶ Special Tokens
 
+ Elevate includes a number of "helper" token types that provide additional capabilities beyond the core functionality for specific situations. These can be used to extend the framework's capabilities, but they should be used with caution. 
+
  <br>
 
    **Pass-Through Tokens**  
@@ -279,8 +279,8 @@ Elevate is powered by two distinct elements:
    ```
 <br>
 
-Please note that you must pass through the value in the same way that you would write it in CSS.
-For example, preserving parentheses for values requiring them (e.g., URLs).
+Please note that when using PassThroughToken, you must pass through the value in the same way that you would write it in CSS.
+For example, preserving parentheses for values requiring them (e.g., URLs) or as above when passing number and unit combinations.
 
 <br>
 
@@ -317,7 +317,7 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → Rule and Property-Attribute Map Entry
+│       │   ├── Yes → New Rule File and Rules.tsEntry
 │       │   └── No → PassThrough Token
 ```
 <br>
@@ -363,25 +363,33 @@ export const config = options
 Import and distribute design system tokens in `elevate/config/design.ts`
 
 ```typescript
-//Design System Token Imports Defined in 'Design' Directory.
-import { example } from "../design/example.js";
-import { colors } from "../design/colors.js";
-import { spacing } from "../design/spacing.js";
-import { typography } from "../design/typography.js";
+//Design System Token Imports 
 
-//Elevate Number Validation
-import { numeric } from '../etc/numeric.js';
+//Elevate Utility Imports
+import { heightUtility } from "../core/system/etc/height.js";
 
-//Token Type Definitions
+//Example Custom Values Import
+import { BrandColors } from "../design/example-brandTokens.js";
+
+//System Standard Imports
+import { colors } from "../core/system/design/colors.js";
+import { spacing } from "../core/system/design/spacing.js";
+import { typography } from "../core/system/design/typography.js";
+import { breakpoints } from '../core/system/design/breakpoints.js';
+
+//Token Definitions
 export const designSystem = {
-    ColorToken: { ...colors, ...example },
-    SpacingToken: spacing,
+    ColorToken: colors,
+    BreakPointToken: breakpoints,
+    SpacingToken: {...spacing,...heightUtility},
     FontSizeToken: typography.size,
     FontFamilyToken: typography.family,
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
-    NumericToken: numeric,
+
+    //Spread Custom Token Categories
+    ...BrandColors
 };
 ```
 <br>
