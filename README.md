@@ -45,30 +45,6 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 
 <br>
 
-## § Features
-<br>
-
-- **Build-Time Validation**
-  - Elevate validates utility strings, design system tokens, and syntax rules during the build process.
-  - Ensures class definitions conform to your design system before CSS is generated.
-  - Errors like invalid syntax or tokens are caught at build time, producing error-free CSS.
-
-- **Strict Design Integration**
-  - Token-based system for colors, spacing, typography, and breakpoints
-  - Structured property-attribute relationships
-  - Extensible syntax that grows with your design system
-
-
-- **Responsive Design**
-  - Intuitive and mobile-first syntax: `property:modifier /breakpoint/ property:modifier`
-  - Automatic media query generation
-
-- **Context Management**
-  - Supporting pseudo-class and pseudo-element selectors
-  - Syntax: `@context:[property:modifier_property:modifier]`
-
-<br>
-
 ## § Design Philosophy
 <br>
 
