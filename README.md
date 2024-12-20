@@ -437,20 +437,20 @@ export const rulesMaster = {
 
 ### ¶ Extending Elevate: A Comprehensive Guide
 
-Elevate is designed to be extensible and adaptable, allowing you to easily add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
+Elevate is designed to be extensible and adaptable, allowing you to easily integrate your design system or add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <details>
 <summary>Click Here To Read More</summary>
 <br>
 
 
-#### Expanding the Design System
+#### Design System Integration
 
 If your goal is to simply integrate your design system into elevate, you can follow these steps:
 
 <br>
 
-1. Add new design system tokens to the `elevate/design` directory.
+1. Add new categorized design tokens to the `elevate/design` directory in alignment with your design system.
 
 ```
 //example-brandTokens.ts
@@ -472,36 +472,33 @@ export const BrandColors = {
 
 <br>
 
-2. Import the new tokens into `elevate/config/design.ts`. 
+2. Import the new token categories into `elevate/config/design.ts`. 
 
 ```
-//Example Custom Values Import
+
+//Importing Our New Token Categories
 import { BrandColors } from "../design/example-brandTokens.js";
-
-//System Standard Imports
-import { colors } from "../core/system/design/colors.js";
-import { spacing } from "../core/system/design/spacing.js";
-import { typography } from "../core/system/design/typography.js";
-import { breakpoints } from '../core/system/design/breakpoints.js';
-
-//Token Definitions
-export const designSystem = {
-   ColorToken: { ...colors, ...BrandColors.BrandBackgroundTokens, ...BrandColors.BrandCopyTokens },
-};
 
 ```
 
 <br>
 
-3. Spread the new token categories into the appropriate token definition
+3. Spread the new token categories into the appropriate token definition for compatability with Elevate's existing syntax.
 
-You can now utilize these new tokens in your utility strings with existing properties and syntax rules.
+```
+//Token Definitions
+export const designSystem = {
+   ColorToken: { ...colors, ...BrandColors.BrandBackgroundTokens, ...BrandColors.BrandCopyTokens },
+};
+```
+
+You can now utilize these new tokens in your utility strings as you would with any of the existing elevate tokens.
 
 <br>
 
 #### Extending Elevate's Syntax
 
-As you integrate your design system, you may want to create product specific or use case specific syntax rules. While this is a powerful affordance of Elevate, it's important to do so with care and consideration. To begin, follow these steps:
+As you integrate your design system, you may want to create product specific or use case specific syntax rules to better express your design system in your codebase and care has been taken to afford this feature. However, wile this is a powerful affordance, it's important to do so with care and consideration. To begin, follow these steps:
 
 <br>
 
@@ -556,6 +553,14 @@ export const relationships = {
     { "background-color": "BrandBackgroundRule", 
       "color": "BrandCopyRule" },
 };
+
+```
+<br>
+
+4. Test your new property in your utility strings within an appropriate filetype
+```html
+
+<div class="brand:bg-popgreen:copy-popwhite"></div>
 
 ```
 
