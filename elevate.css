@@ -134,8 +134,15 @@ textarea:not([rows]) {
     }
 }
 
-.bg-color\:dark {
+.brand\:theme-dark {
 
 background-color: #2C2638;
 }
 
+@media only screen and (min-width:64rem) {
+.bg-color\:purple {
+
+background-color: #6665DD;
+}
+
+}

@@ -20,10 +20,7 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 1. [Introduction](#-introduction)
 2. [Features](#-features)
 3. [Design Philosophy & Architecture](#-design-philosophy--architecture)  
-   - [Core Design Principles](#-core-design-principles)  
-   - [Architectural Approach](#-architectural-approach)  
-   - [Performance Characteristics](#-performance-characteristics)  
-   - [Current Capabilities](#-current-capabilities)  
+   - [Core Design Principles](#-core-design-principles)   
 4. [Syntax and Usage](#-syntax-and-usage)  
    - [Quick Start](#-quick-start)  
    - [Syntax Guide](#-syntax-guide)  
@@ -72,7 +69,7 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 
 <br>
 
-## § Design Philosophy & Architecture
+## § Design Philosophy
 <br>
 
 ### ¶ Core Design Principles
@@ -86,23 +83,6 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 
 - **Extensible and Reliable**  
    Elevate must support growth and adaptation while maintaining simplicity, with syntax validated at build-time to guarantee alignment with the design system on every build. 
-
-<br>
-
-### ¶ Architectural Approach
-
-
-**Key Technical Innovations:**
-- **Build-Time Parsing**: Uses Chevrotain for robust class attribute tokenization
-- **Mobile-First Design**: Intelligent breakpoint processing
-- **Declarative Syntax**: Transforms HTML class attributes into optimized CSS
-
-**Parsing Strategy:**
-1. **File Scanning**: Discover class attributes across project files
-2. **Lexical Analysis**: Tokenize class strings
-3. **Syntax Parsing**: Convert syntax to Concrete Syntax Trees (CST)
-4. **CSS Generation**: Transform CST into optimized CSS
-
 
 <br>
 

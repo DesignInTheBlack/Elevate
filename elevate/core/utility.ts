@@ -6,13 +6,13 @@ import { config } from '../config/elevate.js';
 import { elevateCompiler } from './parser.js';
 
 //Import CSS Reset
-import { cssReset } from '../etc/reset.js';
+import { cssReset } from './system/etc/reset.js';
 
 //Import Numeric Validation
-import { numeric } from '../etc/numeric.js';
+import { numeric } from './system/etc/numeric.js';
 
 //Core Syntax Mapping
-import { declarationMap } from "../config/declarationMap.js";
+import { declarationMap } from "./system/declarationMap.js";
 
 //Import BreakPoints
 import { breakpoints} from "../design/breakpoints.js";
@@ -21,13 +21,17 @@ import { breakpoints} from "../design/breakpoints.js";
 import { spacing } from "../design/spacing.js";
 
 //Import Contain Map
-import { contain } from '../etc/contain.js';
+import { contain } from './system/etc/contain.js';
 
 //Import Design System
 import { designSystem } from '../config/design.js';
 
-//Import Rules
-import { rulesMaster } from '../config/rules.js';
+//Import SystemRules
+import { elevateRules } from './system/elevateRules.js';
+
+//Import User Rules
+import { rules } from '../config/rules.js';
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  SETUP AND CONFIGURATION                           ║
@@ -43,7 +47,8 @@ process.on('uncaughtException', (err) => {
 const types = {
 
     ...designSystem,
-    ...rulesMaster
+    ...elevateRules,
+    ...rules
 };
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   CST TO AST CONVERSION                            ║

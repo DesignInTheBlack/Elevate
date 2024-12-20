@@ -1,3 +1,5 @@
+import { relationships } from "../../config/rules.js";
+
 export const declarationMap = {
 
     // =============================
@@ -123,8 +125,6 @@ export const declarationMap = {
         "text-transform": "TextTransformRule"
     },
 
-    color: { "background-color": "ColorToken" },
-
     // =============================
     // Borders
     // =============================
@@ -149,6 +149,11 @@ export const declarationMap = {
         "grid-template-columns": "GridColumnRule",
         "grid-template-rows": "GridRowRule",
         "grid-gap": "GridGapRule"
-    }
+    },
+
+
+
+    // Allow User Overrides and Extensions
+    ...relationships
 
 };
