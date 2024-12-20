@@ -88,7 +88,16 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate.
+At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate through the expression of property and modifier combinations.
+
+<br>
+
+**The Format**:
+
+```html
+<div class = "property:modifier:modifier">
+```
+
 <br>
 
 **Direct Properties:**  
@@ -108,6 +117,7 @@ Build complex class definitions by chaining modifiers:
 ```html
 <div class="property:modifier:modifier:modifier">      
 ```
+
 <br>
 
 **Practical Examples:**
@@ -118,6 +128,7 @@ Build complex class definitions by chaining modifiers:
 <div class="row:x-center:y-start">  <!-- Row layout with specific alignment -->
 <div class="absolute left:d12 z:10">  <!-- Absolute positioning, d12 from the left, and z-index of 10  -->
 ```
+
 <br>
 
 **※ Modifiers are Order Agnostic**  
