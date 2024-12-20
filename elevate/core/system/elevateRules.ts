@@ -4,7 +4,6 @@ import { flex } from './rules/flex.js';
 import { border } from './rules/border.js';
 import { text } from './rules/text.js';
 import { grid } from './rules/grid.js';
-import { numeric } from './etc/numeric.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -23,5 +22,4 @@ export const elevateRules = {
     GridGapRule: grid.gap,
     GridRowRule: grid.row,
     GridColumnRule: grid.column,
-    NumericToken: numeric,
 };

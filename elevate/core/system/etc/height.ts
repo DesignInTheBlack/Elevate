@@ -1,4 +1,4 @@
- export const height = {
+ export const heightUtility = {
  //Utility
  '0':'0',
  'full':"100%",

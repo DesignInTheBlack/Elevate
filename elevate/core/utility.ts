@@ -20,6 +20,9 @@ import { breakpoints} from "./system/design/breakpoints.js";
 //Import Spacing
 import { spacing } from "./system/design/spacing.js";
 
+//Import Spacing Utilities
+import { heightUtility } from "./system/etc/height.js";
+
 //Import Contain Map
 import { contain } from './system/etc/contain.js';
 
@@ -48,7 +51,9 @@ const types = {
 
     ...designSystem,
     ...elevateRules,
+    ...numeric,
     ...rules
+    
 };
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   CST TO AST CONVERSION                            ║

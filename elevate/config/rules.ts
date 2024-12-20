@@ -1,12 +1,12 @@
-//Example Custom Syntax Rules Import
+//Import Rule Files
 import { Brand } from "../rules/example-brandRules.js";
 
-//Defining Syntax Rules
+//Spread Rules into Rules Object
 export const rules = {
     ...Brand
 };
 
-//Defining CSS Relationships
+//Define Custom Property and CSS Declaration Relationship
 export const relationships = {
     //Example Custom Property Definition
     brand: 
