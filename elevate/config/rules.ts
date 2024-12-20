@@ -1,11 +1,15 @@
+//Example Custom Syntax Rules Import
+import { Brand } from "../rules/example-brandRules.js";
+
 //Defining Syntax Rules
 export const rules = {
-    BrandRule: {
-        "theme-": "ColorToken"
-    },
+    ...Brand
 };
 
 //Defining CSS Relationships
 export const relationships = {
-    brand: { "background-color": "BrandRule" },
+    //Example Custom Property Definition
+    brand: 
+    { "background-color": "BrandBackgroundRule", 
+      "color": "BrandCopyRule" },
 };

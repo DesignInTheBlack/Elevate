@@ -134,9 +134,9 @@ textarea:not([rows]) {
     }
 }
 
-.brand\:theme-dark {
+.bg-color\:popgreen {
 
-background-color: #2C2638;
+no-match: #39FF14;
 }
 
 @media only screen and (min-width:64rem) {

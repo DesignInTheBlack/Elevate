@@ -45,12 +45,5 @@ export const spacing = {
     's12': '90rem',   // 1440pt (h3)
     's13': '120rem',  // 1920pt (h4)
 
-
-    //Utility
-    '0':'0',
-    'full':"100%",
-    'viewheight':"100vh",
-    'viewwidth':"100vw"
-
 } 
 

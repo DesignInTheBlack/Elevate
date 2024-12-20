@@ -15,10 +15,10 @@ import { numeric } from './system/etc/numeric.js';
 import { declarationMap } from "./system/declarationMap.js";
 
 //Import BreakPoints
-import { breakpoints} from "../design/breakpoints.js";
+import { breakpoints} from "./system/design/breakpoints.js";
 
 //Import Spacing
-import { spacing } from "../design/spacing.js";
+import { spacing } from "./system/design/spacing.js";
 
 //Import Contain Map
 import { contain } from './system/etc/contain.js';

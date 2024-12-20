@@ -1,18 +1,17 @@
-
 //Design System Token Imports 
 
-//Example Token Import
-import { example } from "../design/example.js";
+//Example Custom Values Import
+import { BrandColors } from "../design/example-brandTokens.js";
 
 //System Standard Imports
-import { colors } from "../design/colors.js";
-import { spacing } from "../design/spacing.js";
-import { typography } from "../design/typography.js";
-import { breakpoints } from '../design/breakpoints.js';
+import { colors } from "../core/system/design/colors.js";
+import { spacing } from "../core/system/design/spacing.js";
+import { typography } from "../core/system/design/typography.js";
+import { breakpoints } from '../core/system/design/breakpoints.js';
 
 //Token Definitions
 export const designSystem = {
-    ColorToken: { ...colors, ...example },
+    ColorToken: colors,
     BreakPointToken: breakpoints,
     SpacingToken: spacing,
     FontSizeToken: typography.size,
@@ -20,4 +19,5 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
+    ...BrandColors
 };
