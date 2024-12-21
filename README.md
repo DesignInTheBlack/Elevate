@@ -231,7 +231,7 @@ Elevate's systems are driven by two distinct elements:
 2. **Syntax Rule Mappings**  
    - **Purpose:** Property-specific structural validation and syntax construction or extension.  
    - **Location:** `rules/` directory  
-   - **Configuration:**  `elevate/config/rules.ts` and `elevate/rules`
+   - **Configuration:**  `elevate/config/syntax.ts` and `elevate/rules`
    - **Characteristics:** Validate property values, provide transformations, and structure or extend syntax.
 
    **Example:**
@@ -320,7 +320,7 @@ Property Characteristics
 │   ├── Yes → Design System Token
 │   └── No →
 │       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → New Rule File and Rules.tsEntry
+│       │   ├── Yes → New Rule File and Syntax.ts Entry
 │       │   └── No → PassThrough Token
 ```
 <br>
@@ -399,7 +399,7 @@ export const designSystem = {
 
 <br>
 
-Import and distribute syntax rule mappings in `elevate/config/rules.ts`
+Import and distribute syntax rule mappings in `elevate/config/syntax.ts`
 
 ```typescript
 
@@ -519,7 +519,7 @@ export const Brand = {
 2. Import the new rule file into `elevate/config/syntax.ts` and spread it into the rules object.
 
 ```
-//rules.ts
+//syntax.ts
 
 //Import Rule Files
 import { Brand } from "../rules/example-brandRules.js";
