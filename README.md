@@ -491,7 +491,7 @@ As you integrate your design system, you may want to create product specific or 
 
 **※ Rule Files and Modifier Syntax**  
 
-When creating a new rule file, it is important to remember that you are defining the syntax of the modifier and not the property. In the case below, we're specifying that for our new example property (brand), we want to add new rules and we're articulating how those modifiers should be written as well as the types of token they will expect. 
+When creating a new rule file, it is important to remember that you are defining the syntax of the **modifier** and **not the property**. In the case below, we're specifying that for our new example property (brand), we want to add new modifier syntax rules and we're articulating how those modifiers should be written as well as the types of design system tokens they will expect. 
 
 <br>
 
@@ -512,7 +512,7 @@ export const Brand = {
 ```
 <br>
 
-2. Import the new rule file into `elevate/config/rules.ts` and spread it into the rules object.
+2. Import the new rule file into `elevate/config/syntax.ts` and spread it into the rules object.
 
 ```
 //rules.ts
@@ -548,7 +548,7 @@ export const relationships = {
 
 ```
 
-
+<br>
 
 **※ Token Collisions and How to Avoid Them**  
 

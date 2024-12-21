@@ -1,4 +1,4 @@
-import { relationships } from "../../config/rules.js";
+import { relationships } from "../../config/syntax.js";
 
 export const declarationMap = {
 

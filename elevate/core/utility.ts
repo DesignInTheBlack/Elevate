@@ -20,9 +20,6 @@ import { breakpoints} from "./system/design/breakpoints.js";
 //Import Spacing
 import { spacing } from "./system/design/spacing.js";
 
-//Import Spacing Utilities
-import { heightUtility } from "./system/etc/height.js";
-
 //Import Contain Map
 import { contain } from './system/etc/contain.js';
 
@@ -33,7 +30,7 @@ import { designSystem } from '../config/design.js';
 import { elevateRules } from './system/elevateRules.js';
 
 //Import User Rules
-import { rules } from '../config/rules.js';
+import { rules } from '../config/syntax.js';
 
 
 // ╔════════════════════════════════════════════════════════════════════╗
