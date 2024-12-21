@@ -1,4 +1,4 @@
-# Elevate CSS: The Design Driven Utility Framework
+# Elevate CSS: Utility-First. Design-Driven.
 
 <br>
 
