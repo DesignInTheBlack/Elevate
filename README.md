@@ -361,6 +361,7 @@ const options = {
 
 export const config = options
 ```
+
 <br>
 
 Import and distribute design system tokens in `elevate/config/design.ts`
@@ -395,6 +396,7 @@ export const designSystem = {
     ...BrandColors
 };
 ```
+
 <br>
 
 Import and distribute syntax rule mappings in `elevate/config/rules.ts`
@@ -420,15 +422,14 @@ export const relationships = {
 
 <br>
 
-
 ### ¶ Extending Elevate: A Comprehensive Guide
 
 Elevate is designed to be extensible and adaptable, allowing you to easily integrate your design system or add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
 
 <details>
 <summary>Click Here To Read More</summary>
-<br>
 
+<br>
 
 #### Design System Integration
 
