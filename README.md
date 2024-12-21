@@ -17,10 +17,9 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 <br>
 
 1. [Introduction](#-introduction)
-2. [Features](#-features)
-3. [Design Philosophy](#-design-philosophy)  
+2. [Design Philosophy](#-design-philosophy)  
    - [Core Design Principles](#-core-design-principles)
-4. [Syntax and Usage](#-syntax-and-usage)  
+3. [Syntax and Usage](#-syntax-and-usage)  
    - [Quick Start Guide](#-quick-start-guide)  
    - [Installation and Usage](#-installation-and-usage)  
    - [Syntax Guide](#-syntax-guide)  
@@ -30,18 +29,18 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Special Tokens](#-special-tokens)  
    - [Token Selection Guide](#-token-selection-guide)  
    - [Best Practices](#-best-practices)
-5. [Configuration](#-configuration)  
+4. [Configuration](#-configuration)  
    - [Framework Configuration](#-framework-configuration)  
    - [Extending Elevate: A Comprehensive Guide](#-extending-elevate-a-comprehensive-guide)  
    - [Project Structure](#-project-structure)
-6. [Why Elevate?](#-why-elevate)  
+5. [Why Elevate?](#-why-elevate)  
    - [Key Benefits](#-key-benefits)  
    - [TailwindCSS vs. Elevate CSS](#-tailwindcss-vs-elevate-css)  
    - [Why Choose Elevate CSS?](#-why-choose-elevate-css)
-7. [Product Roadmap](#-product-roadmap)  
+6. [Product Roadmap](#-product-roadmap)  
    - [Planned Features](#-planned-features)  
    - [Selector Support](#-selector-support)
-8. [Licensing](#-licensing)
+7. [Licensing](#-licensing)
    
 
 <br>
