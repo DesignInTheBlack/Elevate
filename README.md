@@ -665,6 +665,8 @@ Elevate CSS redefines utility-first frameworks by prioritizing **design consiste
 <details>
 <summary>Click Here To Read More</summary>
 
+<br>
+
 ### ¶ Key Benefits
 
 - **Design-Driven Approach**:  
@@ -682,7 +684,11 @@ Elevate CSS redefines utility-first frameworks by prioritizing **design consiste
 - **Engineering Rigor**:  
    Compiler-driven validation integrates engineering principles into front-end styling, providing a predictable and reliable workflow.
 
+<br>
+
 ---
+
+<br>
 
 ### ¶ TailwindCSS vs. Elevate CSS
 
@@ -696,7 +702,11 @@ Elevate CSS redefines utility-first frameworks by prioritizing **design consiste
 | **Developer Workflow**       | Rapid iteration                              | Intentional, error-resistant engineering      |
 | **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS             |
 
+<br>
+
 ---
+
+<br>
 
 ### ¶ Why Choose Elevate CSS?
 
