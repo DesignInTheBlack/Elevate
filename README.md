@@ -441,11 +441,11 @@ Elevate is designed to be extensible and adaptable, allowing you to easily integ
 
 #### Design System Integration
 
-If your goal is to simply integrate your design system into elevate, you can follow these steps:
+If your goal is to simply integrate your design system tokens into elevate, you can follow these steps:
 
 <br>
 
-1. Add new categorized design tokens to the `elevate/design` directory in alignment with your design system.
+1. Add new categorized design tokens to the `elevate/design` directory in alignment with your design system and preferred organization.
 
 ```
 //example-brandTokens.ts
@@ -502,6 +502,7 @@ As you integrate your design system, you may want to create product specific or 
 <br>
 
 **※ Rule Files and Modifier Syntax**  
+
 When creating a new rule file, it is important to remember that you are defining the syntax of the modifier and not the property. In the case below, we're specifying that for our new example property (brand), we want to add new rules and we're articulating how those modifiers should be written as well as the types of token they will expect. 
 
 <br>
@@ -561,12 +562,90 @@ export const relationships = {
 
 
 
+**※ Token Collisions and How to Avoid Them**  
+
+
+Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly in the property attribute map. It does so through a "first match wins" strategy whereby a modifier passed "slots" to the first CSS declaration that expects a token or rule of that type in the property attribute map.
+
+
+<br>
+
+
+```typescript
+    // Typography
+    text: {
+        "font-size": "FontSizeToken",
+        "color": "ColorToken",
+        "font-family": "FontFamilyToken",
+        "line-height": "LineHeightToken",
+        "letter-spacing": "LetterSpacingToken",
+        "text-align": "TextAlignRule",
+        "max-width": "MeasureToken",
+        "font-weight": "FontWeightToken",
+        "text-transform": "TextTransformRule"
+    }
+
+
+    //You can write text:red:bold or text:bold:red and the order doesn't matter.
+
+
+    //Note the distinction between "rules" and "tokens".
+```
+
+
+<br>
+
+
+However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property as seen above.
+
+
+<br>
+
+
+#### Token and Rule Usage Guidelines
+
+
+**Naming Conventions:**
+- Use clear, semantic names
+- Prefix with the token type or Rule Purpose (e.g., `BrandColorToken` or `TextAlignRule`)
+- Avoid generic names that might cause collisions
+
+
+**Performance Considerations:**
+- Use rules for complex, related tokens or syntactic relatationships or expanding the syntax.
+- Minimize the number of token types and rules as possible to minimize complexity.
 
 
 
+
+<br>
+
+
+#### Helpful Tips
+
+
+**Extension Considerations:**
+- As you begin extending Elevate to fit your use case, consider the following:
+  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts` for maximum compatibility with the default declarations in the declaration map.
+  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to intermediary rules to CSS declarations in `core/system`.
+  3. You can effectively create your own use case specific syntax for your project via these intermediary rules, but do so with care and consideration if you do. Elevate recommends using the existing rules for maximum compatibility whenever possible.
+
+
+<br>
+
+#### Troubleshooting
+
+
+**Common Issues:**
+- If a token doesn’t map correctly, verify the following:
+  1. The design token is properly **exported** in the token file.
+  2. The design token is correctly **imported** and **configured** in `design.ts`.
+  3. All relevant **rules** are updated for your use case and structured correctly.
+  4. The design token or subsequent rules are included in **`declarationMap.ts`** in an entry for the property you are trying to map.
 
 
 </details>
+
 <br>
 
 ### ¶ Project Structure
