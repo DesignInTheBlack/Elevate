@@ -490,7 +490,7 @@ You can now utilize these new tokens in your utility strings as you would with a
 
 #### Extending Elevate's Syntax
 
-As you integrate your design system, you may want to create product specific or use case specific syntax rules to better express your design system in your codebase and care has been taken to afford this feature. However, wile this is a powerful affordance, it's important to do so with care and consideration. To begin, follow these steps:
+As you integrate your design system, you may want to create product specific or use case specific syntax rules to better express your design system in your codebase and care has been taken to afford this feature. However, while this is a powerful affordance, it's important to do so with care and consideration. To begin, follow these steps:
 
 <br>
 
@@ -515,6 +515,8 @@ export const Brand = {
     BrandCopyRule: {
     "copy-": "BrandTextToken"
     }
+
+    //Specifying New Modifier Syntax and Expected Design System Token Types
 
 }
 
@@ -584,14 +586,16 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 
 
     //You can write text:red:bold or text:bold:red and the order doesn't matter.
+
     //Note the distinction between "rules" and "tokens".
+
 ```
 
 
 <br>
 
 
-However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property as seen above.
+However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property as seen above. 
 
 
 <br>
@@ -607,8 +611,8 @@ However, if you have two CSS declarations under a single property that share a c
 
 
 **Performance Considerations:**
-- Use rules for complex, related tokens or syntactic relatationships or expanding the syntax.
-- Minimize the number of token types and rules as possible to minimize complexity.
+- Use rules for syntactic relatationships, expanding the syntax, or to avoid token collisions.
+- Minimize the number of token types and rules as possible to limit complexity.
 
 
 
@@ -621,9 +625,9 @@ However, if you have two CSS declarations under a single property that share a c
 
 **Extension Considerations:**
 - As you begin extending Elevate to fit your use case, consider the following:
-  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts` for maximum compatibility with the default declarations in the declaration map.
-  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to intermediary rules to CSS declarations in `core/system`.
-  3. You can effectively create your own use case specific syntax for your project via these intermediary rules, but do so with care and consideration if you do. Elevate recommends using the existing rules for maximum compatibility whenever possible.
+  1. Design system tokens should always be defined in the design directory and you can spread them in the existing token categories in `elevate/config/design.ts` for maximum compatibility with the existing syntax.
+  2. Examine the existing rules that allow Elevate to work out of the box by mapping token types to rules to CSS declarations in `core/system` to gain a greater understanding of how Elevate works.
+  3. You can effectively create your own use case specific syntax for your project via these rules, but do so with care and consideration if you do. Elevate recommends using the existing rules and token types for maximum compatibility whenever possible.
 
 
 <br>
@@ -635,8 +639,7 @@ However, if you have two CSS declarations under a single property that share a c
 - If a token doesn’t map correctly, verify the following:
   1. The design token is properly **exported** in the token file.
   2. The design token is correctly **imported** and **configured** in `design.ts`.
-  3. All relevant **rules** are updated for your use case and structured correctly.
-  4. The design token or subsequent rules are included in **`declarationMap.ts`** in an entry for the property you are trying to map.
+  3. All relevant **rules** are updated for your use case and structured correctly in the files folder and `syntax.ts`.
 
 
 </details>
@@ -649,7 +652,7 @@ However, if you have two CSS declarations under a single property that share a c
 
 ```
 elevate/
-├── config/     # Framework configuration files
+├── config/     # Framework configuration files for general settings, design system integration, and syntax mapping
 │  
 ├── core/       # Core scanning, parsing, and compilation logic
 │  
@@ -666,7 +669,7 @@ elevate/
 
 ## § Why Elevate?
 
-Elevate CSS redefines utility-first frameworks by prioritizing **design consistency**, **build-time validation**, and **long-term maintainability**. It bridges the gap between design and development, empowering teams to build scalable, error-free, and future-proof systems. Here's why Elevate stands out:
+Elevate CSS reimagines utility-first frameworks by prioritizing **design consistency**, **build-time validation**, and **long-term maintainability**. It bridges the gap between design and development, empowering teams to build scalable, error-free, and future-proof systems. Here's why Elevate stands out:
 
 <details>
 <summary>Click Here To Read More</summary>
@@ -743,7 +746,7 @@ The framework is actively evolving to adapt to the needs of the design and devel
 <br>
 
 - Consider Static Analysis and Compile Time Guarantees 
-- IDE Integration for Syntax Highlighting and Autocomplete (Potentially Via LSP)
+- IDE Integration for Syntax Highlighting and Autocomplete (Potentially Via LSP?)
 - Child selector support
 - Expanded grid support with expressive syntax
 - Container query support
