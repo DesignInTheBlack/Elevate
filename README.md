@@ -22,7 +22,8 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 3. [Design Philosophy](#-design-philosophy)  
    - [Core Design Principles](#-core-design-principles)
 4. [Syntax and Usage](#-syntax-and-usage)  
-   - [Quick Start](#-quick-start)  
+   - [Quick Start Guide](#-quick-start-guide)  
+   - [Installation and Usage](#-installation-and-usage)  
    - [Syntax Guide](#-syntax-guide)  
    - [Responsive Styling](#-responsive-styling)  
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)  
@@ -34,13 +35,19 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Framework Configuration](#-framework-configuration)  
    - [Extending Elevate: A Comprehensive Guide](#-extending-elevate-a-comprehensive-guide)  
    - [Project Structure](#-project-structure)
-6. [Why Elevate](#-why-elevate)  
-   - [TailwindCSS vs Elevate CSS](#-tailwindcss-vs-elevate-css)  
-   - [Why Choose Elevate CSS](#-why-choose-elevate-css)
+6. [Why Elevate?](#-why-elevate)  
+   - [From Arbitrary Utilities to Token-Driven Enforcement](#-from-arbitrary-utilities-to-token-driven-enforcement)  
+   - [Build-Time Validation for Guaranteed Correctness](#-build-time-validation-for-guaranteed-correctness)  
+   - [From Class Bloat to Declarative, Semantic Syntax](#-from-class-bloat-to-declarative-semantic-syntax)  
+   - [From Utility Overload to Structured, Composable Logic](#-from-utility-overload-to-structured-composable-logic)  
+   - [True System Integration at Scale](#-true-system-integration-at-scale)  
+   - [Engineering Rigor Meets Front-End Styling](#-engineering-rigor-meets-front-end-styling)  
+   - [TailwindCSS vs. Elevate CSS](#-tailwindcss-vs-elevate-css)  
+   - [Why Choose Elevate CSS?](#-why-choose-elevate-css)
 7. [Product Roadmap](#-product-roadmap)  
    - [Planned Features](#-planned-features)  
    - [Selector Support](#-selector-support)
-8. [Licensing and Attribution](#-licensing)
+8. [Licensing](#-licensing)
    
 
 <br>
@@ -658,125 +665,56 @@ elevate/
 
 ## § Why Elevate?
 
-The goal of Elevate CSS is to introduce a new standard in the world of utility-first frameworks by addressing fundamental shortcomings in traditional approaches while introducing a rigorous, token-driven, build-time-validated methodology. Unlike other frameworks, Elevate is purpose-built to maintain strict design system adherence, enforce correctness, and enable long-term scalability.
+Elevate CSS redefines utility-first frameworks by prioritizing **design consistency**, **build-time validation**, and **long-term maintainability**. It bridges the gap between design and development, empowering teams to build scalable, error-free, and future-proof systems. Here's why Elevate stands out:
 
 <details>
 <summary>Click Here To Read More</summary>
 
-<br>
+### ¶ Key Benefits
 
-Elevate CSS introduces an **engineering-first approach** to front-end styling, differentiating itself from frameworks like TailwindCSS by prioritizing **design system integrity, maintainability, and build-time validation**. Here’s how Elevate CSS stands apart:
+- **Design-Driven Approach**:  
+   Enforces strict adherence to design tokens, ensuring consistent and intentional styling decisions that align with your design system.
 
-<br>
+- **Build-Time Validation**:  
+   Catches typos, unauthorized values, and invalid class names during the build process, guaranteeing error-free code before production.
 
-#### **From Arbitrary Utilities to Token-Driven Enforcement**
+- **Semantic and Declarative Syntax**:  
+   Intuitive `property:modifier` strings double as living documentation, making class structures readable and easy to maintain.
 
-- **Market Problem:**  
-   TailwindCSS provides immense flexibility but lacks mechanisms to **enforce design system constraints**. Developers can easily introduce arbitrary values (e.g., `px-3.5`, `text-[14px]`), leading to **inconsistent styling** and design drift.
+- **Scalable Structure**:  
+   Organized styling categories and token-driven validation support long-term project scalability while maintaining design integrity.
 
-- **Elevate’s Innovation:**  
-   Elevate CSS enforces strict adherence to **immutable design tokens** for properties like color, spacing, and typography. By validating styles **at build time**, it ensures that every property and modifier aligns with the design system, eliminating guesswork and inconsistencies. Decisions made are **considered** decisions and accesible to everyone.
+- **Engineering Rigor**:  
+   Compiler-driven validation integrates engineering principles into front-end styling, providing a predictable and reliable workflow.
 
-**Key Differentiator:**  
-Elevate turns your design tokens into **enforceable rules**, not optional guidelines, ensuring design consistency across projects.
+---
 
-<br>
-
-#### **Build-Time Validation for Guaranteed Correctness**
-
-- **Market Problem:**  
-   TailwindCSS relies on **manual checks** and runtime visibility to catch issues like typos or invalid class names (`bg-blu-500`). This reactive approach increases QA overhead as well as technical debt over time.
-
-- **Elevate’s Innovation:**  
-   Elevate validates **all utility strings and tokens during the build process**, catching errors like misspelled classes or unauthorized modifiers **before production**. Incorrect styles fail the build, ensuring only valid and consistent styles are shipped.
-
-**Key Differentiator:**  
-Elevate acts as a **compiler for CSS**, enforcing correctness at build time and eliminating reliance on manual QA or runtime checks.
-
-<br>
-
-#### **From Class Bloat to Declarative, Semantic Syntax**
-
-- **Market Problem:**  
-   Tailwind's utility-first approach leads to **verbose, hard-to-read class lists** that obscure design intent (`bg-blue-500 px-4 py-2 text-sm`) and are rarely thoughtfully organized. Maintaining and auditing these class stacks becomes challenging, especially in large projects.
-
-- **Elevate’s Innovation:**  
-   Elevate adopts a **property:modifier syntax** (e.g., `text:purple:bold space:d2`) that maps directly to pre-approved design tokens and structures your responsive styling in a **semantic, declarative way**. This concise syntax makes classes self-explanatory, reducing cognitive overhead and improving code readability.
-
-**Key Differentiator:**  
-Elevate’s declarative syntax doubles as **living documentation** of your design system, making design intent visible, perceivable, most importantly - maintainable.
-
-<br>
-
-#### **From Utility Overload to Structured, Composable Logic**
-
-- **Market Problem:**  
-   Tailwind's atomic classes provide flexibility but lack a conceptual framework, leaving teams to define their own conventions. This becomes unsustainable as projects and teams scale or change.
-
-- **Elevate’s Innovation:**  
-   Elevate organizes styles around meaningful categories (e.g., `text`, `grid`, `space`) and validates modifiers against strictly defined design tokens. This structured approach helps you to build a coherent vocabulary over time, making the system easier to scale and maintain.
-
-**Key Differentiator:**  
-Elevate transforms ad-hoc class lists into a **stable, composable styling system** that grows with your project.
-
-<br>
-
-#### **True System Integration at Scale**
-
-- **Market Problem:**  
-   Tailwind expands by adding more utilities, often resulting in bloated stylesheets and fragmented design adherence. Large teams frequently struggle to maintain alignment with the design system.
-
-- **Elevate’s Innovation:**  
-   Elevate treats the design system as the **foundation of all styling decisions**. Breakpoints, states, and tokens are managed as **runtime-validated constants**, ensuring that changes propagate consistently throughout the codebase. This enables large teams to scale their design systems without sacrificing alignment or maintainability.
-
-**Key Differentiator:**  
-Elevate CSS integrates deeply with your design system, ensuring **coherence and scalability** as complexity grows over time.
-
-<br>
-
-#### **Engineering Rigor Meets Front-End Styling**
-
-- **Market Problem:**  
-   CSS frameworks often prioritize flexibility, relying on intuition and human judgment to maintain consistency. This creates friction for teams that value predictable workflows, reliable validation, and build-time guarantees.
-
-- **Elevate’s Innovation:**  
-   By leveraging **structured token and rule definitions** and **compiler-driven validation**, Elevate brings engineering principles to front-end styling. Developers benefit from a predictable, reliable workflow that aligns with modern software practices and keeps you in sync with your design system.
-
-**Key Differentiator:**  
-Elevate CSS transforms styling into a rigorously engineered system, enabling **long-term maintainability and reliability**.
-
-
-<br>
-
-### ¶ **TailwindCSS vs. Elevate CSS**
+### ¶ TailwindCSS vs. Elevate CSS
 
 | **Feature/Philosophy**      | **TailwindCSS**                               | **Elevate CSS**                                |
 |-----------------------------|-----------------------------------------------|-----------------------------------------------|
-| **Core Philosophy**          | Utility-first pragmatism                     | Design-driven, validated at build time  |
+| **Core Philosophy**          | Utility-first pragmatism                     | Design-driven, validated at build time        |
 | **Design System Adherence**  | Theming encouraged but optional              | Immutable token validation                    |
 | **Error Handling**           | Runtime reliance, visual QA                  | Build-time validation                         |
 | **Code Readability**         | Verbose class lists                          | Declarative, semantic syntax                  |
-| **Scalability**              | Relies on team discipline                    | Token and rule driven consistency and validation       |
-| **Developer Workflow**       | Rapid iteration                              | Intentional, error-resistant engineering          |
-| **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS, no tree shaking necessary           |
+| **Scalability**              | Relies on team discipline                    | Token-driven consistency and validation       |
+| **Developer Workflow**       | Rapid iteration                              | Intentional, error-resistant engineering      |
+| **Output Efficiency**        | JIT-optimized CSS                            | Build-time optimized, minimal CSS             |
 
-
-<br>
+---
 
 ### ¶ Why Choose Elevate CSS?
 
-Elevate CSS introduces a new standard for utility-first frameworks by prioritizing **design consistency**, **build-time correctness**, and **long-term maintainability**. It’s a framework built for teams and projects that demand more than quick fixes, empowering developers to create future-proof codebases without compromising on clarity or precision.
+- **For Teams Scaling Design Systems**:  
+   Elevate guarantees alignment with your design language, preventing drift as your project grows.
 
-- **For Teams Scaling Design Systems:**  
-   Elevate ensures that every styling decision aligns with your design language, preventing drift as your project grows.
+- **For Projects Demanding Consistency**:  
+   Strict enforcement of tokens and build-time validation ensures every style adheres to your system.
 
-- **For Projects Demanding Consistency:**  
-   By strictly enforcing tokens and validating at build-time, Elevate guarantees that every style adheres to the system.
+- **For Developers Seeking Clarity**:  
+   Semantic syntax reveals design intent, simplifying codebase readability, collaboration, and maintenance.
 
-- **For Developers Who Value Clarity:**  
-   Elevate’s semantic syntax reveals intent, making codebases easier to read, to teach, and to maintain.
-
-<br>
+Elevate CSS combines the flexibility of utility-first frameworks with the rigor of engineering principles, setting a new standard for maintainable, scalable, and error-free front-end styling.
 
 </details>
 
