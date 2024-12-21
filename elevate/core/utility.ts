@@ -94,8 +94,9 @@ function handleDirectProperties(cst: any, context?: { fileName: string, lineNumb
     `\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
     💡 Troubleshooting Tips:
-    1. Verify the property "${directProp}" is correctly defined in your property map
-    2. Check for typos or mismatched case in the property name
+    1. Check for typos or mismatched case in the property name ${directProp}
+    2. If this is a custom property, review syntax.ts as well as any relevant rules accordingly.
+    
 
     For more information, refer to the Elevate CSS documentation.\n`
         );
@@ -253,9 +254,8 @@ export function getModifierType(modifier: string, context?: { fileName: string, 
         `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
     
     💡 Troubleshooting Tips:
-    1. Verify the modifier is correctly defined in your design tokens
-    2. Examine submap or nested token configurations
-    3. Ensure the modifier follows the expected design system syntax
+    1. Verify the modifier is correctly defined and that this property accepts it.
+    2. If this is custom syntax, review syntax.ts as well as any relevant rules and their expected token types.
     For more information, refer to the Elevate CSS documentation.\n`
 
     );
@@ -301,10 +301,7 @@ function getAxisSpecificValue(modifier: string): string {
         `\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
  
     💡 Troubleshooting Tips:
-    1. Verify the modifier syntax matches the design system
-    2. Check for typos in your class name
-    3. Ensure the modifier is defined in one of the token maps
-    For more information, refer to the Elevate CSS documentation.\n`
+       For more information, refer to the Elevate CSS documentation.\n`
 
     );
 }
@@ -363,8 +360,8 @@ function validateAndRetrievePrefixValue(
     `\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
     💡 Troubleshooting Tips:
-    1. Examine your prefix value and ensure it matches the expected token type
-    2. Confirm that the value is correctly defined in the relevant token map
+    1. Examine your prefixed value and ensure it matches the expected token type.
+    2. If this is a custom modifier, ensure that you are using the correct syntax.
 
     For more information, refer to the Elevate CSS documentation.\n`
             );

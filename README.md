@@ -90,7 +90,7 @@ npm start
 
 **Basic Usage:**  
 
-At the heart of Elevate's syntax are what is called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate through the expression of property and modifier combinations - which are validated against the design system and a series of rules at build-time to ensure consistency.
+At the heart of Elevate's syntax is what are called "utility strings", which are used to describe styling and serve as the basis for CSS generation. They also double as the actual CSS classes. Unlike traditional utility frameworks which come packed with pre-defined utility classes, you are effectively writing CSS as you write utility strings in Elevate through the expression of property and modifier combinations - which are validated against the design system and a series of syntax rules at build-time to ensure consistency.
 
 <br>
 
@@ -214,13 +214,19 @@ Elevate's systems are driven by two distinct elements:
 
    **Example:**
    ```typescript
-   // design/colors.ts
-   export const colors = {
-       'purple': '#6665DD',
-       'dark':'#2C2638',
-       'white':'#F0EFF4',
-       'warn':'#FABC2A',
-       'error':'#D81E5B'
+   // design/example-brandTokens.ts
+   export const BrandColors = {
+
+      //Define New Token Categories
+
+      BrandBackgroundTokens: {
+      'popgreen':'#39FF14'
+      },
+
+      BrandCopyTokens: {
+      'popwhite': '#FFFFFF',
+      }
+
    } 
 
    ```
@@ -235,19 +241,19 @@ Elevate's systems are driven by two distinct elements:
 
    **Example:**
    ```typescript
-   // rules/grid.ts
+   // rules/example-brandRules.ts
 
-   export const grid = {
-     gap: {
-       "gap-": "SpacingToken"
-     },
-     row: {
-       "row-": "NumericToken" 
-     },
-     column: {
-       "col-": "NumericToken"
-     }
-   } 
+   export const Brand = {
+
+      BrandBackgroundRule: {
+      "bg-": "BrandBackgroundToken"
+      },
+
+      BrandCopyRule: {
+      "copy-": "BrandTextToken"
+      }
+
+   }
 
    ```
 <br>
