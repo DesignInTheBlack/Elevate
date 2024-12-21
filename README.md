@@ -15,7 +15,6 @@ Elevate CSS is a compile-first utility framework that transforms your styling la
 In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and subject to change. I welcome your feedback and suggestions for future enhancements as I take this project from a technical proof-of-concept to a full-fledged utility framework. 
 
 <br>
-<br>
 
 1. [Introduction](#-introduction)
 2. [Features](#-features)
