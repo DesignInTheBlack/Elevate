@@ -575,8 +575,6 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 
 
     //You can write text:red:bold or text:bold:red and the order doesn't matter.
-
-
     //Note the distinction between "rules" and "tokens".
 ```
 
