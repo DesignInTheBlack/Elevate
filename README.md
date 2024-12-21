@@ -19,7 +19,7 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 
 1. [Introduction](#-introduction)
 2. [Features](#-features)
-3. [Design Philosophy & Architecture](#-design-philosophy--architecture)  
+3. [Design Philosophy](#-design-philosophy)  
    - [Core Design Principles](#-core-design-principles)
 4. [Syntax and Usage](#-syntax-and-usage)  
    - [Quick Start](#-quick-start)  
