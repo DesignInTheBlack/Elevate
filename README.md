@@ -398,33 +398,21 @@ Import and distribute syntax rule mappings in `elevate/config/rules.ts`
 
 ```typescript
 
-//Rule Submap Imports Defined in 'Maps' Directory.
-import { flex } from '../rules/flex.js';
-import { border } from '../rules/border.js';
-import { text } from '../rules/text.js';
-import { grid } from '../rules/grid.js';
-import { breakpoints } from '../design/breakpoints.js';
+//Import Rule Files
+import { Brand } from "../rules/example-brandRules.js";
 
-//Token Type Definitions
-export const rulesMaster = {
-    TextAlignRule: text.align,
-    TextTransformRule: text.transform,
-    BreakPointToken: breakpoints,
-    xAxis: flex.xAxis,
-    yAxis: flex.yAxis,
-    BorderWidthRule: border.width,
-    BorderRadiusRule: border.radius,
-    BorderStyleRule: border.style,
-    FlexGrowRule: flex.Grow,
-    FlexShrinkRule: flex.Shrink,
-    FlexSelfRule: flex.Self,
-    FlexOrderRule: flex.Order,
-    FlexBasisRule: flex.Basis,
-    GridGapRule: grid.gap,
-    GridRowRule: grid.row,
-    GridColumnRule: grid.column
+//Spread Rules into Rules Object
+export const rules = {
+    ...Brand
 };
 
+//Define Custom Property and CSS Declaration Relationship
+export const relationships = {
+    //Example Custom Property Definition
+    brand: 
+    { "background-color": "BrandBackgroundRule", 
+      "color": "BrandCopyRule" },
+};
 ```
 
 <br>
