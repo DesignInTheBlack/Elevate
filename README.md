@@ -31,7 +31,6 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
 4. [Configuration](#-configuration)  
    - [Basic Configuration](#-basic-configuration)  
    - [Going Deeper: A Comprehensive Guide](#-going-deeper-a-comprehensive-guide)  
-     - [Special Tokens](#-special-tokens)  
    - [Project Structure](#-project-structure)
 5. [Why Elevate?](#-why-elevate)  
    - [Key Benefits](#-key-benefits)  
