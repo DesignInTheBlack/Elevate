@@ -26,8 +26,6 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Responsive Styling](#-responsive-styling)  
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)  
    - [Design Tokens and Rules](#-design-tokens-and-rules)  
-   - [Token Selection Guide](#-token-selection-guide)  
-   - [Best Practices](#-best-practices)
 4. [Configuration](#-configuration)  
    - [Basic Configuration](#-basic-configuration)  
    - [Going Deeper: A Comprehensive Guide](#-going-deeper-a-comprehensive-guide)  
