@@ -561,23 +561,6 @@ For example, preserving parentheses for values requiring them (e.g., URLs) or as
 <br>
 
 
-### ¶ Token Selection Guide
-
-<br>
-
-**Decision Matrix:**
-```
-Property Characteristics
-├── Needs Global Consistency?
-│   ├── Yes → Design System Token
-│   └── No →
-│       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → New Rule File and Syntax.ts Entry
-│       │   └── No → PassThrough Token
-```
-<br>
-
-
 **※ Token Collisions and How to Avoid Them**  
 
 
