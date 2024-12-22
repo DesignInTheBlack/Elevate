@@ -26,12 +26,12 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Responsive Styling](#-responsive-styling)  
    - [Contextual and Functional Flags](#-contextual-and-functional-flags)  
    - [Design Tokens and Rules](#-design-tokens-and-rules)  
-   - [Special Tokens](#-special-tokens)  
    - [Token Selection Guide](#-token-selection-guide)  
    - [Best Practices](#-best-practices)
 4. [Configuration](#-configuration)  
    - [Basic Configuration](#-basic-configuration)  
    - [Going Deeper: A Comprehensive Guide](#-going-deeper-a-comprehensive-guide)  
+     - [Special Tokens](#-special-tokens)  
    - [Project Structure](#-project-structure)
 5. [Why Elevate?](#-why-elevate)  
    - [Key Benefits](#-key-benefits)  
@@ -257,88 +257,6 @@ Elevate's systems are driven by two distinct elements:
    ```
 <br>
 
-
-
- ### ¶ Special Tokens
-
- Elevate includes a number of "helper" token types that provide additional capabilities beyond the core functionality for specific situations. These can be used to extend the framework's capabilities, but they should be used with caution. 
-
- <br>
-
-   **Pass-Through Tokens**  
-   - Unrestricted value entry.  
-   - No build-time validation, for dynamic or flexible values.
-   - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
-   - Not recommended for general styling.
-   <br>
-
-   **Example:**
-
-   ```typescript
-   // propertyAttributeMap.ts
-   rotate: {
-     "rotate": "PassThroughToken" // Allows any rotation value
-   }
-   ```
-
-   ```html
-   <div class="rotate:((90deg))"></div>
-   ```
-<br>
-
-Please note that when using PassThroughToken, you must pass through the value in the same way that you would write it in CSS.
-For example, preserving parentheses for values requiring them (e.g., URLs) or as above when passing number and unit combinations.
-
-<br>
-
-  **Numeric Tokens**  
-   - For numeric values.  
-   - Build-time validation ensures that the value is a valid number.
-   - Primarily used for CSS rules that require numeric values.
-
-   <br>
-
-   **Example:**
-
-   ```typescript
-   //Declaration Map
-   // =============================
-    // Z-Index
-    // =============================
-    z: { "z-index": "NumericToken" }
-   ```
-
-   ```html
-   <div class="z:20"></div>
-   ```
-<br>
-
-### ¶ Token Selection Guide
-
-<br>
-
-**Decision Matrix:**
-```
-Property Characteristics
-├── Needs Global Consistency?
-│   ├── Yes → Design System Token
-│   └── No →
-│       ├── Property-Specific Validation Needed?
-│       │   ├── Yes → New Rule File and Syntax.ts Entry
-│       │   └── No → PassThrough Token
-```
-<br>
-
-### ¶ Best Practices
-
-<br>
-
-1. Prefer Design System Tokens whenever possible.
-2. Use Syntax Rule Mappings for structured properties, relationships, or syntax extension.
-3. Minimize PassThroughToken usage.
-
-<br>
-
 </details>
 <br>
 
@@ -511,6 +429,8 @@ export const designSystem = {
 };
 ```
 
+<br>
+
 You can now utilize these new tokens in your utility strings as you would with any of the existing elevate tokens.
 
 <br>
@@ -586,6 +506,78 @@ export const relationships = {
 
 ```
 
+<br>
+
+
+### ¶ Special Tokens
+
+ Elevate includes a number of "helper" token types that provide additional capabilities beyond the core functionality for specific situations. These can be used to extend the framework's capabilities, but they should be used with caution. 
+
+ <br>
+
+   **Pass-Through Tokens**  
+   - Unrestricted value entry.  
+   - No build-time validation, for dynamic or flexible values.
+   - Primarily used for CSS rules that require special syntax (e.g., URLs or complex values).
+   - Not recommended for general styling.
+   <br>
+
+   **Example:**
+
+   ```typescript
+   // propertyAttributeMap.ts
+   rotate: {
+     "rotate": "PassThroughToken" // Allows any rotation value
+   }
+   ```
+
+   ```html
+   <div class="rotate:((90deg))"></div>
+   ```
+<br>
+
+Please note that when using PassThroughToken, you must pass through the value in the same way that you would write it in CSS.
+For example, preserving parentheses for values requiring them (e.g., URLs) or as above when passing number and unit combinations.
+
+<br>
+
+  **Numeric Tokens**  
+   - For numeric values.  
+   - Build-time validation ensures that the value is a valid number.
+   - Primarily used for CSS rules that require numeric values.
+
+   <br>
+
+   **Example:**
+
+   ```typescript
+   //Declaration Map
+   // =============================
+    // Z-Index
+    // =============================
+    z: { "z-index": "NumericToken" }
+   ```
+
+   ```html
+   <div class="z:20"></div>
+   ```
+<br>
+
+
+### ¶ Token Selection Guide
+
+<br>
+
+**Decision Matrix:**
+```
+Property Characteristics
+├── Needs Global Consistency?
+│   ├── Yes → Design System Token
+│   └── No →
+│       ├── Property-Specific Validation Needed?
+│       │   ├── Yes → New Rule File and Syntax.ts Entry
+│       │   └── No → PassThrough Token
+```
 <br>
 
 
