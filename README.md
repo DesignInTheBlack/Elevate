@@ -30,8 +30,8 @@ In it's current iteration (v0.1-alpha), Elevate CSS is a proof of concept and su
    - [Token Selection Guide](#-token-selection-guide)  
    - [Best Practices](#-best-practices)
 4. [Configuration](#-configuration)  
-   - [Framework Configuration](#-framework-configuration)  
-   - [Extending Elevate: A Comprehensive Guide](#-extending-elevate-a-comprehensive-guide)  
+   - [Basic Configuration](#-basic-configuration)  
+   - [Going Deeper: A Comprehensive Guide](#-going-deeper-a-comprehensive-guide)  
    - [Project Structure](#-project-structure)
 5. [Why Elevate?](#-why-elevate)  
    - [Key Benefits](#-key-benefits)  
@@ -351,7 +351,7 @@ Elevate is designed with a powerful, flexible configuration system that allows d
 
 <br>
 
-### ¶ Framework Configuration
+### ¶ Basic Configuration
 
 Configure Elevate's general settings in `elevate/config/elevate.ts`:
 
@@ -423,6 +423,16 @@ export const relationships = {
       "color": "BrandCopyRule" },
 };
 ```
+
+<br>
+
+### ¶ Going Deeper: A Comprehensive Guide
+
+Elevate is designed to be extensible and adaptable, allowing you to easily integrate your design system or add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
+
+<details>
+<summary>Click Here To Read More</summary>
+
 <br>
 
 ```mermaid
@@ -450,15 +460,6 @@ flowchart TD
 
   
 ```
-
-<br>
-
-### ¶ Extending Elevate: A Comprehensive Guide
-
-Elevate is designed to be extensible and adaptable, allowing you to easily integrate your design system or add new features and functionality that help you embody your design system in a way that is both consistent and maintainable within your codebase.
-
-<details>
-<summary>Click Here To Read More</summary>
 
 <br>
 
