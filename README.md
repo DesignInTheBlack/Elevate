@@ -423,6 +423,33 @@ export const relationships = {
       "color": "BrandCopyRule" },
 };
 ```
+<br>
+
+```mermaid
+
+flowchart TD
+    I.. -->A[Want To Integrate Design System Tokens]
+    I.. -->B[Want To Expand Upon Elevate's Syntax]
+
+
+
+    A -->D[Create Token Files in 'elevate/design']
+    D -->E[Do I Need To Maintain Compatibility With Existing Elevate Properties?]
+
+    E -->F[Yes] & G[No]
+
+    F -->H[Spread Token Objects Into Existing Categories In 'config/design.ts']
+    G -->I[Define New Token Categories In 'config/design.ts']
+
+
+    B -->C[Create New Rule Files in 'elevate/rules']
+
+    C -->J[Import New Rules and Spread Them In The Rules Object In 'config/syntax.ts']
+
+    J -->K[Define New Property and Establish Token, Rule, and Declaration Relationships In the Relationships Object In 'config/syntax.ts']
+
+  
+```
 
 <br>
 
@@ -560,35 +587,6 @@ export const relationships = {
 
 <br>
 
-
-```mermaid
-
-flowchart TD
-    I.. -->A[Want To Integrate Design System Tokens]
-    I.. -->B[Want To Expand Upon Elevate's Syntax]
-
-
-
-    A -->D[Create Token Files in 'elevate/design']
-    D -->E[Do I Need To Maintain Compatibility With Existing Elevate Properties?]
-
-    E -->F[Yes] & G[No]
-
-    F -->H[Spread Token Objects Into Existing Categories In 'config/design.ts']
-    G -->I[Define New Token Categories In 'config/design.ts']
-
-
-    B -->C[Create New Rule Files in 'elevate/rules']
-
-    C -->J[Import New Rules and Spread Them In The Rules Object In 'config/syntax.ts']
-
-    J -->K[Define New Property and Establish Token, Rule, and Declaration Relationships In the Relationships Object In 'config/syntax.ts']
-
-  
-```
-
-
-<br>
 
 **※ Token Collisions and How to Avoid Them**  
 
