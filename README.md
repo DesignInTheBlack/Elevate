@@ -169,8 +169,10 @@ Elevate affords and enforces a mobile-first, organized syntax for responsive des
 Allows complex, conditional styling for states, conditions, and other pseudo-classes or pseudo-elements:
 
 ```html
-<div class="@hover:[text:green:right]">  <!-- Hover state changes text -->
+<div class="@hover:[text:green:right_p:d1]">  <!-- Hover state changes text and adds padding. -->
 ```
+<br>
+Note that you can chain property modifier combinations with an underscore. This allows more concise expression of design intent. 
 
 <br>
 
