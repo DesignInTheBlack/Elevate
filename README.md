@@ -551,7 +551,7 @@ For example, preserving parentheses for values requiring them (e.g., URLs) or as
    **Example:**
 
    ```typescript
-   //Declaration Map
+   //Elevate's declaration map, responsible for matching modifiers to CSS declarations for a given property.
    // =============================
     // Z-Index
     // =============================
@@ -567,14 +567,14 @@ For example, preserving parentheses for values requiring them (e.g., URLs) or as
 **※ Token Collisions and How to Avoid Them**  
 
 
-Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly in the property attribute map. It does so through a "first match wins" strategy whereby a modifier passed "slots" to the first CSS declaration that expects a token or rule of that type in the property attribute map.
+Out of the box, Elevate supports an order agnostic syntax structure. It doesn't matter where you place a given design token in a utility string, so long as the syntax is valid and the rule is defined correctly. It does so through a "first match wins" strategy whereby a modifier passed "slots" to the first CSS declaration that expects a token or rule of that type.
 
 
 <br>
 
 
 ```typescript
-    // Typography
+    // Elevate's default text property
     text: {
         "font-size": "FontSizeToken",
         "color": "ColorToken",
@@ -598,7 +598,7 @@ Out of the box, Elevate supports an order agnostic syntax structure. It doesn't 
 <br>
 
 
-However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property as seen above. 
+However, if you have two CSS declarations under a single property that share a common token type, you might run into something called a token collision and get unexpected results. A token collision is when two tokens passed through a utility string try to match to the same CSS declaration. To avoid this, you must create a new rule in `elevate/rules` to define an intermediary rule to allow the system to differentiate and then use that intermediary rule in the property as seen in the example above. 
 
 
 <br>
