@@ -6,12 +6,12 @@ export const typography = {
       tiny: '0.533rem',
       small: '0.711rem',
       base: '1rem',
-      h6: '1.125rem',
-      h5: '1.5rem',
-      h4: '2.25rem',
-      h3: '3.375rem',
-      h2: '5.062rem',
-      h1: '7.594rem',
+      heading6: '1.125rem',
+      heading5: '1.5rem',
+      heading4: '2.25rem',
+      heading3: '3.375rem',
+      heading2: '5.062rem',
+      heading1: '7.594rem',
       eyebrow: '0.583rem'
     },
     
