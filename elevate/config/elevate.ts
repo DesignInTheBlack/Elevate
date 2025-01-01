@@ -1,5 +1,5 @@
 const options = {
-    Watch:'./', 
+    Watch:'./templates', 
     FileTypes:['html', 'jsx', 'tsx', 'astro'],
     Output:'./'
 }

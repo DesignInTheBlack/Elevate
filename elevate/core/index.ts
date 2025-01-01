@@ -188,7 +188,7 @@ const main = async () => {
 
 
 
-const watcher = chokidar.watch('./templates', {
+const watcher = chokidar.watch(config.Watch, {
     persistent: true,
     ignoreInitial: true,
     ignored: [],
@@ -207,13 +207,8 @@ watcher.on('change', () => {
     main();
 });
 
-let shutDown = () => {
-    watcher.close().then(() => {
-        console.log('Elevate CSS is shutting down...');
-        process.exit(1);
-    });
-}
 
 process.on('SIGINT', function() {
-    shutDown();
+    console.log('Elevate CSS is shutting down...');
+    process.exit(1);
 });

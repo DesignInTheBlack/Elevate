@@ -144,9 +144,9 @@ textarea:not([rows]) {
     }
 }
 
-.bg-color\:green {
+.bg-color\:indigo {
 
-background-color: #3CAA96;
+background-color: #7075D3;
 }
 
 .row\:x-center\:y-center {
