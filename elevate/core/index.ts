@@ -8,6 +8,7 @@ import { getBreakpointPriority } from './utility.js';
 import { writeToFile } from './utility.js';
 import { getModifierValue } from './utility.js';
 import { config } from '../config/elevate.js'
+import chokidar from 'chokidar';
 import ora from 'ora';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -35,7 +36,7 @@ const main = async () => {
             scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
         } catch (err) {
             console.error('Failed to scan for classes:', err.message);
-            process.exit(1);
+            return;
         }
         
         if (!scannedClasses || scannedClasses.length === 0) {
@@ -177,13 +178,42 @@ const main = async () => {
           throw new Error('No CSS content generated!');
       }
         writeToFile(compiledCSS);
-        
+        console.clear();
         spinner.succeed('Compilation Successful.');
     } catch (error) {
         spinner.fail(`Compilation failed: ${error.message}`);
-        process.exit(1);
+        return;
     }
 };
 
-// Execute the main function
-main();
+
+
+const watcher = chokidar.watch('./templates', {
+    persistent: true,
+    ignoreInitial: true,
+    ignored: [],
+    ignorePermissionErrors: false,
+    interval: 1000,
+    binaryInterval: 300,
+});
+
+watcher.on('ready', () => {
+    console.clear();
+    console.log('Elevate CSS is watching for changes...');
+});
+
+watcher.on('change', () => {
+    console.clear();
+    main();
+});
+
+let shutDown = () => {
+    watcher.close().then(() => {
+        console.log('Elevate CSS is shutting down...');
+        process.exit(1);
+    });
+}
+
+process.on('SIGINT', function() {
+    shutDown();
+});

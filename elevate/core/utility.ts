@@ -437,6 +437,7 @@ export function writeToFile(content: string) {
         let newEntry = `
 @media only screen and (min-width:${minWidth}) {
 .contain {
+    margin:auto;
     padding-left: ${padding};
     padding-right: ${padding};
     }
