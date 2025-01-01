@@ -144,15 +144,60 @@ textarea:not([rows]) {
     }
 }
 
+.mt\:d12 {
+
+margin-top: 3rem;
+}
+
+.text\:semibold\:heading5\:white\:sans {
+
+font-weight: 600;
+font-size: 1.5rem;
+color: #E8EEF1;
+font-family: Raleway;
+}
+
+.w\:c2 {
+
+width: 4.5rem;
+}
+
+.h\:c2 {
+
+height: 4.5rem;
+}
+
+.\@hover\:\[bg-color\:green\]:hover {
+
+background-color: #3CAA96;
+}
+
+.border\:solid\:indigo-light\:w-d2 {
+
+border-style: solid;
+border-color: #8891FF;
+border-width: 0.5rem;
+}
+
+.h\:hScreen {
+
+height: 100vh;
+}
+
 .bg-color\:indigo {
 
 background-color: #7075D3;
 }
 
-.row\:x-center\:y-center {
+.col\:x-center\:y-center {
 display:flex;
-flex-direction:row;
-justify-content: center;
+flex-direction:column;
 align-items: center;
+justify-content: center;
+}
+
+.bg-color\:black-darkest {
+
+background-color: #000A0F;
 }
 

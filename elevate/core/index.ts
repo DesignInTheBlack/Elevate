@@ -157,7 +157,7 @@ const main = async () => {
             const flexProperties =
             item.property === "row"
                 ? "display:flex;\nflex-direction:row;"
-                : item.property === "stack"
+                : item.property === "col"
                 ? "display:flex;\nflex-direction:column;"
                 : "";
 

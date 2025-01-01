@@ -2,6 +2,6 @@
  //Utility
  '0':'0',
  'full':"100%",
- 'viewheight':"100vh",
- 'viewwidth':"100vw"
+ 'wScreen':"100vw",
+ 'hScreen':"100vh"
  }
