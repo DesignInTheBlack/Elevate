@@ -1,7 +1,7 @@
 //Design System Token Imports 
 
 //Elevate Utility Imports
-import { heightUtility } from "../core/system/etc/height.js";
+import { dimensionUtility } from "../core/system/etc/dimension.js";
 
 //Example Custom Values Import
 import { BrandColors } from "../design/example-brandTokens.js";
@@ -16,7 +16,7 @@ import { breakpoints } from '../core/system/design/breakpoints.js';
 export const designSystem = {
     ColorToken: colors,
     BreakPointToken: breakpoints,
-    SpacingToken: {...spacing,...heightUtility},
+    SpacingToken: {...spacing,...dimensionUtility},
     FontSizeToken: typography.size,
     FontFamilyToken: typography.family,
     LineHeightToken: typography.leading,
