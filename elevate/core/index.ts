@@ -198,12 +198,12 @@ const watcher = chokidar.watch(config.Watch, {
 });
 
 watcher.on('ready', () => {
-    console.clear();
+    // console.clear();
     console.log('Elevate CSS is watching for changes...');
 });
 
 watcher.on('change', () => {
-    console.clear();
+    // console.clear();
     main();
 });
 

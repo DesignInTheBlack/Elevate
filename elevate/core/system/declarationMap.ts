@@ -132,7 +132,6 @@ export const declarationMap = {
         "border-color": "ColorToken",
         "border-width": "BorderWidthRule",
         "border-radius": "BorderRadiusRule",
-        "outline-width": "BorderWidthRule",
         "border-style": "BorderStyleRule"
     },
 
@@ -141,13 +140,12 @@ export const declarationMap = {
     // =============================
     'bg-img': { "background-image": "PassThroughToken" },
     'bg-color': { 'background-color': "ColorToken" },
-    'bg-cover': { "background-size": "cover" },
-    'bg-contain': { "background-size": "contain" },
-    'bg-center': { "background-position": "center" },
-    'bg-left': { "background-position": "left" },
-    'bg-right': { "background-position": "right" },
-    'bg-top': { "background-position": "top" },
-    'bg-bottom': { "background-position": "bottom" },
+    'bg-attr': {
+        "background-size": "BGSizeRule",
+        "background-position": "BGPositionRule",
+        "background-repeat": "BGRepeatRule"
+    },
+
 
     // =============================
     // Grid Layout
