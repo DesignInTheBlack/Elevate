@@ -46,6 +46,10 @@ a:not([class]) {
   color: currentColor;
 }
 
+a {
+  text-decoration: none; /* no underline */
+}
+
 img,
 picture {
   max-width: 100%;

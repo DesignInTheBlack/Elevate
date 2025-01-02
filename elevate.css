@@ -46,6 +46,10 @@ a:not([class]) {
   color: currentColor;
 }
 
+a {
+  text-decoration: none; /* no underline */
+}
+
 img,
 picture {
   max-width: 100%;
@@ -144,6 +148,48 @@ textarea:not([rows]) {
     }
 }
 
+.\@hover\:\[mt\:d9_p\:d3_text\:semibold\:white\]:hover {
+
+margin-top: 2.25rem;
+padding-left: 0.75rem;
+padding-top: 0.75rem;
+padding-right: 0.75rem;
+padding-bottom: 0.75rem;
+font-weight: 600;
+color: #E8EEF1;
+}
+
+.bg-color\:indigo {
+
+background-color: #7075D3;
+}
+
+.border\:r-d3 {
+
+border-radius: 0.75rem;
+}
+
+.mt\:d6 {
+
+margin-top: 1.5rem;
+}
+
+.p\:d2 {
+
+padding-left: 0.5rem;
+padding-top: 0.5rem;
+padding-right: 0.5rem;
+padding-bottom: 0.5rem;
+}
+
+.text\:medium\:base\:indigo-lightest\:sans {
+
+font-weight: 500;
+font-size: 1rem;
+color: #A3A9FF;
+font-family: Raleway;
+}
+
 .mt\:d12 {
 
 margin-top: 3rem;
@@ -167,9 +213,10 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.\@hover\:\[bg-color\:green\]:hover {
+.\@hover\:\[bg-color\:green_pb\:d4\]:hover {
 
 background-color: #3CAA96;
+padding-bottom: 1rem;
 }
 
 .border\:solid\:indigo-light\:w-d2 {
@@ -182,11 +229,6 @@ border-width: 0.5rem;
 .h\:hScreen {
 
 height: 100vh;
-}
-
-.bg-color\:indigo {
-
-background-color: #7075D3;
 }
 
 .col\:x-center\:y-center {
