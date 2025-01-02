@@ -141,6 +141,13 @@ export const declarationMap = {
     // =============================
     'bg-img': { "background-image": "PassThroughToken" },
     'bg-color': { 'background-color': "ColorToken" },
+    'bg-cover': { "background-size": "cover" },
+    'bg-contain': { "background-size": "contain" },
+    'bg-center': { "background-position": "center" },
+    'bg-left': { "background-position": "left" },
+    'bg-right': { "background-position": "right" },
+    'bg-top': { "background-position": "top" },
+    'bg-bottom': { "background-position": "bottom" },
 
     // =============================
     // Grid Layout
