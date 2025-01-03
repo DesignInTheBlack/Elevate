@@ -148,13 +148,9 @@ textarea:not([rows]) {
     }
 }
 
-.\@hover\:\[mt\:d9_p\:d3_text\:semibold\:white\]:hover {
+.\@hover\:\[mt\:d9_text\:semibold\:white\]:hover {
 
 margin-top: 2.25rem;
-padding-left: 0.75rem;
-padding-top: 0.75rem;
-padding-right: 0.75rem;
-padding-bottom: 0.75rem;
 font-weight: 600;
 color: #E8EEF1;
 }
@@ -164,7 +160,7 @@ color: #E8EEF1;
 background-color: #7075D3;
 }
 
-.border\:r-d3 {
+.b\:r-d3 {
 
 border-radius: 0.75rem;
 }
@@ -174,12 +170,12 @@ border-radius: 0.75rem;
 margin-top: 1.5rem;
 }
 
-.p\:d2 {
+.p\:d3 {
 
-padding-left: 0.5rem;
-padding-top: 0.5rem;
-padding-right: 0.5rem;
-padding-bottom: 0.5rem;
+padding-left: 0.75rem;
+padding-top: 0.75rem;
+padding-right: 0.75rem;
+padding-bottom: 0.75rem;
 }
 
 .text\:medium\:base\:indigo-lightest\:sans {
@@ -219,7 +215,7 @@ background-color: #3CAA96;
 padding-bottom: 1rem;
 }
 
-.border\:solid\:indigo-light\:w-d2 {
+.b\:solid\:indigo-light\:w-d2 {
 
 border-style: solid;
 border-color: #8891FF;

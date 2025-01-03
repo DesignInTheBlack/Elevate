@@ -128,11 +128,39 @@ export const declarationMap = {
     // =============================
     // Borders
     // =============================
-    border: {
+    b: {
         "border-color": "ColorToken",
         "border-width": "BorderWidthRule",
         "border-radius": "BorderRadiusRule",
         "border-style": "BorderStyleRule"
+    },
+
+    'bl': {
+        "border-left-color": "ColorToken",
+        "border-left-width": "BorderWidthRule",
+        "border-left-radius": "BorderRadiusRule",
+        "border-left-style": "BorderStyleRule"
+    },
+
+    'br': {
+        "border-right-color": "ColorToken",
+        "border-right-width": "BorderWidthRule",
+        "border-right-radius": "BorderRadiusRule",
+        "border-right-style": "BorderStyleRule"
+    },
+
+    'bt': {
+        "border-top-color": "ColorToken",
+        "border-top-width": "BorderWidthRule",
+        "border-top-radius": "BorderRadiusRule",
+        "border-top-style": "BorderStyleRule"
+    },
+
+    'bb': {
+        "border-bottom-color": "ColorToken",
+        "border-bottom-width": "BorderWidthRule",
+        "border-bottom-radius": "BorderRadiusRule",
+        "border-bottom-style": "BorderStyleRule"
     },
 
     // =============================
