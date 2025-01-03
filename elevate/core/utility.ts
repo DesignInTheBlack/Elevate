@@ -193,14 +193,14 @@ function processModifiers(cst: any, context?: { fileName: string }) {
     // Preprocess modifiers based on property type
     const modifiers =
     //Handle Directional Modifiers
-        property === "p" || property === "m" || property === "inset"
+        property === "pd" || property === "mg" || property === "inset"
             ? directionExpansion(cst.children.ColonModifier)
             : cst.children.ColonModifier;
     // Map and construct rules for each modifier
     return modifiers.map((mod: any, index: number) => {
         const modifier = mod.image.replace(":", "");
         const modType =
-            property === "p" || property === "m" || property === "inset"
+            property === "pd" || property === "mg" || property === "inset"
                 ? directions[index % directions.length]
                 : getModifierType(modifier, context);
         return constructRule(modType, property, modifier, context);

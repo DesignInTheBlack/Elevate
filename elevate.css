@@ -148,7 +148,7 @@ textarea:not([rows]) {
     }
 }
 
-.\@hover\:\[mt\:d9_text\:semibold\:white\]:hover {
+.\@hover\:\[mg-t\:d9_text\:semibold\:white\]:hover {
 
 margin-top: 2.25rem;
 font-weight: 600;
@@ -160,17 +160,17 @@ color: #E8EEF1;
 background-color: #7075D3;
 }
 
-.b\:r-d3 {
+.bd\:r-d3 {
 
 border-radius: 0.75rem;
 }
 
-.mt\:d6 {
+.mg-t\:d6 {
 
 margin-top: 1.5rem;
 }
 
-.p\:d3 {
+.pd\:d3 {
 
 padding-left: 0.75rem;
 padding-top: 0.75rem;
@@ -186,7 +186,7 @@ color: #A3A9FF;
 font-family: Raleway;
 }
 
-.mt\:d12 {
+.mg-t\:d12 {
 
 margin-top: 3rem;
 }
@@ -209,13 +209,13 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.\@hover\:\[bg-color\:green_pb\:d4\]:hover {
+.\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
 
 background-color: #3CAA96;
 padding-bottom: 1rem;
 }
 
-.b\:solid\:indigo-light\:w-d2 {
+.bd\:solid\:indigo-light\:w-d2 {
 
 border-style: solid;
 border-color: #8891FF;

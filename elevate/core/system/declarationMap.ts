@@ -45,28 +45,28 @@ export const declarationMap = {
     // =============================
     // Spacing & Layout
     // =============================
-    m: {
+    mg: {
         "margin-left": "left",
         "margin-right": "right",
         "margin-top": "top",
         "margin-bottom": "bottom"
     },
 
-    p: {
+    pd: {
         "padding-left": "left",
         "padding-right": "right",
         "padding-top": "top",
         "padding-bottom": "bottom"
     },
 
-    pl: { "padding-left": "SpacingToken" },
-    pr: { "padding-right": "SpacingToken" },
-    pt: { "padding-top": "SpacingToken" },
-    pb: { "padding-bottom": "SpacingToken" },
-    ml: { "margin-left": "SpacingToken" },
-    mr: { "margin-right": "SpacingToken" },
-    mt: { "margin-top": "SpacingToken" },
-    mb: { "margin-bottom": "SpacingToken" },
+    'pd-l': { "padding-left": "SpacingToken" },
+    'pd-r': { "padding-right": "SpacingToken" },
+    'pd-t': { "padding-top": "SpacingToken" },
+    'pd-b': { "padding-bottom": "SpacingToken" },
+    'mg-l': { "margin-left": "SpacingToken" },
+    'mg-r': { "margin-right": "SpacingToken" },
+    'mg-t': { "margin-top": "SpacingToken" },
+    'mg-b': { "margin-bottom": "SpacingToken" },
     w: { "width": "SpacingToken" },
     h: { "height": "SpacingToken" },
     'min-w': { "min-width": "SpacingToken" },
@@ -128,35 +128,35 @@ export const declarationMap = {
     // =============================
     // Borders
     // =============================
-    b: {
+    bd: {
         "border-color": "ColorToken",
         "border-width": "BorderWidthRule",
         "border-radius": "BorderRadiusRule",
         "border-style": "BorderStyleRule"
     },
 
-    'bl': {
+    'bd-l': {
         "border-left-color": "ColorToken",
         "border-left-width": "BorderWidthRule",
         "border-left-radius": "BorderRadiusRule",
         "border-left-style": "BorderStyleRule"
     },
 
-    'br': {
+    'bd-r': {
         "border-right-color": "ColorToken",
         "border-right-width": "BorderWidthRule",
         "border-right-radius": "BorderRadiusRule",
         "border-right-style": "BorderStyleRule"
     },
 
-    'bt': {
+    'bd-t': {
         "border-top-color": "ColorToken",
         "border-top-width": "BorderWidthRule",
         "border-top-radius": "BorderRadiusRule",
         "border-top-style": "BorderStyleRule"
     },
 
-    'bb': {
+    'bd-b': {
         "border-bottom-color": "ColorToken",
         "border-bottom-width": "BorderWidthRule",
         "border-bottom-radius": "BorderRadiusRule",
