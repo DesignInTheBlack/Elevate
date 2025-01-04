@@ -1,4 +1,6 @@
 
+<br>
+
 <div align="center">
   <img src="https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg" style="width:25%; height:auto;">
 </div>
