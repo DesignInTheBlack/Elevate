@@ -4,14 +4,14 @@
 <br>
 
 <div align="center">
-  <img src="https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg" style="width:10%; height:auto;">
+  <img src="https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg" style="width:15%; height:auto;">
 </div>
 
 <br>
 <br>
 <br>
 
-# Elevate CSS: Utility-First. Design-Driven.
+# Utility-First. Design-Driven.
 
 <br>
 
