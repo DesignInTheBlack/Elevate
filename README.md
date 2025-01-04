@@ -1,5 +1,7 @@
 
-![alt text](https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg)
+<div align="center">
+  <img src="https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg" style="width:50%; height:auto;">
+</div>
 
 # Elevate CSS: Utility-First. Design-Driven.
 
