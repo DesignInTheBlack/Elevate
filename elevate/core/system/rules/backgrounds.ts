@@ -3,9 +3,13 @@ export const backgrounds = {
 
     position: {
 
+        "pos-left-top": "left top",
+        "pos-left": "left",
         "pos-left-bottom": "left bottom",
-        "pos-right": "right",
         "pos-top": "top",
+        "pos-right-top": "right top",
+        "pos-right": "right",
+        "pos-right-bottom": "right bottom",
         "pos-bottom": "bottom"
 
     },

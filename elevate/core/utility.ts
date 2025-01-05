@@ -210,7 +210,7 @@ function processModifiers(cst: any, context?: { fileName: string }) {
 // Constructs a single CSS rule line by combining a property and a resolved modifier value.
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
     return (
-        getRuleName(modType, property, declarationMap) +
+        getRuleName(modType, property, declarationMap, context) +
         ": " +
         getModifierValue(modifier, context)
     );
@@ -386,20 +386,38 @@ function directionExpansion(modifiers: any[]): any[] {
 export function getRuleName(
     modifier: string,
     property: string,
-    keys: typeof declarationMap
+    keys: typeof declarationMap,
+    context?: { fileName: string, lineNumber: number }
 ): string {
     function isPropertyIncluded(property: string): property is propertyMap {
         return property in keys;
     }
     if (isPropertyIncluded(property)) {
         let match = keys[property];
+
         const key = Object.keys(match).find(
             (k) => modifier.startsWith(match[k as keyof typeof match])
-        ) || "no-match";
+        ) 
+
+        if (key) {
         return key;
-    } else {
-        return "no match!";
-    }
+        }
+
+        else {
+            throw new Error(
+`\n\nInvalid Relationship: Unable to verify relationship between modifier type "${modifier}" and "${property}" in ${context?.fileName} on line ${context?.lineNumber}. 
+
+Please double check your utility string and ensure that the modifier name is unique to the property.
+
+💡 Troubleshooting Tips:
+Note that modifier names must be unique to the system. I.E..two modifiers, regardless of property, cannot have the same name.
+
+For more information, refer to the Elevate CSS documentation.\n`
+        
+            );
+        }
+
+    } 
 }
 
 // ╔════════════════════════════════════════════════════════════════════╗

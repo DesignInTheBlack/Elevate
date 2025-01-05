@@ -149,29 +149,24 @@ textarea:not([rows]) {
 }
 
 .\@hover\:\[mg-t\:d9_text\:semibold\:white\]:hover {
-
 margin-top: 2.25rem;
 font-weight: 600;
 color: #E8EEF1;
 }
 
 .bg-color\:indigo {
-
 background-color: #7075D3;
 }
 
 .bd\:r-d3 {
-
 border-radius: 0.75rem;
 }
 
 .mg-t\:d6 {
-
 margin-top: 1.5rem;
 }
 
 .pd\:d3 {
-
 padding-left: 0.75rem;
 padding-top: 0.75rem;
 padding-right: 0.75rem;
@@ -179,7 +174,6 @@ padding-bottom: 0.75rem;
 }
 
 .text\:medium\:base\:indigo-lightest\:sans {
-
 font-weight: 500;
 font-size: 1rem;
 color: #A3A9FF;
@@ -187,12 +181,10 @@ font-family: Raleway;
 }
 
 .mg-t\:d12 {
-
 margin-top: 3rem;
 }
 
 .text\:semibold\:heading5\:white\:sans {
-
 font-weight: 600;
 font-size: 1.5rem;
 color: #E8EEF1;
@@ -200,42 +192,39 @@ font-family: Raleway;
 }
 
 .w\:c2 {
-
 width: 4.5rem;
 }
 
 .h\:c2 {
-
 height: 4.5rem;
 }
 
 .\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
-
 background-color: #3CAA96;
 padding-bottom: 1rem;
 }
 
 .bd\:solid\:indigo-light\:w-d2 {
-
 border-style: solid;
 border-color: #8891FF;
 border-width: 0.5rem;
 }
 
 .h\:hScreen {
-
 height: 100vh;
 }
 
-.col\:x-center\:y-center {
-display:flex;
+.bg-attr\:pos-left {
+background-position: left;
+}
+
+.col\:x-center\:y-center {display:flex;
 flex-direction:column;
 align-items: center;
 justify-content: center;
 }
 
 .bg-color\:black-darkest {
-
 background-color: #000A0F;
 }
 
