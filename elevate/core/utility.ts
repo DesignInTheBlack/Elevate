@@ -63,8 +63,6 @@ export function toAst(cst: any, context?: { fileName: string }) {
         throw new Error("No CST to convert.");
     }
 
-    // console.log(JSON.stringify(cst,null,2))
-
     let utilityAST = null
     if (cst.children.DirectProperty) {
         utilityAST = handleDirectProperties(cst,context)
@@ -191,17 +189,26 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
     const property = cst.children.Property[0].image;
     const directions = ["top", "left", "right", "bottom"];
     // Preprocess modifiers based on property type
-    const modifiers =
+    let modifiers = null;
     //Handle Directional Modifiers
-        property === "pd" || property === "mg" || property === "inset"
-            ? directionExpansion(cst.children.ColonModifier)
-            : cst.children.ColonModifier;
+
+       if (property === "pd" || property === "mg" || property === "inset") {
+
+        modifiers =  directionExpansion(cst.children.ColonModifier)
+
+       } 
+       else {
+        modifiers = cst.children.ColonModifier;
+        }
+
+
     // Map and construct rules for each modifier
     return modifiers.map((mod: any, index: number) => {
         const modifier = mod.image.replace(":", "");
+     
         const modType =
             property === "pd" || property === "mg" || property === "inset"
-                ? directions[index % directions.length]
+                ? [directions[index % directions.length]]
                 : getModifierType(modifier, property, context);
         return constructRule(modType, property, modifier, context);
     });
@@ -209,6 +216,7 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
 
 // Constructs a single CSS rule line by combining a property and a resolved modifier value.
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
+ 
     return (
         getRuleName(modType, property, declarationMap, context) +
         ": " +
@@ -277,6 +285,7 @@ export function getModifierType(
 
 // Retrieves the actual CSS value for a given modifier by resolving it through token types and handlers.
 export function getModifierValue(modifier: string, context?: { fileName: string, lineNumber: number }): string {
+
     const modifierType = getModifierType(modifier, context);
 
      if (modifierType[0] === "PassThroughToken") {
@@ -385,6 +394,7 @@ function validateAndRetrievePrefixValue(
 
 // Expands shorthand directional modifiers (p, m, inset) into full sets of values for all four sides.
 function directionExpansion(modifiers: any[]): any[] {
+
     if (modifiers.length === 1) {
         // Expand a single value to all four sides
         return Array(4).fill(modifiers[0]);
@@ -402,6 +412,9 @@ export function getRuleName(
     keys: typeof declarationMap,
     context?: { fileName: string, lineNumber: number }
 ): string | undefined {
+
+
+
     function isPropertyIncluded(property: string): property is propertyMap {
         return property in keys;
     }
@@ -432,8 +445,6 @@ export function getBreakpointPriority(breakpoint: string): number {
     const clean = breakpoint.replace(/\//g, '') as BreakpointToken;
     return Object.keys(breakpoints).indexOf(clean);
 }
-
-
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   FILE WRITING                                     ║
 // ║        Handles final CSS content output to a file.                 ║
@@ -470,8 +481,6 @@ export function writeToFile(content: string) {
     fs.writeFile(filePath, completeContent, (err: any) => {
         if (err) {
             console.error('Error writing to the file:', err);
-        } else {
-            console.log('Content written to elevate.css successfully!');
         }
     });
 }

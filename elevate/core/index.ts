@@ -179,7 +179,7 @@ const main = async () => {
       }
         writeToFile(compiledCSS);
         console.clear();
-        spinner.succeed('Compilation Successful.');
+        spinner.succeed('Elevate CSS Compilation Successful!');
     } catch (error) {
         spinner.fail(`Compilation failed: ${error.message}`);
         return;

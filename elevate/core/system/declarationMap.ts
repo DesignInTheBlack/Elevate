@@ -46,16 +46,16 @@ export const declarationMap = {
     // Spacing & Layout
     // =============================
     mg: {
+        "margin-top": "top",
         "margin-left": "left",
         "margin-right": "right",
-        "margin-top": "top",
         "margin-bottom": "bottom"
     },
 
     pd: {
+        "padding-top": "top",
         "padding-left": "left",
         "padding-right": "right",
-        "padding-top": "top",
         "padding-bottom": "bottom"
     },
 

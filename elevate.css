@@ -167,10 +167,10 @@ margin-top: 1.5rem;
 }
 
 .pd\:d3 {
-undefined: 0.75rem;
-undefined: 0.75rem;
-undefined: 0.75rem;
-undefined: 0.75rem;
+padding-top: 0.75rem;
+padding-left: 0.75rem;
+padding-right: 0.75rem;
+padding-bottom: 0.75rem;
 }
 
 .text\:medium\:base\:indigo-lightest\:sans {
@@ -220,7 +220,7 @@ height: 100vh;
 }
 
 .bg-attr\:left {
-undefined: left;
+background-position: left;
 }
 
 .col\:x-center\:y-center {display:flex;

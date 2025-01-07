@@ -4,7 +4,7 @@ export const backgrounds = {
     position: {
 
         "pos-left-top": "left top",
-        "pos-left": "left",
+        "left": "left",
         "pos-left-bottom": "left bottom",
         "pos-top": "top",
         "pos-right-top": "right top",
