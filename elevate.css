@@ -167,10 +167,10 @@ margin-top: 1.5rem;
 }
 
 .pd\:d3 {
-padding-left: 0.75rem;
-padding-top: 0.75rem;
-padding-right: 0.75rem;
-padding-bottom: 0.75rem;
+undefined: 0.75rem;
+undefined: 0.75rem;
+undefined: 0.75rem;
+undefined: 0.75rem;
 }
 
 .text\:medium\:base\:indigo-lightest\:sans {
@@ -184,11 +184,12 @@ font-family: Raleway;
 margin-top: 3rem;
 }
 
-.text\:semibold\:heading5\:white\:sans {
+.text\:semibold\:heading5\:white\:sans\:center {
 font-weight: 600;
 font-size: 1.5rem;
 color: #E8EEF1;
 font-family: Raleway;
+text-align: center;
 }
 
 .mg-t\:d8 {
@@ -218,8 +219,8 @@ border-width: 0.5rem;
 height: 100vh;
 }
 
-.bg-attr\:pos-left {
-background-position: left;
+.bg-attr\:left {
+undefined: left;
 }
 
 .col\:x-center\:y-center {display:flex;

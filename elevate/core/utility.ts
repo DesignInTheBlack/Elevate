@@ -145,7 +145,7 @@ function handlePassThrough(cst: any, context?: { fileName: string, lineNumber: n
         const property = passThroughMatch[1];
         const modifier = passThroughMatch[2];
 
-        const modType = getModifierType(modifier, context);
+        const modType = getModifierType(modifier, property, context);
 
 
 
@@ -187,9 +187,9 @@ function handleCompoundProperties(cst: any, context?: { fileName: string, lineNu
 }
 
 // Processes modifiers for properties, potentially expanding directional values and constructing CSS rules.
-function processModifiers(cst: any, context?: { fileName: string }) {
+function processModifiers(cst: any, context?: { fileName: string, lineNumber: number }) {
     const property = cst.children.Property[0].image;
-    const directions = ["left", "top", "right", "bottom"];
+    const directions = ["top", "left", "right", "bottom"];
     // Preprocess modifiers based on property type
     const modifiers =
     //Handle Directional Modifiers
@@ -202,7 +202,7 @@ function processModifiers(cst: any, context?: { fileName: string }) {
         const modType =
             property === "pd" || property === "mg" || property === "inset"
                 ? directions[index % directions.length]
-                : getModifierType(modifier, context);
+                : getModifierType(modifier, property, context);
         return constructRule(modType, property, modifier, context);
     });
 }
@@ -222,56 +222,70 @@ function constructRule(modType: string, property: string, modifier: string, cont
 // ╚════════════════════════════════════════════════════════════════════╝
 
 // Determines the type of a given modifier (token) by checking known token maps and patterns.
-export function getModifierType(modifier: string, context?: { fileName: string, lineNumber: number }): string {
+export function getModifierType(
+    modifier: string,
+    property: string,
+    context?: { fileName: string, lineNumber: number }
+): string[] {
+    const matches = [];
 
     // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
-    const cleanedModifier = modifier.includes(':') 
-        ? modifier.slice(modifier.indexOf('(')) 
+    const cleanedModifier = modifier.includes(':')
+        ? modifier.slice(modifier.indexOf('('))
         : modifier;
 
     if (/^\(.*\)$/.test(cleanedModifier)) {
-        return "PassThroughToken";
+        matches.push("PassThroughToken");
     }
 
-    // First try direct lookup
+    // Direct lookup for matches
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
-            return typeName;
+            matches.push(typeName); // Add to matches array
         }
     }
-    // If not found, try compound modifier format
+
+    // Compound modifier format
     const [prefix] = modifier.split('-');
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
-            return typeName;
+            matches.push(typeName); // Add to matches array
         }
     }
-    // Handle numeric values for z-index
+
+    // Numeric values for z-index
     if (!isNaN(parseInt(modifier, 10))) {
-        return "NumericToken";
+        matches.push("NumericToken");
     }
-    throw new Error(
-        `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
-    
+
+    // If no matches found, throw an error
+    if (matches.length === 0) {
+        throw new Error(
+            `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+            
     💡 Troubleshooting Tips:
     1. Verify the modifier is correctly defined and that this property accepts it.
     2. If this is custom syntax, review syntax.ts as well as any relevant rules and their expected token types.
     For more information, refer to the Elevate CSS documentation.\n`
+        );
+    }
 
-    );
+    // Return unique matches to avoid duplicates
+    return [...new Set(matches)];
 }
+
 
 // Retrieves the actual CSS value for a given modifier by resolving it through token types and handlers.
 export function getModifierValue(modifier: string, context?: { fileName: string, lineNumber: number }): string {
     const modifierType = getModifierType(modifier, context);
 
-     if (modifierType === "PassThroughToken") {
+     if (modifierType[0] === "PassThroughToken") {
         // Extract value inside parentheses
         const match = modifier.match(/^\((.*)\)$/);
         return match ? match[1] : modifier;
     }
 
-    if (modifierType === "NumericToken") {
+    if (modifierType[0] === "NumericToken") {
         return types.NumericToken.validate(modifier);
     }
     if (isAxisSpecificModifier(modifier)) {
@@ -382,43 +396,31 @@ function directionExpansion(modifiers: any[]): any[] {
     return modifiers;
 }
 
-// Determines the correct CSS property name for a given modifier and property combination from the property map.
 export function getRuleName(
-    modifier: string,
+    modifiers: string[],
     property: string,
     keys: typeof declarationMap,
     context?: { fileName: string, lineNumber: number }
-): string {
+): string | undefined {
     function isPropertyIncluded(property: string): property is propertyMap {
         return property in keys;
     }
+
     if (isPropertyIncluded(property)) {
-        let match = keys[property];
+        const match = keys[property];
 
-        const key = Object.keys(match).find(
-            (k) => modifier.startsWith(match[k as keyof typeof match])
-        ) 
-
-        if (key) {
-        return key;
+        // Iterate over modifiers and check each against the match object
+        for (const modifier of modifiers) {
+            for (const [key, value] of Object.entries(match)) {
+                if (modifier.startsWith(value)) {
+                    return key; // Return the first matching key
+                }
+            }
         }
-
-        else {
-            throw new Error(
-`\n\nInvalid Relationship: Unable to verify relationship between modifier type "${modifier}" and "${property}" in ${context?.fileName} on line ${context?.lineNumber}. 
-
-Please double check your utility string and ensure that the modifier name is unique to the property.
-
-💡 Troubleshooting Tips:
-Note that modifier names must be unique to the system. I.E..two modifiers, regardless of property, cannot have the same name.
-
-For more information, refer to the Elevate CSS documentation.\n`
-        
-            );
-        }
-
     } 
 }
+
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                  Breakpoint Handling                               ║
