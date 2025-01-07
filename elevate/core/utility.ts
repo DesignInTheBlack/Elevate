@@ -89,14 +89,13 @@ function handleDirectProperties(cst: any, context?: { fileName: string, lineNumb
 
     if (!propMap) {
         throw new Error(
-    `\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+`\n\nDirect Property Unrecognized: Unrecognized property "${directProp}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
-    💡 Troubleshooting Tips:
-    1. Check for typos or mismatched case in the property name ${directProp}
-    2. If this is a custom property, review syntax.ts as well as any relevant rules accordingly.
-    
+💡 Troubleshooting Tips:
+1. Check for typos or mismatched case in the property name ${directProp}
+2. If this is a custom property, review syntax.ts as well as any relevant rules accordingly.
 
-    For more information, refer to the Elevate CSS documentation.\n`
+For more information, refer to https://elevate-docs.pages.dev\n`
         );
     }
 
@@ -166,13 +165,13 @@ function handleCompoundProperties(cst: any, context?: { fileName: string, lineNu
     // Validate property before processing
     if (!(property in declarationMap)) {
         throw new Error(
-            `\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
-    
-    💡 Troubleshooting Tips:
-    1. Check for typos in your class name
-    2. Ensure the property is defined in the declaration map
+`\n\nInvalid: Unrecognized property "${property}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
-    For more information, refer to the Elevate CSS documentation.\n`
+💡 Troubleshooting Tips:
+1. Check for typos in your class name
+2. Ensure the property is defined in the declaration map
+
+For more information, refer to https://elevate-docs.pages.dev\n`
         );
     }
 
@@ -269,12 +268,13 @@ export function getModifierType(
     // If no matches found, throw an error
     if (matches.length === 0) {
         throw new Error(
-            `\n\nDesign Token Validation Failed: Unable to determine modifier token type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
-            
-    💡 Troubleshooting Tips:
-    1. Verify the modifier is correctly defined and that this property accepts it.
-    2. If this is custom syntax, review syntax.ts as well as any relevant rules and their expected token types.
-    For more information, refer to the Elevate CSS documentation.\n`
+`\n\nModifier Validation Failed: Unable to determine modifier type for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+💡 Troubleshooting Tips:
+1. Verify the modifier is correctly defined and that this property accepts it.
+2. If this is custom syntax, review syntax.ts as well as any relevant rules and their expected token types.
+
+For more information, refer to https://elevate-docs.pages.dev\n`
         );
     }
 
@@ -321,10 +321,10 @@ function getAxisSpecificValue(modifier: string): string {
         return types.yAxis[modifier];
     }
     throw new Error(
-        `\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
- 
-    💡 Troubleshooting Tips:
-       For more information, refer to the Elevate CSS documentation.\n`
+`\n\nInvalid Axis Value: Unable to determine axis specific modifier for "${modifier}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+💡 Troubleshooting Tips:
+For more information, refer to https://elevate-docs.pages.dev\n`
 
     );
 }
@@ -380,13 +380,13 @@ function validateAndRetrievePrefixValue(
             .map(group => group.join(', '))
             .join('\n    ');
             throw new Error(
-    `\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+`\n\nInvalid Prefixed Value: Unable to determine ${tokenType.toLowerCase()} value "${value}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
 
-    💡 Troubleshooting Tips:
-    1. Examine your prefixed value and ensure it matches the expected token type.
-    2. If this is a custom modifier, ensure that you are using the correct syntax.
+💡 Troubleshooting Tips:
+1. Examine your prefixed value and ensure it matches the expected token type.
+2. If this is a custom modifier, ensure that you are using the correct syntax.
 
-    For more information, refer to the Elevate CSS documentation.\n`
+For more information, refer to https://elevate-docs.pages.dev\n`
             );
     }
     return types[tokenType][value];
@@ -411,9 +411,7 @@ export function getRuleName(
     property: string,
     keys: typeof declarationMap,
     context?: { fileName: string, lineNumber: number }
-): string | undefined {
-
-
+): string  {
 
     function isPropertyIncluded(property: string): property is propertyMap {
         return property in keys;
@@ -430,7 +428,21 @@ export function getRuleName(
                 }
             }
         }
-    } 
+    }
+    // If no match found, return an empty string
+
+
+    throw new Error(
+`\n\nInvalid Property/Modifier Relationship: Property "${property}" does not accept modifiers of type "${modifiers}"${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+💡 Troubleshooting Tips:
+1. Examine the property and the accepted modifier types.
+2. Check for typos in both the property and the modifier names.
+
+For more information, refer to https://elevate-docs.pages.dev\n`
+                );
+
+
 }
 
 
