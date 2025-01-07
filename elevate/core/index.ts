@@ -163,7 +163,9 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {${flexProperties}\n${modifiers}\n}\n\n`;
+            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {` +
+            (flexProperties ? `\n${flexProperties}` : '') +
+            `\n${modifiers}\n}\n\n`;
         });
 
         // Close the last media query if open
