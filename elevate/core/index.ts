@@ -163,7 +163,9 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {${flexProperties}\n${modifiers}\n}\n\n`;
+            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {` +
+            (flexProperties ? `\n${flexProperties}` : '') +
+            `\n${modifiers}\n}\n\n`;
         });
 
         // Close the last media query if open
@@ -179,7 +181,7 @@ const main = async () => {
       }
         writeToFile(compiledCSS);
         console.clear();
-        spinner.succeed('Compilation Successful.');
+        spinner.succeed('Elevate CSS Compilation Successful!');
     } catch (error) {
         spinner.fail(`Compilation failed: ${error.message}`);
         return;
