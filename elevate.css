@@ -148,10 +148,10 @@ textarea:not([rows]) {
     }
 }
 
-.\@hover\:\[mg-t\:d9_text\:semibold\:white\]:hover {
+.\@hover\:\[mg-t\:d9_text\:white_font\:semibold\]:hover {
 margin-top: 2.25rem;
-font-weight: 600;
 color: #E8EEF1;
+font-weight: 600;
 }
 
 .bg-color\:indigo {
@@ -173,23 +173,29 @@ padding-right: 0.75rem;
 padding-bottom: 0.75rem;
 }
 
-.text\:medium\:base\:indigo-lightest\:sans {
-font-weight: 500;
-font-size: 1rem;
+.text\:indigo-lightest {
 color: #A3A9FF;
+}
+
+.font\:medium\:sans\:base {
+font-weight: 500;
 font-family: Raleway;
+font-size: 1rem;
 }
 
 .mg-t\:d12 {
 margin-top: 3rem;
 }
 
-.text\:semibold\:heading5\:white\:sans\:center {
-font-weight: 600;
-font-size: 1.5rem;
+.text\:white\:center {
 color: #E8EEF1;
-font-family: Raleway;
 text-align: center;
+}
+
+.font\:semibold\:sans\:heading5 {
+font-weight: 600;
+font-family: Raleway;
+font-size: 1.5rem;
 }
 
 .mg-t\:d8 {
@@ -219,8 +225,8 @@ border-width: 0.5rem;
 height: 100vh;
 }
 
-.bg-attr\:left {
-background-position: left;
+.bg-position\:left-center {
+background-position: left center;
 }
 
 .col\:x-center\:y-center {

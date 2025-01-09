@@ -113,17 +113,22 @@ export const declarationMap = {
     // =============================
     // Typography
     // =============================
-    text: {
+    font: {
         "font-size": "FontSizeToken",
-        "color": "ColorToken",
         "font-family": "FontFamilyToken",
+        "font-weight": "FontWeightToken",
+    },
+
+    text: {
+        "color": "ColorToken",
         "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
-        "text-align": "TextAlignRule",
+        "text-transform": "TextTransformRule",
         "max-width": "MeasureToken",
-        "font-weight": "FontWeightToken",
-        "text-transform": "TextTransformRule"
+        "text-align": "TextAlignRule",
     },
+
+
 
     // =============================
     // Borders
@@ -168,11 +173,9 @@ export const declarationMap = {
     // =============================
     'bg-img': { "background-image": "PassThroughToken" },
     'bg-color': { 'background-color': "ColorToken" },
-    'bg-attr': {
-        "background-size": "BGSizeRule",
-        "background-position": "BGPositionRule",
-        "background-repeat": "BGRepeatRule"
-    },
+    'bg-size': { "background-size": "BGSizeRule" },
+    'bg-position': { "background-position": "BGPositionRule" },
+    'bg-repeat': { "background-repeat": "BGRepeatRule" },
 
 
     // =============================

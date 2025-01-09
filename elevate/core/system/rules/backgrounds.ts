@@ -3,14 +3,15 @@ export const backgrounds = {
 
     position: {
 
-        "pos-left-top": "left top",
-        "left": "left",
-        "pos-left-bottom": "left bottom",
-        "pos-top": "top",
-        "pos-right-top": "right top",
-        "pos-right": "right",
-        "pos-right-bottom": "right bottom",
-        "pos-bottom": "bottom"
+        "left-top": "left top",
+        "left-center": "left center",
+        "left-bottom": "left bottom",
+        "center-top": "center top",
+        "center-center": "center center", // shorthand for both axes centered
+        "center-bottom": "center bottom",
+        "right-top": "right top",
+        "right-center": "right center",
+        "right-bottom": "right bottom"
 
     },
 

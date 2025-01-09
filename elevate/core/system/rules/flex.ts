@@ -23,31 +23,26 @@ export const flex = {
   },
 
   Grow: {
-      "g-0": "0",
-      "g-1": "1",
-      "g-auto": "auto"
+      "no-grow": "0",
+      "grow": "1",
+      "auto": "auto"
   },
 
   Shrink: {
-      "s-0": "0",
-      "s-1": "1"
+      "no-shrink": "0",
+      "shrink": "1"
   },
 
   Self: {
-      "self-start": "flex-start",
-      "self-end": "flex-end",
-      "self-center": "center",
-      "self-stretch": "stretch",
-      "self-auto": "auto"
+      "start": "flex-start",
+      "end": "flex-end",
+      "center": "center",
+      "stretch": "stretch",
+      "auto": "auto"
   },
 
   Order: {
-      "order-first": "-1",
-      "order-0": "0",
-      "order-1": "1",
-      "order-2": "2",
-      "order-3": "3",
-      "order-last": "999"
+      "order-": "NumericToken",
   },
 
   Basis: {
@@ -56,7 +51,7 @@ export const flex = {
 
  Wrap: {
      "wrap": "wrap",
-     "nowrap": "nowrap",
+     "no-wrap": "nowrap",
      "reverse": "wrap-reverse"
  }
 
