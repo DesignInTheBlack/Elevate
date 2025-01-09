@@ -5,6 +5,11 @@ import { border } from './rules/border.js';
 import { text } from './rules/text.js';
 import { grid } from './rules/grid.js';
 import {backgrounds} from './rules/backgrounds.js';
+import { cursor } from './rules/cursor.js';
+import { aspect } from './rules/aspect.js';
+import { overflow } from './rules/overflow.js';
+import { place } from './rules/place.js';
+import { decoration } from './rules/decoration.js'; 
 
 //Token Type Definitions
 export const elevateRules = {
@@ -26,4 +31,9 @@ export const elevateRules = {
     BGSizeRule: backgrounds.size,
     BGRepeatRule: backgrounds.repeat,
     BGPositionRule: backgrounds.position,
+    CursorRule: cursor.variety,
+    AspectRule: aspect.ratios,
+    OverflowRule: overflow.options,
+    PlaceRule: place.content,
+    TextDecorationRule: decoration.options,
 };

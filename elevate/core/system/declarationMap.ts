@@ -102,6 +102,18 @@ export const declarationMap = {
         "flex-wrap": "FlexWrapRule"
     },
 
+    'row-r': {
+        "align-items": "x",   // x maps to align-items in col
+        "justify-content": "y", // y maps to justify-content in col
+        "flex-wrap": "FlexWrapRule"
+    },
+
+    'col-r': {
+        "align-items": "x",   // x maps to align-items in col
+        "justify-content": "y", // y maps to justify-content in col
+        "flex-wrap": "FlexWrapRule"
+    },
+
     item: {
         "flex-basis": "FlexBasisRule",
         "flex-grow": "FlexGrowRule",
@@ -117,15 +129,16 @@ export const declarationMap = {
         "font-size": "FontSizeToken",
         "font-family": "FontFamilyToken",
         "font-weight": "FontWeightToken",
+        "line-height": "LineHeightToken",
+        "letter-spacing": "LetterSpacingToken",
     },
 
     text: {
         "color": "ColorToken",
-        "line-height": "LineHeightToken",
-        "letter-spacing": "LetterSpacingToken",
         "text-transform": "TextTransformRule",
         "max-width": "MeasureToken",
         "text-align": "TextAlignRule",
+        "text-decoration": "TextDecorationRule",
     },
 
 
@@ -187,6 +200,44 @@ export const declarationMap = {
         "grid-gap": "GridGapRule"
     },
 
+    // =============================
+    // Cursor
+    // =============================
+    'cursor': { "cursor": "CursorRule" },
+
+    // =============================
+    // Aspect Ratios
+    // =============================
+
+    'aspect': { "aspect-ratio": "AspectRule" },
+
+     // =============================
+    // Aspect Ratios
+    // =============================
+     'content-box': { "box-sizing": "content-box" },
+     'border-box': { "box-sizing": "border-box" },
+
+    // =============================
+    // Overflow
+    // =============================
+    'overflow': { "overflow": "OverflowRule" },
+
+    // =============================
+    // Visibility
+    // =============================
+    'visible': { "visibility": "visible" },
+    'invisible': { "visibility": "hidden" },
+    'collapse': { "visibility": "collapse" },
+
+    
+    // =============================
+    // Place Content
+    // =============================
+    'place-content': { "place-content": "PlaceRule" },
+
+    // =============================
+    // Text Decoration
+    // =============================
 
 
     // Allow User Overrides and Extensions

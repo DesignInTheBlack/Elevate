@@ -148,6 +148,10 @@ textarea:not([rows]) {
     }
 }
 
+.text\:underline {
+text-decoration: underline;
+}
+
 .\@hover\:\[mg-t\:d9_text\:white_font\:semibold\]:hover {
 margin-top: 2.25rem;
 color: #E8EEF1;
@@ -181,6 +185,10 @@ color: #A3A9FF;
 font-weight: 500;
 font-family: Raleway;
 font-size: 1rem;
+}
+
+.cursor\:pointer {
+cursor: pointer;
 }
 
 .mg-t\:d12 {
