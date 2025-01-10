@@ -148,8 +148,8 @@ textarea:not([rows]) {
     }
 }
 
-.text\:underline {
-text-decoration: underline;
+.events\:auto {
+pointer-events: auto;
 }
 
 .\@hover\:\[mg-t\:d9_text\:white_font\:semibold\]:hover {

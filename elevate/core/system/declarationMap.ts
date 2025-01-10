@@ -200,6 +200,9 @@ export const declarationMap = {
         "grid-gap": "GridGapRule"
     },
 
+
+    //To be documented
+
     // =============================
     // Cursor
     // =============================
@@ -236,9 +239,19 @@ export const declarationMap = {
     'place-content': { "place-content": "PlaceRule" },
 
     // =============================
-    // Text Decoration
+    // White Space
     // =============================
+    'white-space': { "white-space": "WhiteSpaceRule" },
 
+    // =============================
+    // Word Break
+    // =============================
+    'break': { "word-break": "WordBreakRule" },
+
+    // =============================
+    // Pointer Events
+    // =============================
+    'events': { "pointer-events": "PointerEventsRule" },
 
     // Allow User Overrides and Extensions
     ...relationships

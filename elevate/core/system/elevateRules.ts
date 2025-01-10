@@ -10,6 +10,9 @@ import { aspect } from './rules/aspect.js';
 import { overflow } from './rules/overflow.js';
 import { place } from './rules/place.js';
 import { decoration } from './rules/decoration.js'; 
+import { whitespace } from './rules/whitespace.js';
+import { wordbreak } from './rules/wordbreak.js';
+import { pointerevents } from './rules/pointerevents.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -36,4 +39,7 @@ export const elevateRules = {
     OverflowRule: overflow.options,
     PlaceRule: place.content,
     TextDecorationRule: decoration.options,
+    WhiteSpaceRule: whitespace.options,
+    WordBreakRule: wordbreak.options,
+    PointerEventsRule: pointerevents.options
 };
