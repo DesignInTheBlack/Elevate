@@ -4,7 +4,7 @@ import { flex } from './rules/flex.js';
 import { border } from './rules/border.js';
 import { text } from './rules/text.js';
 import { grid } from './rules/grid.js';
-import {backgrounds} from './rules/backgrounds.js';
+import { backgrounds} from './rules/backgrounds.js';
 import { cursor } from './rules/cursor.js';
 import { aspect } from './rules/aspect.js';
 import { overflow } from './rules/overflow.js';
@@ -13,6 +13,13 @@ import { decoration } from './rules/decoration.js';
 import { whitespace } from './rules/whitespace.js';
 import { wordbreak } from './rules/wordbreak.js';
 import { pointerevents } from './rules/pointerevents.js';
+import { resize } from './rules/resize.js';
+import { vertical } from './rules/vertical.js';
+import { hyphens } from './rules/hyphens.js';
+import { attachment } from './rules/attachment.js';
+import { clip } from './rules/clip.js';
+import { origin } from './rules/origin.js';
+import { outline } from './rules/outline.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -41,5 +48,13 @@ export const elevateRules = {
     TextDecorationRule: decoration.options,
     WhiteSpaceRule: whitespace.options,
     WordBreakRule: wordbreak.options,
-    PointerEventsRule: pointerevents.options
+    PointerEventsRule: pointerevents.options,
+    ResizeRule: resize.options,
+    VerticalRule: vertical.options,
+    HyphensRule: hyphens.options,
+    BackgroundAttachmentRule: attachment.options,
+    BackgroundClipRule: clip.options,
+    BackgroundOriginRule: origin.options,
+    OffsetRule: outline.offset,
+    RoundRule: outline.radius
 };

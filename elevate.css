@@ -148,8 +148,12 @@ textarea:not([rows]) {
     }
 }
 
-.events\:auto {
-pointer-events: auto;
+.outline\:indigo\:d2\:solid\:off-d2\:round-d2 {
+outline-color: #7075D3;
+outline-width: 0.5rem;
+outline-style: solid;
+outline-offset: 0.5rem;
+border-radius: 0.5rem;
 }
 
 .\@hover\:\[mg-t\:d9_text\:white_font\:semibold\]:hover {

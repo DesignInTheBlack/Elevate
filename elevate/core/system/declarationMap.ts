@@ -236,22 +236,80 @@ export const declarationMap = {
     // =============================
     // Place Content
     // =============================
+
     'place-content': { "place-content": "PlaceRule" },
 
     // =============================
     // White Space
     // =============================
+
     'white-space': { "white-space": "WhiteSpaceRule" },
 
     // =============================
     // Word Break
     // =============================
+
     'break': { "word-break": "WordBreakRule" },
 
     // =============================
     // Pointer Events
     // =============================
+
     'events': { "pointer-events": "PointerEventsRule" },
+
+    // =============================
+    // Caret Color
+    // =============================
+
+    caret: { "caret-color": "ColorToken" },
+    
+    // =============================
+    // Resize
+    // =============================
+
+    'resize': { "resize": "ResizeRule" },
+
+    // =============================
+    // Vertical Alignment
+    // =============================
+
+    'vertical': { "vertical-align": "VerticalAlignmentRule" },
+
+    // =============================
+    // Hyphens
+    // =============================
+
+    'hyphens': { "hyphens": "HyphensRule" },
+
+    // =============================
+    // Background Attachment
+    // =============================
+
+    'bg-attach': { "background-attachment": "BackgroundAttachmentRule" },
+
+    // =============================
+    // Background Clip
+    // =============================
+
+    'bg-clip': { "background-clip": "BackgroundClipRule" },
+
+     // =============================
+    // Background Origin
+    // =============================
+
+    'bg-origin': { "background-origin": "BackgroundOriginRule" },
+
+    // =============================
+    // Outline
+    // =============================
+
+    outline: {
+        "outline-color": "ColorToken",
+        "outline-width": "SpacingToken",
+        "outline-style": "BorderStyleRule",
+        "outline-offset": "OffsetRule",
+        "border-radius": "RoundRule",
+    },
 
     // Allow User Overrides and Extensions
     ...relationships
