@@ -311,6 +311,13 @@ export const declarationMap = {
         "border-radius": "RoundRule",
     },
 
+    // =============================
+    // Shadow
+    // =============================
+
+    'shadow': { "box-shadow": "EffectToken" },
+
+
     // Allow User Overrides and Extensions
     ...relationships
 

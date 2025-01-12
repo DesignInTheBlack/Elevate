@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 //Configuration Options
 import { config } from '../config/elevate.js';
 
@@ -487,12 +488,37 @@ export function writeToFile(content: string) {
 }`;
         containString += newEntry;
     });
-    // Combine the reset CSS with the provided content
-    const completeContent = `${cssReset}\n\n${containString}\n\n${content}`;
-    // Write to the file
-    fs.writeFile(filePath, completeContent, (err: any) => {
-        if (err) {
-            console.error('Error writing to the file:', err);
+
+
+    (async () => {
+        try {
+            // Read all CSS from the file paths in config.extend
+            const cssPromises = config.Extend.map(async (relativePath) => {
+                try {
+                    const absolutePath = path.resolve(relativePath);
+                    return await fs.promises.readFile(absolutePath, 'utf8');
+                } catch (readError) {
+                    // Handle missing or unreadable files gracefully
+                    console.warn(`Warning: Could not read file at ${relativePath}. Skipping.`);
+                    return ''; // Return empty string for failed files
+                }
+            });
+    
+            // Wait for all CSS to be read
+            const fetchedCSS = await Promise.all(cssPromises);
+    
+            // Combine the reset CSS, provided content, and fetched CSS
+            const combinedCSS =
+                `${cssReset}\n\n${containString}\n\n${content}\n\n${
+                    fetchedCSS.filter(Boolean).join('\n\n') // Skip empty strings
+                }`;
+    
+            // Write the combined content to the file
+            fs.writeFile(filePath, combinedCSS, () => {});
+        } catch (error) {
+            console.error('Error during file processing:', error);
         }
-    });
+    })();
+
+
 }

@@ -66,7 +66,7 @@ const main = async () => {
          
 
             classList.forEach(function (classString) {
-                if (!classString.includes("$")) {
+                if (!classString.startsWith("-")) {
                     const regex = /\/[a-zA-Z]{1,3}\//;
                     // ════ Mobile-First Breakpoint Processing ════
                     if (regex.test(classString)) {
