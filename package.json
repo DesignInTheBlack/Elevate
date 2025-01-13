@@ -13,13 +13,12 @@
   "scripts": {
     "elevate": "tsx elevate/core/index.ts"
   },
-  "devDependencies": {
+
+  "dependencies": {
     "@types/node": "^20.0.0",
     "chevrotain": "^11.0.3",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.0"
-  },
-  "dependencies": {
+    "typescript": "^5.3.0",
     "fs-extra": "^10.0.0",
     "chokidar": "^4.0.3",
     "ora": "^8.1.1"
