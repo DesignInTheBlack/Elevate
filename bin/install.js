@@ -42,9 +42,22 @@ function addElevateScriptToPackageJson() {
   // Read and parse the user's package.json
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
-  // Add the elevate script
+  // Initialize the scripts object if it doesn't exist
   packageJson.scripts = packageJson.scripts || {};
-  packageJson.scripts.elevate = 'tsx elevate/core/index.ts';
+
+  // Check if the "elevate" script already exists
+  if (packageJson.scripts.elevate) {
+    console.warn(
+      'Warning: The "elevate" script already exists in package.json. Skipping script addition.'
+    );
+    return;
+  }
+
+  // Resolve the path to tsx from the elevate-framework package's node_modules
+  const elevateFrameworkNodeModules = path.resolve(__dirname, '../node_modules/.bin/tsx');
+
+  // Add the "elevate" script with the full path to tsx
+  packageJson.scripts.elevate = `node ${elevateFrameworkNodeModules} elevate/core/index.ts`;
 
   // Write the updated package.json back to disk
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
