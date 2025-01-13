@@ -1,6 +1,6 @@
 {
   "name": "elevate-framework",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A framework for building enhanced web design systems.",
   "type": "module",
   "exports": "./elevate/index.ts",
@@ -13,7 +13,6 @@
   "scripts": {
     "elevate": "tsx elevate/core/index.ts"
   },
-
   "dependencies": {
     "@types/node": "^20.0.0",
     "chevrotain": "^11.0.3",
