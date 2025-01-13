@@ -20,6 +20,7 @@ import { attachment } from './rules/attachment.js';
 import { clip } from './rules/clip.js';
 import { origin } from './rules/origin.js';
 import { outline } from './rules/outline.js';
+import { pattern } from './rules/pattern.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -56,5 +57,7 @@ export const elevateRules = {
     BackgroundClipRule: clip.options,
     BackgroundOriginRule: origin.options,
     OffsetRule: outline.offset,
-    RoundRule: outline.radius
+    RoundRule: outline.radius,
+    PatternForeRule: pattern.foreground,
+    PatternBackRule: pattern.background
 };

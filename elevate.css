@@ -219,6 +219,11 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
+.pattern\:plastic\:back-indigo {
+background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
+background-color: #7075D3;
+}
+
 .\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
 background-color: #3CAA96;
 padding-bottom: 1rem;
@@ -234,19 +239,11 @@ border-width: 0.5rem;
 height: 100vh;
 }
 
-.bg-position\:left-center {
-background-position: left center;
-}
-
 .col\:x-center\:y-center {
 display:flex;
 flex-direction:column;
 align-items: center;
 justify-content: center;
-}
-
-.gradient\:fadetoblack {
-background: linear-gradient(0deg, rgba(0,0,0,0.5032387955182073) 0%, rgba(255,255,255,0) 100%);;
 }
 
 

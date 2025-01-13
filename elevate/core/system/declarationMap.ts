@@ -331,6 +331,15 @@ export const declarationMap = {
 
     'transition': { "transition": "TransitionToken" },
 
+    // =============================
+    // Patterns
+    // =============================
+
+    'pattern': { "background": "PatternToken",
+                "background-color": "PatternBackRule",
+                "color": "PatternForeRule",
+     },
+
 
 
     // Allow User Overrides and Extensions
