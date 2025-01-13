@@ -13,10 +13,8 @@ const destinationFolder = path.resolve(process.cwd(), 'elevate');
 // Parse package.json path
 const packageJsonPath = path.resolve(process.cwd(), 'package.json');
 
-// Resolve the tsx binary relative to the elevate-framework package
-const elevateFrameworkBinPath = path.posix.join(
-  path.relative(process.cwd(), path.resolve(__dirname, '../node_modules/.bin/tsx'))
-);
+// Path to tsx binary in the user's project
+const userTsxPath = './node_modules/.bin/tsx';
 
 // Function to copy the folder
 function copyFolderSync(source, destination) {
@@ -43,44 +41,31 @@ function copyFolderSync(source, destination) {
 
 // Function to add the "elevate" script to package.json
 function addElevateScriptToPackageJson() {
-  // Check if the user's package.json exists
   if (!fs.existsSync(packageJsonPath)) {
     console.error('Error: package.json not found in the current directory.');
     return;
   }
 
-  // Read and parse the user's package.json
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-
-  // Initialize the scripts object if it doesn't exist
   packageJson.scripts = packageJson.scripts || {};
 
-  // Check if the "elevate" script already exists
   if (packageJson.scripts.elevate) {
-    console.warn(
-      'Warning: The "elevate" script already exists in package.json. Skipping script addition.'
-    );
+    console.warn('Warning: The "elevate" script already exists in package.json. Skipping.');
     return;
   }
 
-  // Add the "elevate" script with a normalized path to tsx
-  packageJson.scripts.elevate = `node ${elevateFrameworkBinPath} elevate/core/index.ts`;
-
-  // Write the updated package.json back to disk
+  packageJson.scripts.elevate = `node ${userTsxPath} elevate/core/index.ts`;
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
   console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
 }
 
-// Run the folder copy and script addition logic
+// Run the script
 try {
   console.log('Source folder:', sourceFolder);
   console.log('Destination folder:', destinationFolder);
 
-  // Copy the folder
   copyFolderSync(sourceFolder, destinationFolder);
   console.log(`Folder successfully copied to: ${destinationFolder}`);
-
-  // Add the elevate script to package.json
   addElevateScriptToPackageJson();
 } catch (error) {
   console.error('Error:', error);
