@@ -242,6 +242,7 @@ export function getModifierType(
         ? modifier.slice(modifier.indexOf('('))
         : modifier;
 
+
     if (/^\(.*\)$/.test(cleanedModifier)) {
         matches.push("PassThroughToken");
     }
@@ -253,13 +254,20 @@ export function getModifierType(
         }
     }
 
-    // Compound modifier format
-    const [prefix] = modifier.split('-');
+  
+
+    // Find the prefix (everything before the first `-`)
+    const [prefix, ...rest] = modifier.split('-');
+    const remaining = rest.join('-'); // Everything after the first `-`
+    
+  
+    
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
             matches.push(typeName); // Add to matches array
         }
     }
+    
 
     // Numeric values for z-index
     if (!isNaN(parseInt(modifier, 10))) {
@@ -345,7 +353,8 @@ function getGeneralTokenValue(modifier: string): string | null {
 
 // Handles compound modifiers with prefixes (property:r-modifier), resolving their token types and retrieving validated values.
 function handlePrefixModifier(modifier: string, context?: { fileName: string }): string {
-    const [prefix, value] = modifier.split('-');
+
+    const [prefix, value] = modifier.split(/-(.+)/); 
     for (const [typeName, values] of Object.entries(types)) {
         if (`${prefix}-` in values) {
             const tokenType = values[`${prefix}-`];

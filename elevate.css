@@ -178,8 +178,8 @@ padding-right: 0.75rem;
 padding-bottom: 0.75rem;
 }
 
-.text\:indigo-lightest {
-color: #A3A9FF;
+.text\:indigo-4 {
+color: #22253F;
 }
 
 .font\:medium\:sans\:base {
@@ -219,9 +219,10 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.pattern\:plastic\:back-indigo {
-background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
-background-color: #7075D3;
+.pattern\:moire\:back-indigo\+2\:fore-indigo-1 {
+background: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 2px), repeating-linear-gradient(44deg, currentColor 0 1px, transparent 1px 2px);
+background-color: #A3A9FF;
+color: #53589A;
 }
 
 .\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
@@ -229,9 +230,9 @@ background-color: #3CAA96;
 padding-bottom: 1rem;
 }
 
-.bd\:solid\:indigo-light\:w-d2 {
+.bd\:solid\:indigo-1\:w-d2 {
 border-style: solid;
-border-color: #8891FF;
+border-color: #53589A;
 border-width: 0.5rem;
 }
 
