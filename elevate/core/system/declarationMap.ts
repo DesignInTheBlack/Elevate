@@ -325,6 +325,11 @@ export const declarationMap = {
 
     'gradient': { "background": "GradientToken" },
 
+    // =============================
+    // Transition
+    // =============================
+
+    'transition': { "transition": "TransitionToken" },
 
 
 

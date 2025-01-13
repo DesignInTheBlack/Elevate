@@ -26,6 +26,7 @@ export const designSystem = {
     ShadowToken: effects.shadows,
     GradientToken: effects.gradients,
     TextShadowToken: effects.textShadows,
+    TransitionToken: effects.transitions,
 
     //Spread Custom Token Categories
     ...BrandColors
