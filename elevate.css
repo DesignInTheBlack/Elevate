@@ -148,8 +148,8 @@ textarea:not([rows]) {
     }
 }
 
-.transition\:ultra-slow {
-transition: all 0.5s ease-in-out;
+.transition\:slow {
+transition: all 0.3s ease-in-out;
 }
 
 .\@hover\:\[mg-t\:d9_text\:white_font\:semibold_shadow\:soft\]:hover {
@@ -178,8 +178,8 @@ padding-right: 0.75rem;
 padding-bottom: 0.75rem;
 }
 
-.text\:indigo-4 {
-color: #22253F;
+.text\:indigo\+1 {
+color: #8891FF;
 }
 
 .font\:medium\:sans\:base {
@@ -219,20 +219,14 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.pattern\:moire\:back-indigo\+2\:fore-indigo-1 {
-background: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 2px), repeating-linear-gradient(44deg, currentColor 0 1px, transparent 1px 2px);
-background-color: #A3A9FF;
-color: #53589A;
-}
-
 .\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
 background-color: #3CAA96;
 padding-bottom: 1rem;
 }
 
-.bd\:solid\:indigo-1\:w-d2 {
+.bd\:solid\:indigo\+1\:w-d2 {
 border-style: solid;
-border-color: #53589A;
+border-color: #8891FF;
 border-width: 0.5rem;
 }
 
