@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Define source and destination paths
+const sourceFolder = path.resolve(__dirname, '../elevate');
+const destinationFolder = path.resolve(process.cwd(), 'elevate');
+
 // Parse package.json path
 const packageJsonPath = path.resolve(process.cwd(), 'package.json');
 
@@ -14,7 +18,30 @@ const elevateFrameworkBinPath = path.posix.join(
   path.relative(process.cwd(), path.resolve(__dirname, '../node_modules/.bin/tsx'))
 );
 
-// Define a function to add the "elevate" script
+// Function to copy the folder
+function copyFolderSync(source, destination) {
+  if (!fs.existsSync(source)) {
+    console.error(`Source folder does not exist: ${source}`);
+    return;
+  }
+
+  if (!fs.existsSync(destination)) {
+    fs.mkdirSync(destination, { recursive: true });
+  }
+
+  fs.readdirSync(source).forEach((item) => {
+    const sourcePath = path.join(source, item);
+    const destinationPath = path.join(destination, item);
+
+    if (fs.lstatSync(sourcePath).isDirectory()) {
+      copyFolderSync(sourcePath, destinationPath);
+    } else {
+      fs.copyFileSync(sourcePath, destinationPath);
+    }
+  });
+}
+
+// Function to add the "elevate" script to package.json
 function addElevateScriptToPackageJson() {
   // Check if the user's package.json exists
   if (!fs.existsSync(packageJsonPath)) {
@@ -44,9 +71,17 @@ function addElevateScriptToPackageJson() {
   console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
 }
 
-// Run the script addition logic
+// Run the folder copy and script addition logic
 try {
+  console.log('Source folder:', sourceFolder);
+  console.log('Destination folder:', destinationFolder);
+
+  // Copy the folder
+  copyFolderSync(sourceFolder, destinationFolder);
+  console.log(`Folder successfully copied to: ${destinationFolder}`);
+
+  // Add the elevate script to package.json
   addElevateScriptToPackageJson();
 } catch (error) {
-  console.error('Error adding elevate script:', error);
+  console.error('Error:', error);
 }
