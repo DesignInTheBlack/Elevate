@@ -2,37 +2,20 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Get the current directory of this script
+// Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Define source and destination paths
-const sourceFolder = path.resolve(__dirname, '../elevate');
-const destinationFolder = path.resolve(process.cwd(), 'elevate');
+// Parse package.json path
+const packageJsonPath = path.resolve(process.cwd(), 'package.json');
 
-console.log('Source folder:', sourceFolder);
-console.log('Destination folder:', destinationFolder);
+// Resolve the tsx binary relative to the elevate-framework package
+const elevateFrameworkBinPath = path.posix.join(
+  path.relative(process.cwd(), path.resolve(__dirname, '../node_modules/.bin/tsx'))
+);
 
-function copyFolderSync(source, destination) {
-  if (!fs.existsSync(destination)) {
-    fs.mkdirSync(destination, { recursive: true });
-  }
-
-  fs.readdirSync(source).forEach((item) => {
-    const sourcePath = path.join(source, item);
-    const destinationPath = path.join(destination, item);
-
-    if (fs.lstatSync(sourcePath).isDirectory()) {
-      copyFolderSync(sourcePath, destinationPath);
-    } else {
-      fs.copyFileSync(sourcePath, destinationPath);
-    }
-  });
-}
-
+// Define a function to add the "elevate" script
 function addElevateScriptToPackageJson() {
-  const packageJsonPath = path.resolve(process.cwd(), 'package.json');
-
   // Check if the user's package.json exists
   if (!fs.existsSync(packageJsonPath)) {
     console.error('Error: package.json not found in the current directory.');
@@ -53,13 +36,7 @@ function addElevateScriptToPackageJson() {
     return;
   }
 
-  // Resolve the path to tsx within the elevate-framework package
-  const elevateFrameworkBinPath = path.relative(
-    process.cwd(),
-    path.resolve(__dirname, '../node_modules/.bin/tsx')
-  );
-
-  // Add the "elevate" script with a relative path to tsx
+  // Add the "elevate" script with a normalized path to tsx
   packageJson.scripts.elevate = `node ${elevateFrameworkBinPath} elevate/core/index.ts`;
 
   // Write the updated package.json back to disk
@@ -67,14 +44,9 @@ function addElevateScriptToPackageJson() {
   console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
 }
 
-
+// Run the script addition logic
 try {
-  // Attempt to copy the folder
-  copyFolderSync(sourceFolder, destinationFolder);
-  console.log(`Folder successfully copied to: ${destinationFolder}`);
-
-  // Add the elevate script to the user's package.json
   addElevateScriptToPackageJson();
-} catch (err) {
-  console.error('Error:', err);
+} catch (error) {
+  console.error('Error adding elevate script:', error);
 }
