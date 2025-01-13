@@ -30,10 +30,34 @@ function copyFolderSync(source, destination) {
   });
 }
 
+function addElevateScriptToPackageJson() {
+  const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+
+  // Check if the user's package.json exists
+  if (!fs.existsSync(packageJsonPath)) {
+    console.error('Error: package.json not found in the current directory.');
+    return;
+  }
+
+  // Read and parse the user's package.json
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+
+  // Add the elevate script
+  packageJson.scripts = packageJson.scripts || {};
+  packageJson.scripts.elevate = 'tsx elevate/core/index.ts';
+
+  // Write the updated package.json back to disk
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
+  console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
+}
+
 try {
   // Attempt to copy the folder
   copyFolderSync(sourceFolder, destinationFolder);
   console.log(`Folder successfully copied to: ${destinationFolder}`);
+
+  // Add the elevate script to the user's package.json
+  addElevateScriptToPackageJson();
 } catch (err) {
-  console.error('Error copying folder:', err);
+  console.error('Error:', err);
 }
