@@ -53,16 +53,20 @@ function addElevateScriptToPackageJson() {
     return;
   }
 
-  // Resolve the path to tsx from the elevate-framework package's node_modules
-  const elevateFrameworkNodeModules = path.resolve(__dirname, '../node_modules/.bin/tsx');
+  // Resolve the path to tsx within the elevate-framework package
+  const elevateFrameworkBinPath = path.relative(
+    process.cwd(),
+    path.resolve(__dirname, '../node_modules/.bin/tsx')
+  );
 
-  // Add the "elevate" script with the full path to tsx
-  packageJson.scripts.elevate = `node ${elevateFrameworkNodeModules} elevate/core/index.ts`;
+  // Add the "elevate" script with a relative path to tsx
+  packageJson.scripts.elevate = `node ${elevateFrameworkBinPath} elevate/core/index.ts`;
 
   // Write the updated package.json back to disk
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
   console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
 }
+
 
 try {
   // Attempt to copy the folder
