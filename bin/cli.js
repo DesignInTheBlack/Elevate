@@ -2,6 +2,11 @@
 
 import { exec } from "child_process";
 import path from "path";
+import { fileURLToPath } from "url";
+
+// Fix for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Parse command-line arguments
 const args = process.argv.slice(2);
