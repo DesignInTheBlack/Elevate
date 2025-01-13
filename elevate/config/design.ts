@@ -23,7 +23,8 @@ export const designSystem = {
     LineHeightToken: typography.leading,
     LetterSpacingToken: typography.tracking,
     FontWeightToken: typography.weight,
-    EffectToken: effects,
+    ShadowToken: effects.shadows,
+    GradientToken: effects.gradients,
 
     //Spread Custom Token Categories
     ...BrandColors
