@@ -25,6 +25,7 @@ export const designSystem = {
     FontWeightToken: typography.weight,
     ShadowToken: effects.shadows,
     GradientToken: effects.gradients,
+    TextShadowToken: effects.textShadows,
 
     //Spread Custom Token Categories
     ...BrandColors

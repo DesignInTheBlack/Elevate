@@ -315,13 +315,17 @@ export const declarationMap = {
     // Shadow
     // =============================
 
-    'shadow': { "box-shadow": "ShadowToken" },
+    'shadow': { "box-shadow": "ShadowToken",
+                "text-shadow": "TextShadowToken"
+     },
 
      // =============================
     // Gradient
     // =============================
 
     'gradient': { "background": "GradientToken" },
+
+
 
 
     // Allow User Overrides and Extensions
