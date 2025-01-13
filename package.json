@@ -1,18 +1,17 @@
 {
   "name": "elevate-framework",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A framework for building enhanced web design systems.",
   "type": "module",
-  "exports": "./elevate/index.ts", 
+  "exports": "./elevate/index.ts",
   "engines": {
     "node": ">=18"
   },
-
   "bin": {
-  "elevate": "./bin/cli.js"
-},
+    "elevate": "./bin/cli.js"
+  },
   "scripts": {
-    "elevate": "tsx elevate/core/index.ts" 
+    "elevate": "tsx elevate/core/index.ts"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
