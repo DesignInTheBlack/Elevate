@@ -39,7 +39,7 @@ function copyFolderSync(source, destination) {
   });
 }
 
-// Function to add the "elevate" script to package.json
+// Function to add or update the "elevate" script in package.json
 function addElevateScriptToPackageJson() {
   if (!fs.existsSync(packageJsonPath)) {
     console.error('Error: package.json not found in the current directory.');
@@ -49,14 +49,11 @@ function addElevateScriptToPackageJson() {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
   packageJson.scripts = packageJson.scripts || {};
 
-  if (packageJson.scripts.elevate) {
-    console.warn('Warning: The "elevate" script already exists in package.json. Skipping.');
-    return;
-  }
+  // Add or update the "elevate" script
+  packageJson.scripts.elevate = `tsx elevate/core/index.ts`;
 
-  packageJson.scripts.elevate = `node ${userTsxPath} elevate/core/index.ts`;
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
-  console.log('Added "elevate" script to package.json. You can now run "npm run elevate".');
+  console.log('The "elevate" script has been added or updated in package.json. You can now run "npm run elevate".');
 }
 
 // Run the script
