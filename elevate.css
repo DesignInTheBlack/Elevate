@@ -148,18 +148,21 @@ textarea:not([rows]) {
     }
 }
 
-.transition\:slow {
-transition: all 0.3s ease-in-out;
+.transition\:ultra-slow {
+transition: all 0.5s ease-in-out;
 }
 
-.\@hover\:\[mg-t\:d9_text\:white_font\:semibold_shadow\:soft\]:hover {
+.\@hover\:\[mg-t\:d9_font\:semibold_pattern\:glow\:back-indigo_text\:white_shadow\:soft\]:hover {
 margin-top: 2.25rem;
-color: #E8EEF1;
 font-weight: 600;
+background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
+background-color: #7075D3;
+color: #E8EEF1;
 box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;;
 }
 
-.bg-color\:indigo {
+.pattern\:glow\:back-indigo {
+background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
 background-color: #7075D3;
 }
 
@@ -178,8 +181,8 @@ padding-right: 0.75rem;
 padding-bottom: 0.75rem;
 }
 
-.text\:indigo\+1 {
-color: #8891FF;
+.text\:white-4 {
+color: #434547;
 }
 
 .font\:medium\:sans\:base {
@@ -219,8 +222,13 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.\@hover\:\[bg-color\:green_pd-b\:d4\]:hover {
-background-color: #3CAA96;
+.pattern\:plastic\:fore-indigo\+1\:back-indigo {
+background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
+color: #8891FF;
+background-color: #7075D3;
+}
+
+.\@hover\:\[pd-b\:d4\]:hover {
 padding-bottom: 1rem;
 }
 
