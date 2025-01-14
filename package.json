@@ -1,6 +1,6 @@
 {
   "name": "elevate-framework",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A framework for building enhanced web design systems.",
   "type": "module",
   "exports": "./elevate/index.ts",
