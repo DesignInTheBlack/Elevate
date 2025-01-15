@@ -2,8 +2,9 @@
 // ║                 1. IMPORT STATEMENTS                               ║
 // ║ Import Chevrotain library and utility functions.                   ║
 // ╚════════════════════════════════════════════════════════════════════╝
-import { createToken, Lexer, CstParser, CstNode } from "chevrotain";
+import { createToken, Lexer, CstParser } from "chevrotain";
 import { toAst } from "./utility.js";
+import type { CstNode } from "chevrotain";
 
 
 // ╔════════════════════════════════════════════════════════════════════╗

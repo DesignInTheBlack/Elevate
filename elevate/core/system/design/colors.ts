@@ -49,23 +49,10 @@ export const colors = {
     'green+3': '#87FFF1',
     'green+4': '#ACFFF8',
     
-    'black-4': '#000509',
-    'black-3': '#00070C',
-    'black-2': '#000A0F',
-    'black-1': '#011118',
-    'black': '#011822',
-    'black+1': '#02212C',
-    'black+2': '#03303A',
-    'black+3': '#04414B',
-    'black+4': '#055263',
+
+    'black': '#0C090D',
+   
     
-    'white-4': '#434547',
-    'white-3': '#5B5E60',
-    'white-2': '#6E7173',
-    'white-1': '#A9ADB0',
-    'white': '#E8EEF1',
-    'white+1': '#F2F8FB',
-    'white+2': '#FFFFFF',
-    'white+3': '#FFFFFF',
-    'white+4': '#FFFFFF'
+    'white': '#FDFFFC',
+   
 }
