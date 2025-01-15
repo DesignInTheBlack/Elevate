@@ -340,6 +340,8 @@ export const declarationMap = {
                 "color": "PatternForeRule",
      },
 
+     'contain':{},
+
 
 
     // Allow User Overrides and Extensions
