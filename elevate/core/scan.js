@@ -50,7 +50,7 @@ const removeCommentsAndCodeBlocks = (text) => {
     cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
 
     // 3. Remove single-line JS comments (// ...)
-    cleaned = cleaned.replace(/\/\/.*$/gm, '');
+    cleaned = cleaned.replace(/(^|\s)\/\/.*$/gm, '$1');
 
     // 4. Remove HTML comments (<!-- ... -->)
     cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '');
