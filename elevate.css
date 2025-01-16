@@ -148,54 +148,6 @@ textarea:not([rows]) {
     }
 }
 
-.transition\:ultra-slow {
-transition: all 0.5s ease-in-out;
-}
-
-.\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover {
-margin-top: 2.25rem;
-font-weight: 600;
-color: #FDFFFC;
-}
-
-.shadow\:physical {
-box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;;
-}
-
-.pattern\:glow\:back-indigo {
-background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
-background-color: #7075D3;
-}
-
-.bd\:r-d3 {
-border-radius: 0.75rem;
-}
-
-.mg-t\:d6 {
-margin-top: 1.5rem;
-}
-
-.pd\:d3 {
-padding-top: 0.75rem;
-padding-left: 0.75rem;
-padding-right: 0.75rem;
-padding-bottom: 0.75rem;
-}
-
-.text\:indigo-1 {
-color: #53589A;
-}
-
-.font\:sans\:medium\:wider {
-font-family: Raleway;
-font-weight: 500;
-letter-spacing: 0.02rem;
-}
-
-.cursor\:pointer {
-cursor: pointer;
-}
-
 .mg-t\:d12 {
 margin-top: 3rem;
 }
@@ -221,6 +173,10 @@ width: 4.5rem;
 
 .h\:c2 {
 height: 4.5rem;
+}
+
+.transition\:ultra-slow {
+transition: all 0.5s ease-in-out;
 }
 
 .\@hover\:\[pd-b\:d4_pattern\:plastic\:back-indigo\]:hover {
@@ -249,10 +205,6 @@ display:flex;
 flex-direction:column;
 align-items: center;
 justify-content: center;
-}
-
-.contain {
-
 }
 
 

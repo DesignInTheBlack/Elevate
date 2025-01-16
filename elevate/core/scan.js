@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-//Configuration Options
+// Configuration Options
 import { config } from '../config/elevate.js';
 
 /**
@@ -34,22 +34,52 @@ const searchFiles = (dir, fileTypes, classList = []) => {
 };
 
 /**
- * Extract class attributes from file content with line numbers
- * @param {string} content - The file's content as a string
+ * Remove triple-backtick code blocks, multi-line JS comments, single-line JS comments,
+ * and HTML comments from file content.
+ * 
+ * @param {string} text - The file's raw content
+ * @returns {string} - The cleaned content
+ */
+const removeCommentsAndCodeBlocks = (text) => {
+    let cleaned = text;
+
+    // 1. Remove triple-backtick code blocks (``` ... ```)
+    cleaned = cleaned.replace(/```[\s\S]*?```/g, '');
+
+    // 2. Remove multi-line JS comments (/* ... */)
+    cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
+
+    // 3. Remove single-line JS comments (// ...)
+    cleaned = cleaned.replace(/\/\/.*$/gm, '');
+
+    // 4. Remove HTML comments (<!-- ... -->)
+    cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '');
+
+    return cleaned;
+};
+
+/**
+ * Extract class attributes from file content with line numbers, ignoring commented sections
+ * @param {string} content - The file's raw content
  * @param {Array<Object>} classList - Array to store extracted classes
  * @param {string} filePath - Path to the file being processed
  */
 const extractClasses = (content, classList, filePath) => {
-    const lines = content.split('\n');
+    // First, strip out comments and code blocks
+    const cleanedContent = removeCommentsAndCodeBlocks(content);
+
+    // Then, split by lines
+    const lines = cleanedContent.split('\n');
+    
+    // Regex to match class="some classes"
     const regex = /class\s*=\s*"([^"]+)"/g;
 
     lines.forEach((line, lineNumber) => {
         let match;
-
         while ((match = regex.exec(line)) !== null) {
             const classValue = match[1].trim();
 
-            // Find and handle state patterns
+            // Find and handle state patterns: e.g., "@foo:[bar]"
             const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
             let classString = classValue;
             const states = [];
@@ -57,7 +87,7 @@ const extractClasses = (content, classList, filePath) => {
             let index = 0;
             const placeholders = [];
 
-            // Replace state patterns with placeholders and store them
+            // Replace state patterns with placeholders
             while ((stateMatch = statePattern.exec(classValue)) !== null) {
                 const placeholder = `__STATE${index}__`;
                 states.push(stateMatch[0]);
@@ -66,10 +96,10 @@ const extractClasses = (content, classList, filePath) => {
                 index++;
             }
 
-            // Split the string (now with placeholders) by whitespace
+            // Split on whitespace
             const parts = classString.split(/\s+/).filter(Boolean);
 
-            // Restore state patterns in their original positions
+            // Restore state patterns
             const classNames = parts.map(part => {
                 const placeholderIndex = placeholders.indexOf(part);
                 return placeholderIndex !== -1 ? states[placeholderIndex] : part;
@@ -77,7 +107,7 @@ const extractClasses = (content, classList, filePath) => {
 
             classList.push({
                 file: filePath,
-                lineNumber: lineNumber + 1, // Line numbers are 1-based
+                lineNumber: lineNumber + 1, // Lines are 1-based
                 classes: classNames
             });
         }
@@ -97,4 +127,4 @@ export function findClassAttributes(startDir = process.cwd(), fileTypes = config
         console.error('Error traversing files:', err.message);
         return [];
     }
-};
+}
