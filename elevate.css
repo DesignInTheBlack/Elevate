@@ -155,7 +155,7 @@ transition: all 0.5s ease-in-out;
 .\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover {
 margin-top: 2.25rem;
 font-weight: 600;
-color: #FDFFFC;
+color: #FCFCFC;
 }
 
 .shadow\:physical {
@@ -201,7 +201,7 @@ margin-top: 3rem;
 }
 
 .text\:white\:center {
-color: #FDFFFC;
+color: #FCFCFC;
 text-align: center;
 }
 
