@@ -16,8 +16,8 @@ export const typography = {
     },
     
     leading: {
-      hug: '1',
-      tight: '1.2',
+      none: '1',
+      hug: '1.2',
       snug: '1.3',
       normal: '1.4',
       relaxed: '1.5',
