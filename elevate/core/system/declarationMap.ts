@@ -131,6 +131,7 @@ export const declarationMap = {
         "font-weight": "FontWeightToken",
         "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
+        
     },
 
     text: {
