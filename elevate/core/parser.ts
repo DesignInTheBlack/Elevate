@@ -27,7 +27,7 @@ const Property = createToken({
 });
 const Modifier = createToken({ 
     name: "ColonModifier", 
-    pattern: /:[a-zA-Z0-9][a-zA-Z0-9\-+]*/ 
+    pattern: /:[a-zA-Z0-9][a-zA-Z0-9\-+.]*/ 
 });
 const closeState = createToken({ name: "closeState", pattern: /\]/ });
 const WhiteSpace = createToken({

@@ -344,8 +344,17 @@ export const declarationMap = {
      'contain':{},
 
 
+     
+    // =============================
+    // Opacity
+    // =============================
 
+    'opacity': { "opacity": "NumericToken" },
+
+    // =============================
     // Allow User Overrides and Extensions
+    // =============================
+
     ...relationships
 
 };
