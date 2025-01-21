@@ -163,6 +163,8 @@ const main = async () => {
             ? "display:flex;\nflex-direction:row-reverse;"
             : item.property === "col-r"
             ? "display:flex;\nflex-direction:column-reverse;"
+              : item.property === "grid"
+            ? "display:grid;"
             : "";
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");

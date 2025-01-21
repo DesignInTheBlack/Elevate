@@ -21,6 +21,7 @@ import { clip } from './rules/clip.js';
 import { origin } from './rules/origin.js';
 import { outline } from './rules/outline.js';
 import { pattern } from './rules/pattern.js';
+import { span } from './rules/span.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -59,5 +60,11 @@ export const elevateRules = {
     OffsetRule: outline.offset,
     RoundRule: outline.radius,
     PatternForeRule: pattern.foreground,
-    PatternBackRule: pattern.background
+    PatternBackRule: pattern.background,
+    SpanColumnStartRule: span.columnstart,
+    SpanColumnEndRule: span.columnend,
+    SpanRowStartRule: span.rowstart,
+    SpanRowEndRule: span.rowend,
+    GridGapXRule: grid.columngap,
+    GridGapYRule: grid.rowgap
 };

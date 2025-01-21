@@ -198,8 +198,29 @@ export const declarationMap = {
     grid: {
         "grid-template-columns": "GridColumnRule",
         "grid-template-rows": "GridRowRule",
-        "grid-gap": "GridGapRule"
+        "grid-gap": "GridGapRule",
+        "column-gap": "GridGapXRule",
+        "row-gap": "GridGapYRule"
     },
+    
+     'col-spans': {"grid-column-start":"SpanColumnStartRule",
+                  "grid-column-end": "SpanColumnEndRule",
+     },
+
+     'row-spans': {"grid-row-start":"SpanRowStartRule",
+                  "grid-row-end": "SpanRowEndRule",
+     },
+
+     'col-spans-all': {
+        "grid-column-start": "1", /* Start at the first column */
+        "grid-column-end": "-1"  /* End at the last column */
+     },
+
+     'row-spans-all': {
+        "grid-row-start": "1", /* Start at the first row */
+        "grid-row-end": "-1"  /* End at the last row */
+     },
+
 
 
     //To be documented
