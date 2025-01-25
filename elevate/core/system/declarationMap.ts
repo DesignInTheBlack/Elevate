@@ -52,12 +52,24 @@ export const declarationMap = {
         "margin-bottom": "bottom"
     },
 
+    'mg-y': { "margin-top": "top", 
+        "margin-bottom": "bottom" },
+
+    'mg-x': { "margin-left": "left", 
+        "margin-right": "right" },
+
     pd: {
         "padding-top": "top",
         "padding-left": "left",
         "padding-right": "right",
         "padding-bottom": "bottom"
     },
+
+    'pd-y': { "padding-top": "top", 
+        "padding-bottom": "bottom" },
+
+    'pd-x': { "padding-left": "left", 
+        "padding-right": "right" },
 
     'pd-l': { "padding-left": "SpacingToken" },
     'pd-r': { "padding-right": "SpacingToken" },
