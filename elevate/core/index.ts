@@ -199,8 +199,7 @@ const main = async () => {
 const watcher = chokidar.watch(config.Watch, {
     persistent: true,
     ignoreInitial: true,
-    ignored: [],
-    ignorePermissionErrors: false,
+    ignored: ['**/*.css'],
     interval: 1000,
     binaryInterval: 300,
 });
