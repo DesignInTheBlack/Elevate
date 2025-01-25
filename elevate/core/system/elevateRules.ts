@@ -22,6 +22,8 @@ import { origin } from './rules/origin.js';
 import { outline } from './rules/outline.js';
 import { pattern } from './rules/pattern.js';
 import { span } from './rules/span.js';
+import { object } from './rules/object.js';
+import { overflowwrap } from './rules/overflowwrap.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -66,5 +68,7 @@ export const elevateRules = {
     SpanRowStartRule: span.rowstart,
     SpanRowEndRule: span.rowend,
     GridGapXRule: grid.columngap,
-    GridGapYRule: grid.rowgap
+    GridGapYRule: grid.rowgap,
+    ObjectFitRule: object.options,
+    OverflowWrapRule: overflowwrap.options
 };

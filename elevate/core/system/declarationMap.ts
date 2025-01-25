@@ -141,17 +141,24 @@ export const declarationMap = {
         "font-size": "FontSizeToken",
         "font-family": "FontFamilyToken",
         "font-weight": "FontWeightToken",
-        "line-height": "LineHeightToken",
         "letter-spacing": "LetterSpacingToken",
         
     },
 
     text: {
         "color": "ColorToken",
-        "text-transform": "TextTransformRule",
+        "line-height": "LineHeightToken",
         "max-width": "MeasureToken",
         "text-align": "TextAlignRule",
         "text-decoration": "TextDecorationRule",
+    },
+
+    style: {
+    "text-transform": "TextTransformRule",
+    "hyphens": "HyphensRule",
+    "white-space": "WhiteSpaceRule",
+    "word-break": "WordBreakRule",
+    "overflow-wrap": "OverflowWrapRule"
     },
 
 
@@ -199,9 +206,13 @@ export const declarationMap = {
     // =============================
     'bg-img': { "background-image": "PassThroughToken" },
     'bg-color': { 'background-color': "ColorToken" },
-    'bg-size': { "background-size": "BGSizeRule" },
-    'bg-position': { "background-position": "BGPositionRule" },
-    'bg-repeat': { "background-repeat": "BGRepeatRule" },
+    'bg-attr': { "background-size": "BGSizeRule",
+        "background-position": "BGPositionRule",
+        "background-repeat": "BGRepeatRule",
+        "background-attachment": "BackgroundAttachmentRule",
+        "background-origin": "BackgroundOriginRule",
+        "background-clip": "BackgroundClipRule",
+    },
 
 
     // =============================
@@ -273,17 +284,6 @@ export const declarationMap = {
 
     'place-content': { "place-content": "PlaceRule" },
 
-    // =============================
-    // White Space
-    // =============================
-
-    'white-space': { "white-space": "WhiteSpaceRule" },
-
-    // =============================
-    // Word Break
-    // =============================
-
-    'break': { "word-break": "WordBreakRule" },
 
     // =============================
     // Pointer Events
@@ -308,30 +308,6 @@ export const declarationMap = {
     // =============================
 
     'vertical': { "vertical-align": "VerticalAlignmentRule" },
-
-    // =============================
-    // Hyphens
-    // =============================
-
-    'hyphens': { "hyphens": "HyphensRule" },
-
-    // =============================
-    // Background Attachment
-    // =============================
-
-    'bg-attach': { "background-attachment": "BackgroundAttachmentRule" },
-
-    // =============================
-    // Background Clip
-    // =============================
-
-    'bg-clip': { "background-clip": "BackgroundClipRule" },
-
-     // =============================
-    // Background Origin
-    // =============================
-
-    'bg-origin': { "background-origin": "BackgroundOriginRule" },
 
     // =============================
     // Outline
@@ -383,6 +359,12 @@ export const declarationMap = {
     // =============================
 
     'opacity': { "opacity": "NumericToken" },
+
+    // =============================
+    // Object Position
+    // =============================
+
+    'fit': { "object-fit": "ObjectFitRule" },
 
     // =============================
     // Allow User Overrides and Extensions
