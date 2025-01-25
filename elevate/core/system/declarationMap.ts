@@ -153,7 +153,7 @@ export const declarationMap = {
         "text-decoration": "TextDecorationRule",
     },
 
-    style: {
+    format: {
     "text-transform": "TextTransformRule",
     "hyphens": "HyphensRule",
     "white-space": "WhiteSpaceRule",
@@ -243,6 +243,17 @@ export const declarationMap = {
         "grid-row-start": "1", /* Start at the first row */
         "grid-row-end": "-1"  /* End at the last row */
      },
+
+     'auto-col':{'grid-auto-columns': "PassThroughToken"},
+     'auto-row':{'grid-auto-rows': "PassThroughToken"},
+     'auto-flow':{'grid-auto-flow': "PassThroughToken"},
+
+
+     'just-i':{'justify-items': "JustifyItemsRule"},
+     'just-c':{'justify-content': "JustifyContentRule"},
+     'align-i':{'align-items': "AlignItemsRule"},
+     'align-c':{'align-content': "AlignContentRule"},
+
 
 
 
