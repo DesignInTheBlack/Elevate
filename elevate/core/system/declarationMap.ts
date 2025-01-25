@@ -126,7 +126,7 @@ export const declarationMap = {
         "flex-wrap": "FlexWrapRule"
     },
 
-    item: {
+    child: {
         "flex-basis": "FlexBasisRule",
         "flex-grow": "FlexGrowRule",
         "flex-shrink": "FlexShrinkRule",
@@ -221,7 +221,7 @@ export const declarationMap = {
     grid: {
         "grid-template-columns": "GridColumnRule",
         "grid-template-rows": "GridRowRule",
-        "grid-gap": "GridGapRule",
+        "gap": "GridGapRule",
         "column-gap": "GridGapXRule",
         "row-gap": "GridGapYRule"
     },
@@ -249,12 +249,15 @@ export const declarationMap = {
      'auto-flow':{'grid-auto-flow': "PassThroughToken"},
 
 
-     'just-i':{'justify-items': "JustifyItemsRule"},
-     'just-c':{'justify-content': "JustifyContentRule"},
-     'align-i':{'align-items': "AlignItemsRule"},
-     'align-c':{'align-content': "AlignContentRule"},
+     'content':{
+                'align-content': "AlignContentRule",
+                'justify-content': "JustifyContentRule"
+     },
 
-
+     'items':{
+                'align-items': "AlignItemsRule",
+                'justify-items': "JustifyItemsRule",  
+     },
 
 
     //To be documented

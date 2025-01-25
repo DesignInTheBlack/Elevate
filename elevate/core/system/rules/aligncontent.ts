@@ -1,12 +1,12 @@
 export const alignc = {
     options: {
-        'start': 'start',
-        'end': 'end',
-        'center': 'center',
-        'stretch': 'stretch',
-        'space-between': 'space-between',
-        'space-around': 'space-around',
-        'space-evenly': 'space-evenly',
-        'baseline': 'baseline'
+        'align-start': 'start',
+        'align-end': 'end',
+        'align-center': 'center',
+        'align-stretch': 'stretch',
+        'align-space-between': 'space-between',
+        'align-space-around': 'space-around',
+        'align-space-evenly': 'space-evenly',
+        'align-baseline': 'baseline'
     }
 };

@@ -1,11 +1,11 @@
 export const justi = {
     options: {
-        'start': 'start',
-        'end': 'end',
-        'center': 'center',
-        'stretch': 'stretch',
-        'baseline': 'baseline',
-        'self-start': 'self-start',
-        'self-end': 'self-end'
+        'just-start': 'start',
+        'just-end': 'end',
+        'just-center': 'center',
+        'just-stretch': 'stretch',
+        'just-baseline': 'baseline',
+        'just-self-start': 'self-start',
+        'just-self-end': 'self-end'
     }
 };

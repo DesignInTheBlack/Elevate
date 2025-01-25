@@ -1,11 +1,11 @@
 export const aligni = {
     options: {
-        'start': 'start',
-        'end': 'end',
-        'center': 'center',
-        'stretch': 'stretch',
-        'baseline': 'baseline',
-        'self-start': 'self-start',
-        'self-end': 'self-end'
+        'align-start': 'start',
+        'align-end': 'end',
+        'align-center': 'center',
+        'align-stretch': 'stretch',
+        'align-baseline': 'baseline',
+        'align-self-start': 'self-start',
+        'align-self-end': 'self-end'
     }
 };
