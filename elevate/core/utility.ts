@@ -427,7 +427,6 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 function directionExpansion(property: string,modifiers: any[]): any[] {
 
     if (property === "mg-y" || property === "pd-y" || property === "mg-x" || property === "pd-x") {
-        console.log("I SEE THIS!");
         return Array(2).fill(modifiers[0]);
     }
 
