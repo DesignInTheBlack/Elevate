@@ -237,11 +237,13 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
 
 // Constructs a single CSS rule line by combining a property and a resolved modifier value.
 function constructRule(modType: string, property: string, modifier: string, context?: { fileName: string }) {
+
+    let criteria = declarationMap[property];
  
     return (
         getRuleName(modType, property, declarationMap, context) +
         ": " +
-        getModifierValue(modifier, context)
+        getModifierValue(modifier, criteria, context)
     );
 }
 
@@ -314,7 +316,7 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 
 
 // Retrieves the actual CSS value for a given modifier by resolving it through token types and handlers.
-export function getModifierValue(modifier: string, context?: { fileName: string, lineNumber: number }): string {
+export function getModifierValue(modifier: string, criteria: any, context?: { fileName: string, lineNumber: number }): string {
 
     const modifierType = getModifierType(modifier, context);
 
@@ -330,7 +332,7 @@ export function getModifierValue(modifier: string, context?: { fileName: string,
     if (isAxisSpecificModifier(modifier)) {
         return getAxisSpecificValue(modifier);
     }
-    const value = getGeneralTokenValue(modifier);
+    const value = getGeneralTokenValue(modifier,criteria);
     if (value) {
         return value;
     }
@@ -360,17 +362,32 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 }
 
 // Attempts to find a given modifier in the general token maps and returns its corresponding value if found.
-function getGeneralTokenValue(modifier: string): string | null {
-    for (const [typeName, values] of Object.entries(types)) {
+function getGeneralTokenValue(modifier: string, criteria: Record<string, string>): string | null {
+    console.log(criteria);
+
+    // Filter types by the values of the criteria object
+    const filteredTypes = Object.entries(types)
+        .filter(([typeName]) => Object.values(criteria).includes(typeName))
+        .reduce((acc, [key, value]) => {
+            acc[key] = value;
+            return acc;
+        }, {});
+
+    // Existing logic with filteredTypes
+    for (const [typeName, values] of Object.entries(filteredTypes)) {
         if (['xAxis', 'yAxis'].includes(typeName)) {
             continue;
         }
+
         if (modifier in values) {
             return (values as Record<string, string>)[modifier];
         }
     }
+
     return null;
 }
+
+
 
 // Handles compound modifiers with prefixes (property:r-modifier), resolving their token types and retrieving validated values.
 function handlePrefixModifier(modifier: string, context?: { fileName: string }): string {
