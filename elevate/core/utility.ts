@@ -364,6 +364,8 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 // Attempts to find a given modifier in the general token maps and returns its corresponding value if found.
 function getGeneralTokenValue(modifier: string, context: Record<string, string>): string | null {
 
+    if (context) {
+
     // Check if the context contains the values 'top', 'left', 'bottom', or 'right'
     const hasDirectionalValues = Object.values(context).some((value) =>
         ['top', 'left', 'bottom', 'right'].includes(value)
@@ -392,6 +394,26 @@ function getGeneralTokenValue(modifier: string, context: Record<string, string>)
     }
 
     return null;
+    }
+
+    else {
+           // Existing logic with the selected source
+    for (const [typeName, values] of Object.entries(types)) {
+        if (['xAxis', 'yAxis'].includes(typeName)) {
+            continue;
+        }
+
+        if (modifier in values) {
+            return (values as Record<string, string>)[modifier];
+        }
+    }
+    }
+
+
+
+
+
+
 }
 
 
