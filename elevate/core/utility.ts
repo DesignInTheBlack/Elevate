@@ -362,19 +362,26 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 }
 
 // Attempts to find a given modifier in the general token maps and returns its corresponding value if found.
-function getGeneralTokenValue(modifier: string, criteria: Record<string, string>): string | null {
-    console.log(criteria);
+function getGeneralTokenValue(modifier: string, context: Record<string, string>): string | null {
 
-    // Filter types by the values of the criteria object
+    // Check if the context contains the values 'top', 'left', 'bottom', or 'right'
+    const hasDirectionalValues = Object.values(context).some((value) =>
+        ['top', 'left', 'bottom', 'right'].includes(value)
+    );
+
+    // Filter types by the values of the context object
     const filteredTypes = Object.entries(types)
-        .filter(([typeName]) => Object.values(criteria).includes(typeName))
+        .filter(([typeName]) => Object.values(context).includes(typeName))
         .reduce((acc, [key, value]) => {
             acc[key] = value;
             return acc;
         }, {});
 
-    // Existing logic with filteredTypes
-    for (const [typeName, values] of Object.entries(filteredTypes)) {
+    // Use types or filteredTypes based on the presence of directional values
+    const sourceTypes = hasDirectionalValues ? types : filteredTypes;
+
+    // Existing logic with the selected source
+    for (const [typeName, values] of Object.entries(sourceTypes)) {
         if (['xAxis', 'yAxis'].includes(typeName)) {
             continue;
         }
@@ -386,6 +393,7 @@ function getGeneralTokenValue(modifier: string, criteria: Record<string, string>
 
     return null;
 }
+
 
 
 

@@ -176,10 +176,10 @@ margin-top: 1.5rem;
 }
 
 .pd\:d3 {
-padding-top: undefined;
-padding-left: undefined;
-padding-right: undefined;
-padding-bottom: undefined;
+padding-top: 0.75rem;
+padding-left: 0.75rem;
+padding-right: 0.75rem;
+padding-bottom: 0.75rem;
 }
 
 .text\:indigo-1 {
