@@ -156,8 +156,7 @@ const main = async () => {
                       throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
                   }
                     const breakpointTransition = 
-`@media only screen and (min-width:${breakpoint}) {
-[class*="${item.selector}"]`;
+`@media only screen and (min-width:${breakpoint}) {\n`;
                     compiledCSS += `${breakpointTransition}`;
                     mediaQueryOpen = true;
                 }
@@ -178,7 +177,9 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `.${escapeClassName(item.className)}${stateSelector}{`+(flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
+            compiledCSS += `${mediaQueryOpen ? `[class*="${item.selector}"]` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
+            (flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
+          
         });
 
         // Close the last media query if open
