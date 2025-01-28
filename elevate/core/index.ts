@@ -57,6 +57,12 @@ const main = async () => {
         // ║ - Detects breakpoints                                              ║
         // ║ - Adds them to class objects                                       ║
         // ╚════════════════════════════════════════════════════════════════════╝
+        
+             // Helper function to escape special characters in class names
+             const escapeClassName = (className) =>
+                className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
+        
+        
         function establishBreakpoints(instance) {
 
     
@@ -79,6 +85,8 @@ const main = async () => {
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
                     classObject.selector = classList.join(' ');
+                    classObject.selector = escapeClassName(classObject.selector);
+
                 
                     compiledClasses.push(classObject);
                 }
@@ -122,10 +130,6 @@ const main = async () => {
         // ║                       6. OUTPUT RESULTS                            ║
         // ║ Compile the results into a CSS file                                ║
         // ╚════════════════════════════════════════════════════════════════════╝
-
-        // Helper function to escape special characters in class names
-        const escapeClassName = (className) =>
-            className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
 
         spinner.text = 'Generating CSS output...';
         await delay(400);
