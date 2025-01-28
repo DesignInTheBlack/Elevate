@@ -63,6 +63,19 @@ const main = async () => {
         }
             let lastBreak = '';
             let classList = instance.classes;
+           
+            // Variable to hold the removed item
+            let scopeItem = null;
+
+            // Find and remove the item containing "scope"
+            classList = classList.filter(item => {
+                if (item.includes('scope')) {
+                    scopeItem = item;
+                    return false; // Exclude it from the new array
+                }
+                return true; // Keep other items
+            });
+            
          
 
             classList.forEach(function (classString) {
@@ -73,10 +86,12 @@ const main = async () => {
                         lastBreak = classString;
                         return;
                     }
+
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
+                    classObject.scope = scopeItem;
                    
-
+                    
                     compiledClasses.push(classObject);
                 }
             });
@@ -169,9 +184,12 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {` +
+            compiledCSS += `${item.scope ? `.${escapeClassName(item.scope)}` : ''}.${escapeClassName(item.className)}${stateSelector} {` +
             (flexProperties ? `\n${flexProperties}` : '') +
             `\n${modifiers}\n}\n\n`;
+
+
+            
         });
 
         // Close the last media query if open

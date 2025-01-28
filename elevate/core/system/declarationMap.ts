@@ -365,8 +365,6 @@ export const declarationMap = {
      },
 
      'contain':{},
-
-
      
     // =============================
     // Opacity
