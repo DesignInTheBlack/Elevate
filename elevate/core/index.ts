@@ -96,7 +96,6 @@ const main = async () => {
                     const terms = ['grid', 'row', 'col']; // Add the terms you want to check
 
                     if (terms.some(term => classString.includes(term))) {
-                        console.log(classObject);
                         classObject.selector = classList.join(' ');
                         classObject.selector = generateSelector(classObject.selector);
                     }
