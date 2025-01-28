@@ -60,7 +60,7 @@ const main = async () => {
         
              // Helper function to escape special characters in class names
              const escapeClassName = (className) =>
-                className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
+                className.replace(/[@:\[\]()\/.,+#~=% ]/g, (match) => `\\${match}`);
         
         
         function establishBreakpoints(instance) {
