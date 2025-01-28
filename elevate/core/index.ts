@@ -148,8 +148,10 @@ const main = async () => {
                     if (!breakpoint) {
                       throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
                   }
-                    const breakpointTransition = `@media only screen and (min-width:${breakpoint}) {`;
-                    compiledCSS += `${breakpointTransition}\n`;
+                    const breakpointTransition = 
+                    `@media only screen and (min-width:${breakpoint}) {
+                    [class*="${item.breakpoint}"]`;
+                    compiledCSS += `${breakpointTransition}`;
                     mediaQueryOpen = true;
                 }
             }
@@ -169,9 +171,7 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {` +
-            (flexProperties ? `\n${flexProperties}` : '') +
-            `\n${modifiers}\n}\n\n`;
+            compiledCSS += `.${escapeClassName(item.className)}${stateSelector}{`+(flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
         });
 
         // Close the last media query if open
@@ -186,7 +186,7 @@ const main = async () => {
           throw new Error('No CSS content generated!');
       }
         writeToFile(compiledCSS);
-        console.clear();
+        // console.clear();
         spinner.succeed('Elevate CSS Compilation Successful!');
     } catch (error) {
         spinner.fail(`Compilation failed: ${error.message}`);
@@ -205,12 +205,12 @@ const watcher = chokidar.watch(config.Watch, {
 });
 
 watcher.on('ready', () => {
-    console.clear();
+    // console.clear();
     console.log('Elevate CSS is watching for changes...');
 });
 
 watcher.on('change', () => {
-    console.clear();
+    // console.clear();
     main();
 });
 
