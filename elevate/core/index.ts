@@ -92,11 +92,17 @@ const main = async () => {
                     }
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
-                    classObject.selector = classList.join(' ');
-                    classObject.selector = generateSelector(classObject.selector);
 
-                
+                    const terms = ['grid', 'row', 'col']; // Add the terms you want to check
+
+                    if (terms.some(term => classString.includes(term))) {
+                        console.log(classObject);
+                        classObject.selector = classList.join(' ');
+                        classObject.selector = generateSelector(classObject.selector);
+                    }
+
                     compiledClasses.push(classObject);
+
                 }
             });
         }
@@ -185,7 +191,7 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `${mediaQueryOpen ? `${item.selector}` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
+            compiledCSS += `${item.selector ? `${item.selector}` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
             (flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
           
         });
