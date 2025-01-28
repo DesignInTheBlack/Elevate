@@ -60,9 +60,17 @@ const main = async () => {
         
              // Helper function to escape special characters in class names
              const escapeClassName = (className) =>
-                className.replace(/[@:\[\]()\/.,+#~=% ]/g, (match) => `\\${match}`);
-        
-        
+                className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
+             
+             const selectorEscape = (className) =>
+                className.replace(/[:@()[\]\/.,+#~=%!<>|{}^$"]/g, '\\$&');
+              
+              const generateSelector = (classes) =>
+                classes
+                  .split(' ')
+                  .map((cls) => `[class~="${selectorEscape(cls)}"]`)
+                  .join('');
+              
         function establishBreakpoints(instance) {
 
     
@@ -85,7 +93,7 @@ const main = async () => {
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
                     classObject.selector = classList.join(' ');
-                    classObject.selector = escapeClassName(classObject.selector);
+                    classObject.selector = generateSelector(classObject.selector);
 
                 
                     compiledClasses.push(classObject);
@@ -177,7 +185,7 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `${mediaQueryOpen ? `[class*="${item.selector}"]` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
+            compiledCSS += `${mediaQueryOpen ? `${item.selector}` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
             (flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
           
         });
