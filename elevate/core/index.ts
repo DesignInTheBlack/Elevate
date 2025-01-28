@@ -58,6 +58,9 @@ const main = async () => {
         // ║ - Adds them to class objects                                       ║
         // ╚════════════════════════════════════════════════════════════════════╝
         function establishBreakpoints(instance) {
+
+    
+
           if (!instance || !instance.classes) {
             throw new Error('Invalid class instance provided');
         }
@@ -75,8 +78,8 @@ const main = async () => {
                     }
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
-                   
-
+                    classObject.selector = classList.join(' ');
+                
                     compiledClasses.push(classObject);
                 }
             });
@@ -149,8 +152,8 @@ const main = async () => {
                       throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
                   }
                     const breakpointTransition = 
-                    `@media only screen and (min-width:${breakpoint}) {
-                    [class*="${item.breakpoint}"]`;
+`@media only screen and (min-width:${breakpoint}) {
+[class*="${item.selector}"]`;
                     compiledCSS += `${breakpointTransition}`;
                     mediaQueryOpen = true;
                 }
@@ -186,7 +189,7 @@ const main = async () => {
           throw new Error('No CSS content generated!');
       }
         writeToFile(compiledCSS);
-        // console.clear();
+        console.clear();
         spinner.succeed('Elevate CSS Compilation Successful!');
     } catch (error) {
         spinner.fail(`Compilation failed: ${error.message}`);
@@ -205,12 +208,12 @@ const watcher = chokidar.watch(config.Watch, {
 });
 
 watcher.on('ready', () => {
-    // console.clear();
+    console.clear();
     console.log('Elevate CSS is watching for changes...');
 });
 
 watcher.on('change', () => {
-    // console.clear();
+    console.clear();
     main();
 });
 

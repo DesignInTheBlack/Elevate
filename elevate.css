@@ -148,103 +148,103 @@ textarea:not([rows]) {
     }
 }
 
-.transition\:ultra-slow {
+.transition\:ultra-slow{
 transition: all 0.5s ease-in-out;
 }
 
-.\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover {
+.\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover{
 margin-top: 2.25rem;
 font-weight: 600;
 color: #FCFCFC;
 }
 
-.shadow\:physical {
+.shadow\:physical{
 box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;;
 }
 
-.pattern\:glow\:back-indigo {
+.pattern\:glow\:back-indigo{
 background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
 background-color: #7075D3;
 }
 
-.bd\:r-d3 {
+.bd\:r-d3{
 border-radius: 0.75rem;
 }
 
-.mg-t\:d6 {
+.mg-t\:d6{
 margin-top: 1.5rem;
 }
 
-.pd\:d3 {
+.pd\:d3{
 padding-top: 0.75rem;
 padding-left: 0.75rem;
 padding-right: 0.75rem;
 padding-bottom: 0.75rem;
 }
 
-.text\:indigo-1 {
+.text\:indigo-1{
 color: #53589A;
 }
 
-.font\:sans\:medium\:wider {
+.font\:sans\:medium\:wider{
 font-family: Raleway;
 font-weight: 500;
 letter-spacing: 0.02rem;
 }
 
-.cursor\:pointer {
+.cursor\:pointer{
 cursor: pointer;
 }
 
-.mg-t\:d12 {
+.mg-t\:d12{
 margin-top: 3rem;
 }
 
-.text\:white\:center {
+.text\:white\:center{
 color: #FCFCFC;
 text-align: center;
 }
 
-.font\:semibold\:sans\:heading5 {
+.font\:semibold\:sans\:heading5{
 font-weight: 600;
 font-family: Raleway;
 font-size: 1.5rem;
 }
 
-.mg-t\:d8 {
+.mg-t\:d8{
 margin-top: 2rem;
 }
 
-.w\:c2 {
+.w\:c2{
 width: 4.5rem;
 }
 
-.h\:c2 {
+.h\:c2{
 height: 4.5rem;
 }
 
-.\@hover\:\[pd-b\:d4_pattern\:plastic\:back-indigo\]:hover {
+.\@hover\:\[pd-b\:d4_pattern\:plastic\:back-indigo\]:hover{
 padding-bottom: 1rem;
 background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
 background-color: #7075D3;
 }
 
-.pattern\:plastic\:back-indigo-1 {
+.pattern\:plastic\:back-indigo-1{
 background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
 background-color: #53589A;
 }
 
-.bd\:solid\:indigo\:w-d2 {
+.bd\:solid\:indigo\:w-d2{
 border-style: solid;
 border-color: #7075D3;
 border-width: 0.5rem;
 }
 
-.h\:hScreen {
+.h\:hScreen{
 height: 100vh;
 }
 
-.col\:x-center\:y-center {
+.col\:x-center\:y-center{
 display:flex;
 flex-direction:column;
 align-items: center;
