@@ -57,24 +57,7 @@ const main = async () => {
         // ║ - Detects breakpoints                                              ║
         // ║ - Adds them to class objects                                       ║
         // ╚════════════════════════════════════════════════════════════════════╝
-        
-             // Helper function to escape special characters in class names
-             const escapeClassName = (className) =>
-                className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
-             
-             const selectorEscape = (className) =>
-                className.replace(/[:@()[\]\/.,+#~=%!<>|{}^$"]/g, '\\$&');
-              
-              const generateSelector = (classes) =>
-                classes
-                  .split(' ')
-                  .map((cls) => `[class~="${selectorEscape(cls)}"]`)
-                  .join('');
-              
         function establishBreakpoints(instance) {
-
-    
-
           if (!instance || !instance.classes) {
             throw new Error('Invalid class instance provided');
         }
@@ -92,16 +75,9 @@ const main = async () => {
                     }
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
-
-                    const terms = ['grid', 'row', 'col']; // Add the terms you want to check
-
-                    if (terms.some(term => classString.includes(term))) {
-                        classObject.selector = classList.join(' ');
-                        classObject.selector = generateSelector(classObject.selector);
-                    }
+                   
 
                     compiledClasses.push(classObject);
-
                 }
             });
         }
@@ -144,6 +120,10 @@ const main = async () => {
         // ║ Compile the results into a CSS file                                ║
         // ╚════════════════════════════════════════════════════════════════════╝
 
+        // Helper function to escape special characters in class names
+        const escapeClassName = (className) =>
+            className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
+
         spinner.text = 'Generating CSS output...';
         await delay(400);
         let breakpointSupervisor = null;
@@ -168,9 +148,8 @@ const main = async () => {
                     if (!breakpoint) {
                       throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
                   }
-                    const breakpointTransition = 
-`@media only screen and (min-width:${breakpoint}) {\n`;
-                    compiledCSS += `${breakpointTransition}`;
+                    const breakpointTransition = `@media only screen and (min-width:${breakpoint}) {`;
+                    compiledCSS += `${breakpointTransition}\n`;
                     mediaQueryOpen = true;
                 }
             }
@@ -190,9 +169,9 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `${item.selector ? `${item.selector}` : ''}.${escapeClassName(item.className)}${stateSelector}{` +
-            (flexProperties ? `\n${flexProperties}` : '') + `\n${modifiers}\n}\n\n`;
-          
+            compiledCSS += `.${escapeClassName(item.className)}${stateSelector} {` +
+            (flexProperties ? `\n${flexProperties}` : '') +
+            `\n${modifiers}\n}\n\n`;
         });
 
         // Close the last media query if open
