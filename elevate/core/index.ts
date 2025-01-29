@@ -63,6 +63,7 @@ const main = async () => {
         }
             let lastBreak = '';
             let classList = instance.classes;
+
            
             // Variable to hold the removed item
             let scopeItem = null;
@@ -90,7 +91,7 @@ const main = async () => {
                     let classObject = elevateCompiler(classString,{ fileName: instance.file, lineNumber: instance.lineNumber });
                     classObject.breakpoint = lastBreak;
                     classObject.scope = scopeItem;
-                   
+                 
                     
                     compiledClasses.push(classObject);
                 }
@@ -118,10 +119,12 @@ const main = async () => {
             return getBreakpointPriority(a.breakpoint) - getBreakpointPriority(b.breakpoint);
         });
 
+ 
+
         // Deduplicate classes
         const uniqueClasses = new Map();
         compiledClasses.forEach(item => {
-            const key = `${item.className}${item.breakpoint || ''}`;
+            const key = `${item.className}${item.breakpoint || ''}${item.scope || ''}`; // Include scope
             if (!uniqueClasses.has(key)) {
                 uniqueClasses.set(key, item);
             }
@@ -188,8 +191,7 @@ const main = async () => {
             (flexProperties ? `\n${flexProperties}` : '') +
             `\n${modifiers}\n}\n\n`;
 
-
-            
+      
         });
 
         // Close the last media query if open
