@@ -2,9 +2,9 @@ export const pointerevents = {
     options: {
         'auto': 'auto',
         'none': 'none',
-        'visiblePainted': 'visiblePainted',
-        'visibleFill': 'visibleFill',
-        'visibleStroke': 'visibleStroke',
+        'visible-paint': 'visiblePainted',
+        'visible-fill': 'visibleFill',
+        'visible-stroke': 'visibleStroke',
         'visible': 'visible',
         'fill': 'fill',
         'stroke': 'stroke',

@@ -1,11 +1,11 @@
 
 export const pattern = {
  foreground: {
-  "fore-": "ColorToken", // This looks correct
+  "fg-": "ColorToken", // This looks correct
  },
 
  background: {
-  "back-": "ColorToken", // Changed from NumberToken
+  "bg-": "ColorToken", // Changed from NumberToken
  },
 
 } 

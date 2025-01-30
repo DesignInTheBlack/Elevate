@@ -7,7 +7,7 @@ export const backgrounds = {
         "left-center": "left center",
         "left-bottom": "left bottom",
         "center-top": "center top",
-        "center-center": "center center", // shorthand for both axes centered
+        "center": "center center", // shorthand for both axes centered
         "center-bottom": "center bottom",
         "right-top": "right top",
         "right-center": "right center",

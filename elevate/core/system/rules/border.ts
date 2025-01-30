@@ -1,10 +1,10 @@
 
 export const border = {
     width: {
-        "w-": "SpacingToken"
+        "width-": "SpacingToken"
     },
     radius: {
-        "r-": "SpacingToken"
+        "round-": "SpacingToken"
     },
     style: {
         "solid": "solid",

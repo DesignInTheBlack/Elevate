@@ -162,12 +162,12 @@ color: #FCFCFC;
 box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;;
 }
 
-.pattern\:glow\:back-indigo {
+.pattern\:glow\:bg-indigo {
 background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
 background-color: #7075D3;
 }
 
-.bd\:r-d3 {
+.bd\:round-d3 {
 border-radius: 0.75rem;
 }
 
@@ -205,7 +205,7 @@ color: #FCFCFC;
 text-align: center;
 }
 
-.font\:semibold\:sans\:heading5 {
+.font\:semibold\:sans\:h5 {
 font-weight: 600;
 font-family: Raleway;
 font-size: 1.5rem;
@@ -223,18 +223,18 @@ width: 4.5rem;
 height: 4.5rem;
 }
 
-.\@hover\:\[pd-b\:d4_pattern\:plastic\:back-indigo\]:hover {
+.\@hover\:\[pd-b\:d4_pattern\:plastic\:bg-indigo\]:hover {
 padding-bottom: 1rem;
 background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
 background-color: #7075D3;
 }
 
-.pattern\:plastic\:back-indigo-1 {
+.pattern\:plastic\:bg-indigo-1 {
 background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
 background-color: #53589A;
 }
 
-.bd\:solid\:indigo\:w-d2 {
+.bd\:solid\:indigo\:width-d2 {
 border-style: solid;
 border-color: #7075D3;
 border-width: 0.5rem;

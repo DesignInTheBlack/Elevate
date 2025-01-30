@@ -1,19 +1,19 @@
 export const place = {
     content: {
   /* Positional Alignment */
-  'center-center': 'center center',
+  'center': 'center center',
   'center-start': 'center start',
   'center-end': 'center end',
   'center-stretch': 'center stretch',
 
   'start-center': 'start center',
-  'start-start': 'start start',
+  'start': 'start start',
   'start-end': 'start end',
   'start-stretch': 'start stretch',
 
   'end-center': 'end center',
   'end-start': 'end start',
-  'end-end': 'end end',
+  'end': 'end end',
   'end-stretch': 'end stretch',
 
   'stretch-center': 'stretch center',

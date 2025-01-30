@@ -14,7 +14,7 @@ export const aspect = {
   'card': '7/5',
   'gallery': '1.5/1',
   'feature': '5/4',
-  'fb-post': '1.91/1',
+  'facebook': '1.91/1',
   'wide-banner': '5/1'
     }
 }
