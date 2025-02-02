@@ -30,7 +30,6 @@ const main = async () => {
         // ║ Scan the files in the provided directory and retrieve class lists. ║
         // ╚════════════════════════════════════════════════════════════════════╝
         spinner.text = 'Scanning files for Elevate classes...';
-        await delay(500);
         let scannedClasses;
         try {
             scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
@@ -48,7 +47,6 @@ const main = async () => {
         // ║ Define the compiledClasses array and placeholder for types.        ║
         // ╚════════════════════════════════════════════════════════════════════╝
         spinner.text = 'Processing class definitions...';
-        await delay(300);
         let compiledClasses: any[] = [];
 
         // ╔════════════════════════════════════════════════════════════════════╗
@@ -110,7 +108,6 @@ const main = async () => {
         // ║ Empty breakpoints are prioritized first.                           ║
         // ╚════════════════════════════════════════════════════════════════════╝
         spinner.text = 'Organizing and sorting classes...';
-        await delay(300);
         compiledClasses.sort((a, b) => {
             // Handle empty breakpoints (put them first)
             if (!a.breakpoint) return -1;
@@ -139,11 +136,11 @@ const main = async () => {
         // ╚════════════════════════════════════════════════════════════════════╝
 
         // Helper function to escape special characters in class names
+        await delay(100);
         const escapeClassName = (className) =>
             className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
 
         spinner.text = 'Generating CSS output...';
-        await delay(400);
         let breakpointSupervisor = null;
         let compiledCSS = '';
         let mediaQueryOpen = false;
@@ -187,7 +184,7 @@ const main = async () => {
 
             const modifiers = item.modifiers.map((modifier) => `${modifier};`).join("\n");
 
-            compiledCSS += `${item.scope ? `.${escapeClassName(item.scope)}` : ''}.${escapeClassName(item.className)}${stateSelector} {` +
+            compiledCSS += `${item.scope ? `.${escapeClassName(item.scope)}` : ''}.${escapeClassName(item.className)}${stateSelector === ':placeholder' ? `:` : ''}${stateSelector} {` +
             (flexProperties ? `\n${flexProperties}` : '') +
             `\n${modifiers}\n}\n\n`;
 
@@ -201,7 +198,6 @@ const main = async () => {
 
         // Write the final CSS output
         spinner.text = 'Writing CSS file...';
-        await delay(300);
         if (!compiledCSS) {
           throw new Error('No CSS content generated!');
       }

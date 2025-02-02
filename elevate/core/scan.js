@@ -58,6 +58,7 @@ const removeCommentsAndCodeBlocks = (text) => {
     return cleaned;
 };
 
+
 /**
  * Extract class attributes from file content with line numbers, ignoring commented sections
  * @param {string} content - The file's raw content
@@ -70,49 +71,51 @@ const extractClasses = (content, classList, filePath) => {
 
     // Then, split by lines
     const lines = cleanedContent.split('\n');
-    
-    // Regex to match class="some classes"
-    const regex = /class\s*=\s*"([^"]+)"/g;
 
-    lines.forEach((line, lineNumber) => {
-        let match;
-        while ((match = regex.exec(line)) !== null) {
-            const classValue = match[1].trim();
+    // Iterate over each regex pattern in the config
+    config.ClassRegex.forEach(regex => {
+        lines.forEach((line, lineNumber) => {
+            let match;
+            while ((match = regex.exec(line)) !== null) {
+                const classValue = match[1].trim();
 
-            // Find and handle state patterns: e.g., "@foo:[bar]"
-            const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
-            let classString = classValue;
-            const states = [];
-            let stateMatch;
-            let index = 0;
-            const placeholders = [];
+                // Find and handle state patterns: e.g., "@foo:[bar]"
+                const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
+                let classString = classValue;
+                const states = [];
+                let stateMatch;
+                let index = 0;
+                const placeholders = [];
 
-            // Replace state patterns with placeholders
-            while ((stateMatch = statePattern.exec(classValue)) !== null) {
-                const placeholder = `__STATE${index}__`;
-                states.push(stateMatch[0]);
-                placeholders.push(placeholder);
-                classString = classString.replace(stateMatch[0], placeholder);
-                index++;
+                // Replace state patterns with placeholders
+                while ((stateMatch = statePattern.exec(classValue)) !== null) {
+                    const placeholder = `__STATE${index}__`;
+                    states.push(stateMatch[0]);
+                    placeholders.push(placeholder);
+                    classString = classString.replace(stateMatch[0], placeholder);
+                    index++;
+                }
+
+                // Split on whitespace
+                const parts = classString.split(/\s+/).filter(Boolean);
+
+                // Restore state patterns
+                const classNames = parts.map(part => {
+                    const placeholderIndex = placeholders.indexOf(part);
+                    return placeholderIndex !== -1 ? states[placeholderIndex] : part;
+                });
+
+                classList.push({
+                    file: filePath,
+                    lineNumber: lineNumber + 1, // Lines are 1-based
+                    classes: classNames
+                });
             }
-
-            // Split on whitespace
-            const parts = classString.split(/\s+/).filter(Boolean);
-
-            // Restore state patterns
-            const classNames = parts.map(part => {
-                const placeholderIndex = placeholders.indexOf(part);
-                return placeholderIndex !== -1 ? states[placeholderIndex] : part;
-            });
-
-            classList.push({
-                file: filePath,
-                lineNumber: lineNumber + 1, // Lines are 1-based
-                classes: classNames
-            });
-        }
+        });
     });
 };
+
+
 
 /**
  * Main function to scan the project directory
