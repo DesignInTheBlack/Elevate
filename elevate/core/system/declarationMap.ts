@@ -379,6 +379,13 @@ export const declarationMap = {
     'fit': { "object-fit": "ObjectFitRule" },
 
     // =============================
+    // Allow Empty Pseudo-Elements
+    // =============================
+
+    'empty':{"content": "''"},
+
+
+    // =============================
     // Allow User Overrides and Extensions
     // =============================
 
