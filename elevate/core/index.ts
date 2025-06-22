@@ -65,11 +65,11 @@ const main = async () => {
 
            
             // Variable to hold the removed item
-            // let scopeItem = null;
+            let scopeItem = null;
 
             // Find and remove the item containing "scope"
             classList = classList.filter(item => {
-                if (item.includes('ctx') && !item.includes('ctx:end')) {
+                if (item.includes('ctx')) {
                     scopeItem = item;
                     return false; // Exclude it from the new array
                 }
