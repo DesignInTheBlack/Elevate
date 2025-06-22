@@ -48,6 +48,7 @@ const main = async () => {
         // ╚════════════════════════════════════════════════════════════════════╝
         spinner.text = 'Processing class definitions...';
         let compiledClasses: any[] = [];
+        let scopeItem = null;
 
         // ╔════════════════════════════════════════════════════════════════════╗
         // ║                    3. Establish Breakpoints                        ║
@@ -64,14 +65,21 @@ const main = async () => {
 
            
             // Variable to hold the removed item
-            let scopeItem = null;
+            // let scopeItem = null;
 
             // Find and remove the item containing "scope"
             classList = classList.filter(item => {
-                if (item.includes('scope')) {
+                if (item.includes('ctx') && !item.includes('ctx:end')) {
                     scopeItem = item;
                     return false; // Exclude it from the new array
                 }
+
+
+                else if (item.includes('ctx:end')) {
+                    scopeItem = null;
+                    return false; // Exclude it from the new array
+                }
+
                 return true; // Keep other items
             });
             
