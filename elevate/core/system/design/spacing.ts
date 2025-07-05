@@ -1,6 +1,7 @@
 export const spacing = {
   
     // Detail: For fine adjustments and component construction (0.25rem - 3.5rem)
+    'd0': '0.125rem', // 2pt (a0)
     'd1': '0.25rem',  // 4pt (a1)
     'd2': '0.5rem',   // 8pt (a2)
     'd3': '0.75rem',  // 12pt (a3)

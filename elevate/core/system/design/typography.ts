@@ -37,6 +37,7 @@ export const typography = {
   
     measure: {
       note: '20ch',
+      blob: '35ch',
       brief: '45ch',
       blog: '65ch',
       book: '70ch',
