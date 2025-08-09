@@ -1,133 +1,151 @@
-import fs from 'fs';
-import path from 'path';
-// Configuration Options
-import { config } from '../config/elevate.js';
+import fs from 'fs'
+import path from 'path'
+import { config } from '../config/elevate.js'
 
 /**
  * Recursively search for files of specific extensions within a directory
- * @param {string} dir - Directory to start scanning
- * @param {Array<string>} fileTypes - File extensions to search for (e.g., ['html', 'jsx', 'tsx'])
- * @param {Array<Object>} classList - Accumulated results for class attributes
- * @returns {Array<Object>} - Array of objects with file, line number, and class lists
  */
 const searchFiles = (dir, fileTypes, classList = []) => {
-    const files = fs.readdirSync(dir);
+  const files = fs.readdirSync(dir)
 
-    files.forEach(file => {
-        const filePath = path.join(dir, file);
-        const fileStat = fs.lstatSync(filePath);
+  files.forEach((file) => {
+    const filePath = path.join(dir, file)
+    const fileStat = fs.lstatSync(filePath)
 
-        if (fileStat.isDirectory()) {
-            // Skip node_modules and other irrelevant directories
-            if (file === 'node_modules' || file.startsWith('.')) return;
-            searchFiles(filePath, fileTypes, classList);
-        } else {
-            const ext = path.extname(file).toLowerCase().substring(1);
-            if (fileTypes.includes(ext)) {
-                const fileContent = fs.readFileSync(filePath, 'utf-8');
-                extractClasses(fileContent, classList, filePath);
-            }
-        }
-    });
+    if (fileStat.isDirectory()) {
+      if (file === 'node_modules' || file.startsWith('.')) return
+      searchFiles(filePath, fileTypes, classList)
+    } else {
+      const ext = path.extname(file).toLowerCase().substring(1)
+      if (fileTypes.includes(ext)) {
+        const fileContent = fs.readFileSync(filePath, 'utf-8')
+        extractClasses(fileContent, classList, filePath)
+      }
+    }
+  })
 
-    return classList;
-};
+  return classList
+}
 
 /**
  * Remove triple-backtick code blocks, multi-line JS comments, single-line JS comments,
  * and HTML comments from file content.
- * 
- * @param {string} text - The file's raw content
- * @returns {string} - The cleaned content
  */
 const removeCommentsAndCodeBlocks = (text) => {
-    let cleaned = text;
-
-    // 1. Remove triple-backtick code blocks (``` ... ```)
-    cleaned = cleaned.replace(/```[\s\S]*?```/g, '');
-
-    // 2. Remove multi-line JS comments (/* ... */)
-    cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '');
-
-    // 3. Remove single-line JS comments (// ...)
-    cleaned = cleaned.replace(/(^|\s)\/\/.*$/gm, '$1');
-
-    // 4. Remove HTML comments (<!-- ... -->)
-    cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '');
-
-    return cleaned;
-};
-
+  let cleaned = text
+  cleaned = cleaned.replace(/```[\s\S]*?```/g, '') // triple backticks
+  cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '') // multiline comments
+  cleaned = cleaned.replace(/(^|\s)\/\/.*$/gm, '$1') // single-line comments
+  cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '') // HTML comments
+  return cleaned
+}
 
 /**
- * Extract class attributes from file content with line numbers, ignoring commented sections
- * @param {string} content - The file's raw content
- * @param {Array<Object>} classList - Array to store extracted classes
- * @param {string} filePath - Path to the file being processed
+ * Validate whether a class token is safe for Elevate
+ */
+const VALID_CLASS = /^[a-zA-Z0-9@:_/\-\[\]]+$/
+
+const isValidClass = (c) => {
+    if (!VALID_CLASS.test(c)) return false
+  
+    if (
+      c.includes('::') ||
+      (c.includes('[') && !c.includes(']')) ||
+      (c.includes(']') && !c.includes('['))
+    ) return false
+  
+    // Allow slash-wrapped breakpoints like /lg/
+    const isSlashWrapped = /^\/[a-zA-Z0-9_-]{1,5}\/$/.test(c)
+    if (c.startsWith('/') || c.endsWith('/')) {
+      return isSlashWrapped
+    }
+  
+    return true
+  }
+
+/**
+ * Extract static class names from common template expressions
+ */
+const extractStaticClassesFromTemplate = (raw) => {
+  const found = [];
+
+  // 1) Grab every quoted substring anywhere in the template segment
+  //    Handles single, double, and backtick quotes, with escapes.
+  for (const m of raw.matchAll(/(['"`])((?:\\.|(?!\1).)+)\1/g)) {
+    found.push(...m[2].split(/\s+/));
+  }
+
+  // 2) Remove all ${...} expressions entirely
+  const withoutExpr = raw.replace(/\$\{[\s\S]*?\}/g, '');
+
+  // 3) Add remaining static parts
+  found.push(...withoutExpr.split(/\s+/));
+
+  return found.filter(Boolean);
+};
+
+/**
+ * Extract class attributes from file content with line numbers
  */
 const extractClasses = (content, classList, filePath) => {
-    // First, strip out comments and code blocks
-    const cleanedContent = removeCommentsAndCodeBlocks(content);
+  const cleanedContent = removeCommentsAndCodeBlocks(content)
+  const lines = cleanedContent.split('\n')
 
-    // Then, split by lines
-    const lines = cleanedContent.split('\n');
+  config.ClassRegex.forEach((regex) => {
+    lines.forEach((line, lineNumber) => {
+      let match
+      while ((match = regex.exec(line)) !== null) {
+        let classValue = match[1].trim()
 
-    // Iterate over each regex pattern in the config
-    config.ClassRegex.forEach(regex => {
-        lines.forEach((line, lineNumber) => {
-            let match;
-            while ((match = regex.exec(line)) !== null) {
-                const classValue = match[1].trim();
+        if (regex.source.includes('`')) {
+            const staticParts = extractStaticClassesFromTemplate(classValue)
+            classValue = staticParts.join(' ')
+          }
 
-                // Find and handle state patterns: e.g., "@foo:[bar]"
-                const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g;
-                let classString = classValue;
-                const states = [];
-                let stateMatch;
-                let index = 0;
-                const placeholders = [];
+        const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g
+        const states = []
+        const placeholders = []
+        let index = 0
+        let stateMatch
+        let classString = classValue
 
-                // Replace state patterns with placeholders
-                while ((stateMatch = statePattern.exec(classValue)) !== null) {
-                    const placeholder = `__STATE${index}__`;
-                    states.push(stateMatch[0]);
-                    placeholders.push(placeholder);
-                    classString = classString.replace(stateMatch[0], placeholder);
-                    index++;
-                }
+        while ((stateMatch = statePattern.exec(classValue)) !== null) {
+          const placeholder = `__STATE${index}__`
+          states.push(stateMatch[0])
+          placeholders.push(placeholder)
+          classString = classString.replace(stateMatch[0], placeholder)
+          index++
+        }
 
-                // Split on whitespace
-                const parts = classString.split(/\s+/).filter(Boolean);
+        const parts = classString.split(/\s+/).filter(Boolean)
 
-                // Restore state patterns
-                const classNames = parts.map(part => {
-                    const placeholderIndex = placeholders.indexOf(part);
-                    return placeholderIndex !== -1 ? states[placeholderIndex] : part;
-                });
+        const classNames = parts
+          .map((part) => {
+            const i = placeholders.indexOf(part)
+            return i !== -1 ? states[i] : part
+          })
+          .filter(isValidClass)
 
-                classList.push({
-                    file: filePath,
-                    lineNumber: lineNumber + 1, // Lines are 1-based
-                    classes: classNames
-                });
-            }
-        });
-    });
-};
-
-
+        if (classNames.length > 0) {
+          classList.push({
+            file: filePath,
+            lineNumber: lineNumber + 1,
+            classes: classNames
+          })
+        }
+      }
+    })
+  })
+}
 
 /**
- * Main function to scan the project directory
- * @param {string} startDir - The directory to start scanning (default: current directory)
- * @param {Array<string>} fileTypes - File extensions to scan for (e.g., ['html', 'jsx', 'tsx'])
- * @returns {Array<Object>} - Array of objects with file, line number, and class lists
+ * Entrypoint for scanning
  */
 export function findClassAttributes(startDir = process.cwd(), fileTypes = config.FileTypes) {
-    try {
-        return searchFiles(startDir, fileTypes);
-    } catch (err) {
-        console.error('Error traversing files:', err.message);
-        return [];
-    }
+  try {
+    return searchFiles(startDir, fileTypes)
+  } catch (err) {
+    console.error('Error traversing files:', err.message)
+    return []
+  }
 }
