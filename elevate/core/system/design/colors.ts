@@ -1,116 +1,103 @@
 export const colors = {
-
-    // --- Existing Colors ---
     // PURPLE
-    'purple-4': '#31063E',
-    'purple-3': '#3F084E',
-    'purple-2': '#4A095F',
-    'purple-1': '#6F10A0',
-    'purple':   '#9B16D8',
-    'purple+1': '#BA1CFF',
-    'purple+2': '#D940FF',
-    'purple+3': '#E97AFF',
-    'purple+4': '#F4B3FF',
-    
+    'purple-4': '#12071C',
+    'purple-3': '#1C0C29',
+    'purple-2': '#2A1240',
+    'purple-1': '#411C6B',
+    'purple':   '#7C2FE0',
+    'purple+1': '#9F5AEE',
+    'purple+2': '#BE86F8',
+    'purple+3': '#D8B3FF',
+    'purple+4': '#EBDDFF',
+  
     // RED
-    'red-4': '#450F1A',
-    'red-3': '#561421',
-    'red-2': '#691727',
-    'red-1': '#A1203E',
-    'red':   '#D82A54',
-    'red+1': '#F9426A',
-    'red+2': '#FF627F',
-    'red+3': '#FF8B9B',
-    'red+4': '#FFB5C2',
-    
+    'red-4': '#24070A',
+    'red-3': '#330D12',
+    'red-2': '#4E1620',
+    'red-1': '#7A2231',
+    'red':   '#D33A52',
+    'red+1': '#E75F72',
+    'red+2': '#F68D9F',
+    'red+3': '#FBB8C7',
+    'red+4': '#FFE0E8',
+  
     // INDIGO
-    'indigo-4': '#22253F',
-    'indigo-3': '#2B304D',
-    'indigo-2': '#363B5F',
-    'indigo-1': '#53589A',
-    'indigo':   '#7075D3',
-    'indigo+1': '#8891FF',
-    'indigo+2': '#A3A9FF',
-    'indigo+3': '#BCC2FF',
-    'indigo+4': '#D6DCFF',
-    
+    'indigo-4': '#0B1026',
+    'indigo-3': '#151C3A',
+    'indigo-2': '#222B57',
+    'indigo-1': '#37408B',
+    'indigo':   '#5865EF', // tweaked for AA on white
+    'indigo+1': '#7E8BFB',
+    'indigo+2': '#A3ADFF',
+    'indigo+3': '#C6CEFF',
+    'indigo+4': '#E2E8FF',
+  
     // ORANGE
-    'orange-4': '#4A2C17',
-    'orange-3': '#5B361E',
-    'orange-2': '#714222',
-    'orange-1': '#B56335',
-    'orange':   '#F48247',
-    'orange+1': '#FF9A5B',
-    'orange+2': '#FFB07A',
-    'orange+3': '#FFC59A',
-    'orange+4': '#FFD9BB',
-    
+    'orange-4': '#221107',
+    'orange-3': '#32190A',
+    'orange-2': '#4A250F',
+    'orange-1': '#753817',
+    'orange':   '#E06F2A',
+    'orange+1': '#F08B46',
+    'orange+2': '#F6A76F',
+    'orange+3': '#FBC89C',
+    'orange+4': '#FFE1C6',
+  
     // GREEN
-    'green-4': '#153A32',
-    'green-3': '#1A453C',
-    'green-2': '#1E5147',
-    'green-1': '#2C7E6F',
-    'green':   '#3CAA96',
-    'green+1': '#4CD8BE',
-    'green+2': '#63F3E0',
-    'green+3': '#87FFF1',
-    'green+4': '#ACFFF8',
+    'green-4': '#061911',
+    'green-3': '#0B2418',
+    'green-2': '#123427',
+    'green-1': '#1B513D',
+    'green':   '#2E9B6E',
+    'green+1': '#4DB88B',
+    'green+2': '#75D4AA',
+    'green+3': '#A5EBC9',
+    'green+4': '#D2FAE6',
   
-    // --- Neutral/Black & White ---
-    // BLACK (expanded)
-
-    'black':   '#0C0C0C',
-
-    // GREY (newly added)
-    'grey-4': '#121212',
-    'grey-3': '#1F1F1F',
-    'grey-2': '#2E2E2E',
-    'grey-1': '#3C3C3C',
-    'grey':   '#5A5A5A',
-    'grey+1': '#7A7A7A',
-    'grey+2': '#9A9A9A',
-    'grey+3': '#BDBDBD',
-    'grey+4': '#DCDCDC',
+    // NEUTRALS
+    'black':   '#0B0B0C',
+    'grey-4':  '#0F0F11',
+    'grey-3':  '#17171A',
+    'grey-2':  '#25262A',
+    'grey-1':  '#35363B',
+    'grey':    '#575A60',
+    'grey+1':  '#777A80',
+    'grey+2':  '#9DA1A7',
+    'grey+3':  '#C6C9CE',
+    'grey+4':  '#E9EBEE',
+    'white':   '#FCFCFD',
   
-    // WHITE (expanded)
-
-    'white':   '#FCFCFC',
-
-  
-    // --- Newly Added Colors ---
     // BLUE
-    'blue-4': '#0E1E39',
-    'blue-3': '#0F2A4C',
-    'blue-2': '#103661',
-    'blue-1': '#13518F',
-    'blue':   '#1673F5',
-    'blue+1': '#3B90FF',
-    'blue+2': '#68ADFF',
-    'blue+3': '#99C8FF',
-    'blue+4': '#CCE4FF',
+    'blue-4': '#071724',
+    'blue-3': '#0B2233',
+    'blue-2': '#10324A',
+    'blue-1': '#184E79',
+    'blue':   '#2B82E6',
+    'blue+1': '#4A9CF5',
+    'blue+2': '#79BAFF',
+    'blue+3': '#A9D4FF',
+    'blue+4': '#D6EAFF',
   
     // PINK
-    'pink-4': '#4D0124',
-    'pink-3': '#660131',
-    'pink-2': '#82013E',
-    'pink-1': '#B00A66',
-    'pink':   '#FF4FA7',
-    'pink+1': '#FF78BB',
-    'pink+2': '#FFA0CE',
-    'pink+3': '#FFC2DF',
-    'pink+4': '#FFE0F0',
+    'pink-4': '#230714',
+    'pink-3': '#330B1F',
+    'pink-2': '#4C1532',
+    'pink-1': '#75254F',
+    'pink':   '#E4489B',
+    'pink+1': '#F067B0',
+    'pink+2': '#F692C9',
+    'pink+3': '#FAC0E0',
+    'pink+4': '#FFE2F2',
   
-    // YELLOW
-    'yellow-4': '#4A4000',
-    'yellow-3': '#645400',
-    'yellow-2': '#7F6800',
-    'yellow-1': '#B29800',
-    'yellow':   '#FFD600',
-    'yellow+1': '#FFEE4D',
-    'yellow+2': '#FFF375',
-    'yellow+3': '#FFF79E',
-    'yellow+4': '#FFFBCC',
+    // YELLOW (kept your true yellow ramp)
+    'yellow-4': '#221F00',
+    'yellow-3': '#3A3600',
+    'yellow-2': '#5B5400',
+    'yellow-1': '#8A8000',
+    'yellow':   '#FFD500',
+    'yellow+1': '#FFE34D',
+    'yellow+2': '#FFED80',
+    'yellow+3': '#FFF5B0',
+    'yellow+4': '#FFFAD6',
+  };
   
-
-
-}
