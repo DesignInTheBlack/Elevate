@@ -44,7 +44,7 @@ const removeCommentsAndCodeBlocks = (text) => {
  * Validate whether a class token is safe for Elevate
  */
 
-const VALID_CLASS = /^[a-zA-Z0-9@:/-[]+]+$/
+const VALID_CLASS = /^[A-Za-z0-9@:\/_\-\[\]]+$/;
 
 const isValidClass = (c) => {
     if (!VALID_CLASS.test(c)) return false

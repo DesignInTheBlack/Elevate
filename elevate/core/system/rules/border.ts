@@ -6,6 +6,19 @@ export const border = {
     radius: {
         "round-": "SpacingToken"
     },
+
+    topLeftRadius: {
+        "roundtl-": "SpacingToken"
+    },
+    topRightRadius: {
+        "roundtr-": "SpacingToken"
+    },
+    bottomLeftRadius: {
+        "roundbl-": "SpacingToken"
+    },
+    bottomRightRadius: {
+        "roundbr-": "SpacingToken"
+    },
     style: {
         "solid": "solid",
         "dashed": "dashed",
