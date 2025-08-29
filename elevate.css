@@ -148,24 +148,107 @@ textarea:not([rows]) {
     }
 }
 
-.bg-color\:indigo,  .bg-color\:indigo {
+.ctx\:mainSplash.transition\:ultra-slow, .ctx\:mainSplash .transition\:ultra-slow {
+transition: all 0.5s ease-in-out;
+}
+
+.ctx\:mainSplash.\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover, .ctx\:mainSplash .\@hover\:\[mg-t\:d9_font\:semibold_text\:white\]:hover {
+margin-top: 2.25rem;
+font-weight: 600;
+color: #FCFCFD;
+}
+
+.ctx\:mainSplash.shadow\:physical, .ctx\:mainSplash .shadow\:physical {
+box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;;
+}
+
+.ctx\:mainSplash.pattern\:glow\:bg-indigo, .ctx\:mainSplash .pattern\:glow\:bg-indigo {
+background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2), transparent), radial-gradient(circle at 65% 65%, rgba(255,255,255,0.15), transparent), currentColor;
 background-color: #5865EF;
 }
 
-.w\:d10,  .w\:d10 {
-width: 2.5rem;
+.ctx\:mainSplash.bd\:round-d3, .ctx\:mainSplash .bd\:round-d3 {
+border-radius: 0.75rem;
 }
 
-.h\:d10,  .h\:d10 {
-height: 2.5rem;
+.ctx\:mainSplash.mg-t\:d6, .ctx\:mainSplash .mg-t\:d6 {
+margin-top: 1.5rem;
 }
 
-.row,  .row {
+.ctx\:mainSplash.pd\:d3, .ctx\:mainSplash .pd\:d3 {
+padding-top: 0.75rem;
+padding-left: 0.75rem;
+padding-right: 0.75rem;
+padding-bottom: 0.75rem;
+}
+
+.ctx\:mainSplash.text\:indigo-1, .ctx\:mainSplash .text\:indigo-1 {
+color: #37408B;
+}
+
+.ctx\:mainSplash.font\:sans\:medium\:wider, .ctx\:mainSplash .font\:sans\:medium\:wider {
+font-family: Raleway;
+font-weight: 500;
+letter-spacing: 0.02rem;
+}
+
+.ctx\:mainSplash.cursor\:pointer, .ctx\:mainSplash .cursor\:pointer {
+cursor: pointer;
+}
+
+.ctx\:mainSplash.mg-t\:d12, .ctx\:mainSplash .mg-t\:d12 {
+margin-top: 3rem;
+}
+
+.ctx\:mainSplash.text\:white\:center, .ctx\:mainSplash .text\:white\:center {
+color: #FCFCFD;
+text-align: center;
+}
+
+.ctx\:mainSplash.font\:semibold\:sans\:h5, .ctx\:mainSplash .font\:semibold\:sans\:h5 {
+font-weight: 600;
+font-family: Raleway;
+font-size: 1.5rem;
+}
+
+.ctx\:mainSplash.mg-t\:d8, .ctx\:mainSplash .mg-t\:d8 {
+margin-top: 2rem;
+}
+
+.ctx\:mainSplash.w\:c2, .ctx\:mainSplash .w\:c2 {
+width: 4.5rem;
+}
+
+.ctx\:mainSplash.h\:c2, .ctx\:mainSplash .h\:c2 {
+height: 4.5rem;
+}
+
+.ctx\:mainSplash.\@hover\:\[pd-b\:d4_pattern\:plastic\:bg-indigo\]:hover, .ctx\:mainSplash .\@hover\:\[pd-b\:d4_pattern\:plastic\:bg-indigo\]:hover {
+padding-bottom: 1rem;
+background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
+background-color: #5865EF;
+}
+
+.ctx\:mainSplash.pattern\:plastic\:bg-indigo-1, .ctx\:mainSplash .pattern\:plastic\:bg-indigo-1 {
+background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%), radial-gradient(circle at 50% 8%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
+background-color: #37408B;
+}
+
+.ctx\:mainSplash.bd\:solid\:indigo\:width-d2, .ctx\:mainSplash .bd\:solid\:indigo\:width-d2 {
+border-style: solid;
+border-color: #5865EF;
+border-width: 0.5rem;
+}
+
+.ctx\:mainSplash.h\:hScreen, .ctx\:mainSplash .h\:hScreen {
+height: 100vh;
+}
+
+.ctx\:mainSplash.col\:x-center\:y-center, .ctx\:mainSplash .col\:x-center\:y-center {
 display:flex;
-flex-direction:row;
-justify-content: x;
-align-items: y;
-flex-wrap: FlexWrapRule;
+flex-direction:column;
+align-items: center;
+justify-content: center;
 }
 
 
