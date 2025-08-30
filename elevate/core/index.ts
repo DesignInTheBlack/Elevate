@@ -136,7 +136,7 @@ const main = async () => {
     // Helper function to escape special characters in class names
     await delay(100);
     const escapeClassName = (className: string) =>
-      className.replace(/[@:\[\]()\/.,+#~=%]/g, (match) => `\\${match}`);
+      className.replace(/[@:\[\]()\/.,+#~=%?&!$^*<>{}|]/g, m => `\\${m}`);
 
     spinner.text = 'Generating CSS output...';
     let breakpointSupervisor: string | null = null;
