@@ -46,9 +46,7 @@ const tokens = [State, openState, Property, Modifier, WhiteSpace, DirectProperty
 // ║                   4. LEXER INITIALIZATION                          ║
 // ║ Initialize the Lexer with the vocabulary.                          ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const lexer = new Lexer(tokens, {
-    positionTracking: "onlyOffset" // Disable line and column tracking
-});
+
 
 // ╔════════════════════════════════════════════════════════════════════╗
 // ║                   5. PARSER DEFINITION                             ║
@@ -136,32 +134,80 @@ class ElevateParser extends CstParser {
 // ║                   6. COMPILER FUNCTION                            ║
 // ║ Define the `elevateCompiler` function to process input classes.   ║
 // ╚════════════════════════════════════════════════════════════════════╝
-export const elevateCompiler = (className: string,context?: { fileName: string, lineNumber: number }): any => {
-    const parser = new ElevateParser();
+
+
+class ParserManager {
+    private static parser: ElevateParser | null = null;
+    private static lexerInstance: Lexer | null = null;
+    
+    static getParser(): ElevateParser {
+        if (!ParserManager.parser) {
+            ParserManager.parser = new ElevateParser();
+        }
+        return ParserManager.parser;
+    }
+    
+    static getLexer(): Lexer {
+        if (!ParserManager.lexerInstance) {
+            ParserManager.lexerInstance = new Lexer(tokens, {
+                positionTracking: "onlyOffset"
+            });
+        }
+        return ParserManager.lexerInstance;
+    }
+    
+    static resetParser(parser: ElevateParser): void {
+        // Clear parsing errors and input
+        parser.errors = [];
+        parser.input = [];
+        
+        // Reset token consumption tracking
+        (parser as any).currIdx = 0;
+        (parser as any).tokVector = [];
+        (parser as any).tokVectorLength = 0;
+        
+        // Clear memoization cache
+        if ((parser as any).memoizedResults) {
+            (parser as any).memoizedResults = {};
+        }
+        
+        // Reset backtracking state
+        if ((parser as any).isBackTrackingStack) {
+            (parser as any).isBackTrackingStack = [];
+        }
+        
+        // Reset GAST (Grammar AST) cache if present
+        if ((parser as any).gastCache) {
+            (parser as any).gastCache = {};
+        }
+        
+        // Reset any rule invocation stacks
+        if ((parser as any).ruleInvocationStateUpdate) {
+            (parser as any).ruleInvocationStateUpdate = [];
+        }
+    }
+}
+
+export const elevateCompiler = (className: string, context?: { fileName: string, lineNumber: number }): any => {
+    const parser = ParserManager.getParser();
+    const lexer = ParserManager.getLexer(); // Changed this line
     const result = lexer.tokenize(className);
 
-    // Lexing Error Handling
     if (result.errors.length > 0) {
         console.error("Lexing errors detected:", result.errors);
         return;
     }
 
-    // Set tokens for parser input
     parser.input = result.tokens;
 
-    // Parse input using the primary rule
     const cst = parser.PropertyDefinition();
     (cst as any).className = className;
 
-    // Parsing Error Handling 
     if (parser.errors.length > 0) {
         console.error("Parsing errors detected:", parser.errors);
         return;
     }
 
-    // Generate AST from CST using `toAst`
-    const ast = toAst(cst,context);
-    
-    // Return the AST
+    const ast = toAst(cst, context);
     return ast;
 };

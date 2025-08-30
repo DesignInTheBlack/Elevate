@@ -260,6 +260,8 @@ export function getModifierType(
 ): string[] {
     const matches = [];
 
+    
+
     // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
     const cleanedModifier = modifier.includes(':')
         ? modifier.slice(modifier.indexOf('('))
@@ -270,12 +272,14 @@ export function getModifierType(
         matches.push("PassThroughToken");
     }
 
-    // Direct lookup for matches
+  
+    
     for (const [typeName, values] of Object.entries(types)) {
         if (modifier in values) {
             matches.push(typeName); // Add to matches array
         }
     }
+
 
   
 
@@ -319,6 +323,13 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 export function getModifierValue(modifier: string, criteria: any, context?: { fileName: string, lineNumber: number }): string {
 
     const modifierType = getModifierType(modifier, context);
+
+    if (
+        modifierType.includes("NumericToken") &&
+        !isNaN(Number(modifier))
+      ) {
+        return numeric.NumericToken.validate(modifier);
+      }
 
      if (modifierType[0] === "PassThroughToken") {
         // Extract value inside parentheses
