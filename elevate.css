@@ -148,6 +148,10 @@ textarea:not([rows]) {
     }
 }
 
+.bg-exact\:\(50\%_auto\),  .bg-exact\:\(50\%_auto\) {
+background-size: 50% auto;
+}
+
 .ctx\:mainSplash.transition\:ultra-slow, .ctx\:mainSplash .transition\:ultra-slow {
 transition: all 0.5s ease-in-out;
 }

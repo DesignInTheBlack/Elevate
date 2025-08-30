@@ -213,6 +213,7 @@ export const declarationMap = {
         "background-origin": "BackgroundOriginRule",
         "background-clip": "BackgroundClipRule",
     },
+    'bg-exact': { "background-size": "PassThroughToken" },
 
 
     // =============================
@@ -394,7 +395,7 @@ export const declarationMap = {
    // =============================
     //Transform & Filters
     // =============================
-    'transform-origin': { "transform-origin": "PassThroughToken" },
+    'origin': { "transform-origin": "PassThroughToken" },
     'transform': { "transform": "PassThroughToken" },
     'filter': { "filter": "PassThroughToken" },
 

@@ -263,9 +263,9 @@ export function getModifierType(
     
 
     // Extract the part after the first ':' if it exists, preserving the entire parenthetical content
-    const cleanedModifier = modifier.includes(':')
-        ? modifier.slice(modifier.indexOf('('))
-        : modifier;
+    const cleanedModifier = modifier.includes('(')
+    ? modifier.slice(modifier.indexOf('('))
+    : modifier;
 
 
     if (/^\(.*\)$/.test(cleanedModifier)) {
@@ -331,11 +331,12 @@ export function getModifierValue(modifier: string, criteria: any, context?: { fi
         return numeric.NumericToken.validate(modifier);
       }
 
-     if (modifierType[0] === "PassThroughToken") {
-        // Extract value inside parentheses
-        const match = modifier.match(/^\((.*)\)$/);
-        return match ? match[1] : modifier;
-    }
+      if (modifierType[0] === "PassThroughToken") {
+        const m = modifier.match(/^\((.*)\)$/);
+        const inner = m ? m[1] : modifier;
+        const decoded = inner.replace(/_/g, ' ');
+        return decoded;
+      }
 
     if (modifierType[0] === "NumericToken") {
         return types.NumericToken.validate(modifier);

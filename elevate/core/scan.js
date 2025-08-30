@@ -118,7 +118,7 @@ const extractClasses = (content, classList, filePath) => {
           index++
         }
 
-        const parts = classString.split(/\s+/).filter(Boolean)
+        const parts = (classString.match(/(?:\([^)]*\)|\S+)/g) || []).filter(Boolean);
 
         const classNames = parts
           .map((part) => {

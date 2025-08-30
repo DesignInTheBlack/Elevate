@@ -17,8 +17,9 @@ export const backgrounds = {
 
     size: {
         "cover": "cover",
-        "contain": "contain"
+        "contain": "contain",
     },
+
 
     repeat: {
         "no-repeat": "no-repeat",
