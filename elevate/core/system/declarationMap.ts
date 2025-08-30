@@ -384,6 +384,19 @@ export const declarationMap = {
 
     'empty':{"content": "''"},
 
+    // =============================
+    // Select
+    // =============================
+
+    'select': { "user-select": "SelectRule" },
+    
+
+   // =============================
+    //Transform & Filters
+    // =============================
+    'transform-origin': { "transform-origin": "PassThroughToken" },
+    'transform': { "transform": "PassThroughToken" },
+    'filter': { "filter": "PassThroughToken" },
 
     // =============================
     // Allow User Overrides and Extensions

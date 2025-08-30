@@ -28,6 +28,7 @@ import { justc } from './rules/justifycontent.js';
 import { aligni } from './rules/alignitems.js';
 import { alignc } from './rules/aligncontent.js';
 import { justi } from './rules/justifyitems.js';
+import { select } from './rules/select.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -83,4 +84,5 @@ export const elevateRules = {
     GridGapYRule: grid.rowgap,
     ObjectFitRule: object.options,
     OverflowWrapRule: overflowwrap.options,
+    SelectRule: select.options,
 };

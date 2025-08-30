@@ -192,6 +192,10 @@ font-weight: 500;
 letter-spacing: 0.02rem;
 }
 
+.ctx\:mainSplash.select\:none, .ctx\:mainSplash .select\:none {
+user-select: none;
+}
+
 .ctx\:mainSplash.cursor\:pointer, .ctx\:mainSplash .cursor\:pointer {
 cursor: pointer;
 }
