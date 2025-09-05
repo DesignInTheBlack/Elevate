@@ -4,7 +4,7 @@
 <br>
 
 <div align="center">
-  <img src="https://elevate-docs.pages.dev/_astro/dark.BMBoyW0C.svg" style="width:15%; height:auto;">
+  <img src="https://elevate-docs.pages.dev/_astro/dark.DxR7SM2r.svg" style="width:15%; height:auto;">
 </div>
 
 <br>
