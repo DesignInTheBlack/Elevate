@@ -67,20 +67,202 @@ const isValidClass = (c) => {
 /**
  * Extract static class names from common template expressions
  */
-const extractStaticClassesFromTemplate = (raw) => {
+const extractClassesFromTemplateExpression = (expression) => {
+  const expr = expression.slice(2, -1).trim(); // Remove ${ }
+  
+  const patterns = {
+    // Basic conditional: condition && 'class'
+    logicalAnd: {
+      test: /^(.+?)\s*&&\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2]]
+    },
+    
+    // Basic ternary: condition ? 'class1' : 'class2'
+    ternary: {
+      test: /^(.+?)\s*\?\s*['"`]([^'"`]+)['"`]\s*:\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2], match[3]]
+    },
+    
+    // Ternary with empty string: condition ? 'class' : ''
+    ternaryWithEmpty: {
+      test: /^(.+?)\s*\?\s*['"`]([^'"`]+)['"`]\s*:\s*['"`]['"`]$/,
+      extract: (match) => [match[2]]
+    },
+    
+    // Ternary with empty string first: condition ? '' : 'class'
+    ternaryEmptyFirst: {
+      test: /^(.+?)\s*\?\s*['"`]['"`]\s*:\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2]]
+    },
+    
+    // Multiple conditions with &&: condition1 && condition2 && 'class'
+    multipleLogicalAnd: {
+      test: /^(.+?)\s*&&\s*(.+?)\s*&&\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[3]]
+    },
+    
+    // Negated condition: !condition && 'class'
+    negatedLogicalAnd: {
+      test: /^!(.+?)\s*&&\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2]]
+    },
+    
+    // Template literal with variable: `class-${variable}`
+    templateLiteralWithVar: {
+      test: /^['"`]([^'"`$]+)\$\{[^}]+\}([^'"`]*)['"`]$/,
+      extract: (match) => [] // Can't extract static classes from dynamic ones
+    },
+    
+    // Function call returning class: getClass()
+    functionCall: {
+      test: /^[a-zA-Z_$][a-zA-Z0-9_$]*\([^)]*\)$/,
+      extract: (match) => [] // Can't extract from function calls
+    },
+    
+    // Clsx with static string: clsx('class1 class2')
+    clsxStatic: {
+      test: /^clsx\s*\(\s*['"`]([^'"`]+)['"`]\s*\)$/,
+      extract: (match) => match[1].split(/\s+/)
+    },
+    
+    // Clsx with conditional: clsx('base', condition && 'conditional')
+    clsxWithConditional: {
+      test: /^clsx\s*\(\s*['"`]([^'"`]+)['"`]\s*,\s*(.+?)\s*&&\s*['"`]([^'"`]+)['"`]\s*\)$/,
+      extract: (match) => [match[1], match[3]].join(' ').split(/\s+/)
+    },
+    
+    // Clsx with ternary: clsx('base', condition ? 'class1' : 'class2')
+    clsxWithTernary: {
+      test: /^clsx\s*\(\s*['"`]([^'"`]+)['"`]\s*,\s*(.+?)\s*\?\s*['"`]([^'"`]+)['"`]\s*:\s*['"`]([^'"`]+)['"`]\s*\)$/,
+      extract: (match) => [match[1], match[3], match[4]].join(' ').split(/\s+/)
+    },
+    
+    // Clsx with object: clsx({ 'class1': condition, 'class2': condition2 })
+    clsxObject: {
+      test: /^clsx\s*\(\s*\{\s*(.+?)\s*\}\s*\)$/,
+      extract: (match) => {
+        const objectContent = match[1];
+        const classes = [];
+        const pairs = objectContent.match(/['"`]([^'"`]+)['"`]\s*:\s*[^,}]+/g);
+        if (pairs) {
+          pairs.forEach(pair => {
+            const classMatch = pair.match(/['"`]([^'"`]+)['"`]/);
+            if (classMatch) classes.push(classMatch[1]);
+          });
+        }
+        return classes.flatMap(c => c.split(/\s+/));
+      }
+    },
+    
+    // Classnames (alias for clsx): classNames('class1', condition && 'class2')
+    classNamesWithConditional: {
+      test: /^classNames\s*\(\s*['"`]([^'"`]+)['"`]\s*,\s*(.+?)\s*&&\s*['"`]([^'"`]+)['"`]\s*\)$/,
+      extract: (match) => [match[1], match[3]].join(' ').split(/\s+/)
+    },
+    
+    // Array join: [condition && 'class1', 'class2'].join(' ')
+    arrayJoin: {
+      test: /^\[(.+?)\]\.join\s*\(\s*['"`]\s*['"`]\s*\)$/,
+      extract: (match) => {
+        const arrayContent = match[1];
+        const classes = [];
+        const conditionals = arrayContent.match(/['"`]([^'"`]+)['"`]/g);
+        if (conditionals) {
+          conditionals.forEach(cond => {
+            const classMatch = cond.match(/['"`]([^'"`]+)['"`]/);
+            if (classMatch) classes.push(classMatch[1]);
+          });
+        }
+        return classes.flatMap(c => c.split(/\s+/));
+      }
+    },
+    
+    // Filter pattern: ['base', condition && 'conditional'].filter(Boolean).join(' ')
+    arrayFilterJoin: {
+      test: /^\[(.+?)\]\.filter\s*\(\s*Boolean\s*\)\.join\s*\(\s*['"`]\s*['"`]\s*\)$/,
+      extract: (match) => {
+        const arrayContent = match[1];
+        const classes = [];
+        const items = arrayContent.match(/['"`]([^'"`]+)['"`]/g);
+        if (items) {
+          items.forEach(item => {
+            const classMatch = item.match(/['"`]([^'"`]+)['"`]/);
+            if (classMatch) classes.push(classMatch[1]);
+          });
+        }
+        return classes.flatMap(c => c.split(/\s+/));
+      }
+    },
+    
+    // Variable reference: someVariable
+    variableReference: {
+      test: /^[a-zA-Z_$][a-zA-Z0-9_$]*$/,
+      extract: (match) => [] // Can't extract from variables
+    },
+    
+    // Object property: obj.classes
+    objectProperty: {
+      test: /^[a-zA-Z_$][a-zA-Z0-9_$]*\.[a-zA-Z_$][a-zA-Z0-9_$]*$/,
+      extract: (match) => [] // Can't extract from object properties
+    },
+    
+    // Computed property: obj['classes']
+    computedProperty: {
+      test: /^[a-zA-Z_$][a-zA-Z0-9_$]*\[['"`][^'"`]+['"`]\]$/,
+      extract: (match) => [] // Can't extract from computed properties
+    },
+    
+    // Complex ternary with multiple classes: condition ? 'class1 class2' : 'class3 class4'
+    ternaryMultipleClasses: {
+      test: /^(.+?)\s*\?\s*['"`]([^'"`\s]+(?:\s+[^'"`\s]+)*)['"`]\s*:\s*['"`]([^'"`\s]+(?:\s+[^'"`\s]+)*)['"`]$/,
+      extract: (match) => [...match[2].split(/\s+/), ...match[3].split(/\s+/)]
+    },
+    
+    // Parenthesized condition: (condition) && 'class'
+    parenthesizedConditional: {
+      test: /^\((.+?)\)\s*&&\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2]]
+    },
+    
+    // String concatenation: 'base ' + (condition ? 'active' : 'inactive')
+    stringConcatenation: {
+      test: /^['"`]([^'"`]+)['"`]\s*\+\s*\((.+?)\s*\?\s*['"`]([^'"`]+)['"`]\s*:\s*['"`]([^'"`]+)['"`]\)$/,
+      extract: (match) => [match[1], match[3], match[4]].join(' ').split(/\s+/)
+    },
+    
+    // Logical OR with fallback: condition && 'class' || 'fallback'
+    logicalOrFallback: {
+      test: /^(.+?)\s*&&\s*['"`]([^'"`]+)['"`]\s*\|\|\s*['"`]([^'"`]+)['"`]$/,
+      extract: (match) => [match[2], match[3]]
+    }
+  };
+  
+  for (const [name, pattern] of Object.entries(patterns)) {
+    const match = expr.match(pattern.test);
+    if (match) {
+      return pattern.extract(match).filter(Boolean);
+    }
+  }
+  
+  return []; // No recognized pattern
+ };
+
+
+ const extractStaticClassesFromTemplate = (raw) => {
   const found = [];
 
-  // 1) Grab every quoted substring anywhere in the template segment
-  //    Handles single, double, and backtick quotes, with escapes.
-  for (const m of raw.matchAll(/(['"`])((?:\\.|(?!\1).)+)\1/g)) {
-    found.push(...m[2].split(/\s+/));
-  }
+  // 1. Get static parts
+  const parts = raw.split(/\$\{[^}]*\}/);
+  parts.forEach(part => {
+    found.push(...part.trim().split(/\s+/));
+  });
 
-  // 2) Remove all ${...} expressions entirely
-  const withoutExpr = raw.replace(/\$\{[\s\S]*?\}/g, '');
-
-  // 3) Add remaining static parts
-  found.push(...withoutExpr.split(/\s+/));
+  // 2. Extract from expressions using the pattern matcher
+  const expressions = raw.match(/\$\{[^}]*\}/g) || [];
+  expressions.forEach(expr => {
+    const extractedClasses = extractClassesFromTemplateExpression(expr);
+    found.push(...extractedClasses);
+  });
 
   return found.filter(Boolean);
 };
@@ -90,52 +272,56 @@ const extractStaticClassesFromTemplate = (raw) => {
  */
 const extractClasses = (content, classList, filePath) => {
   const cleanedContent = removeCommentsAndCodeBlocks(content)
-  const lines = cleanedContent.split('\n')
 
   config.ClassRegex.forEach((regex) => {
-    lines.forEach((line, lineNumber) => {
-      let match
-      while ((match = regex.exec(line)) !== null) {
-        let classValue = match[1].trim()
+    // Create multiline version of the regex
+    const multilineRegex = new RegExp(regex.source, 'gms')
+    
+    let match
+    while ((match = multilineRegex.exec(cleanedContent)) !== null) {
+      // Calculate line number from match position
+      const beforeMatch = cleanedContent.substring(0, match.index)
+      const lineNumber = (beforeMatch.match(/\n/g) || []).length + 1
+      
+      let classValue = match[1].trim()
 
-        if (regex.source.includes('`')) {
-            const staticParts = extractStaticClassesFromTemplate(classValue)
-            classValue = staticParts.join(' ')
-          }
-
-        const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g
-        const states = []
-        const placeholders = []
-        let index = 0
-        let stateMatch
-        let classString = classValue
-
-        while ((stateMatch = statePattern.exec(classValue)) !== null) {
-          const placeholder = `__STATE${index}__`
-          states.push(stateMatch[0])
-          placeholders.push(placeholder)
-          classString = classString.replace(stateMatch[0], placeholder)
-          index++
-        }
-
-        const parts = (classString.match(/(?:\([^)]*\)|\S+)/g) || []).filter(Boolean);
-
-        const classNames = parts
-          .map((part) => {
-            const i = placeholders.indexOf(part)
-            return i !== -1 ? states[i] : part
-          })
-          .filter(isValidClass)
-
-        if (classNames.length > 0) {
-          classList.push({
-            file: filePath,
-            lineNumber: lineNumber + 1,
-            classes: classNames
-          })
-        }
+      if (regex.source.includes('`') || regex.source.includes('{')) {
+        const staticParts = extractStaticClassesFromTemplate(classValue)
+        classValue = staticParts.join(' ')
       }
-    })
+
+      const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g
+      const states = []
+      const placeholders = []
+      let index = 0
+      let stateMatch
+      let classString = classValue
+
+      while ((stateMatch = statePattern.exec(classValue)) !== null) {
+        const placeholder = `__STATE${index}__`
+        states.push(stateMatch[0])
+        placeholders.push(placeholder)
+        classString = classString.replace(stateMatch[0], placeholder)
+        index++
+      }
+
+      const parts = (classString.match(/(?:\([^)]*\)|\S+)/g) || []).filter(Boolean);
+
+      const classNames = parts
+        .map((part) => {
+          const i = placeholders.indexOf(part)
+          return i !== -1 ? states[i] : part
+        })
+        .filter(isValidClass)
+
+      if (classNames.length > 0) {
+        classList.push({
+          file: filePath,
+          lineNumber: lineNumber,
+          classes: classNames
+        })
+      }
+    }
   })
 }
 
