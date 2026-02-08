@@ -28,16 +28,51 @@ const searchFiles = (dir, fileTypes, classList = []) => {
 }
 
 /**
- * Remove triple-backtick code blocks, multi-line JS comments, single-line JS comments,
- * and HTML comments from file content.
+ * Mask triple-backtick code blocks, multi-line JS comments, single-line JS comments,
+ * and HTML comments without changing string length. This preserves offsets for rewrites.
  */
-const removeCommentsAndCodeBlocks = (text) => {
+const maskCommentsAndCodeBlocks = (text) => {
+  const mask = (match) => match.replace(/[^\n]/g, ' ')
   let cleaned = text
-  cleaned = cleaned.replace(/```[\s\S]*?```/g, '') // triple backticks
-  cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, '') // multiline comments
-  cleaned = cleaned.replace(/(^|\s)\/\/.*$/gm, '$1') // single-line comments
-  cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, '') // HTML comments
-  return cleaned
+  cleaned = cleaned.replace(/```[\s\S]*?```/g, mask) // triple backticks
+  cleaned = cleaned.replace(/\/\*[\s\S]*?\*\//g, mask) // multiline comments
+  cleaned = cleaned.replace(/<!--[\s\S]*?-->/g, mask) // HTML comments
+
+  // Single-line comments, but avoid masking inside string literals
+  const chars = cleaned.split('')
+  let quote = null
+  let escape = false
+  for (let i = 0; i < chars.length; i++) {
+    const ch = chars[i]
+    if (escape) {
+      escape = false
+      continue
+    }
+    if (quote) {
+      if (ch === '\\') {
+        escape = true
+        continue
+      }
+      if (ch === quote) {
+        quote = null
+      }
+      continue
+    }
+    if (ch === '"' || ch === "'" || ch === '`') {
+      quote = ch
+      continue
+    }
+    if (ch === '/' && chars[i + 1] === '/') {
+      // mask to end of line
+      let j = i
+      while (j < chars.length && chars[j] !== '\n') {
+        if (chars[j] !== '\r') chars[j] = ' '
+        j++
+      }
+      i = j - 1
+    }
+  }
+  return chars.join('')
 }
 
 /**
@@ -45,8 +80,18 @@ const removeCommentsAndCodeBlocks = (text) => {
  */
 
 const VALID_CLASS = /^[A-Za-z0-9@:\/_\-\[\].()=?&%+,~!$^*'";<>|{}]+$/; 
+const STATE_BLOCK = /^@[A-Za-z0-9-]+(?:\+[A-Za-z0-9-]+)*:\[[\s\S]*\]$/;
 
 const isValidClass = (c) => {
+    const isStateBlock = STATE_BLOCK.test(c);
+    if (isStateBlock) {
+      if (
+        c.includes('::') ||
+        (c.includes('[') && !c.includes(']')) ||
+        (c.includes(']') && !c.includes('['))
+      ) return false;
+      return true;
+    }
     if (!VALID_CLASS.test(c)) return false
   
     if (
@@ -267,11 +312,52 @@ const extractClassesFromTemplateExpression = (expression) => {
   return found.filter(Boolean);
 };
 
+const splitClassTokens = (raw) => {
+  const tokens = []
+  let current = ''
+  let depth = 0
+  let bracketDepth = 0
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i]
+    if (ch === '(') {
+      depth++
+      current += ch
+      continue
+    }
+    if (ch === ')') {
+      depth = Math.max(0, depth - 1)
+      current += ch
+      continue
+    }
+    if (ch === '[') {
+      bracketDepth++
+      current += ch
+      continue
+    }
+    if (ch === ']') {
+      bracketDepth = Math.max(0, bracketDepth - 1)
+      current += ch
+      continue
+    }
+    if (/\s/.test(ch) && depth === 0 && bracketDepth === 0) {
+      if (current) {
+        tokens.push(current)
+        current = ''
+      }
+      continue
+    }
+    current += ch
+  }
+  if (current) tokens.push(current)
+  return tokens
+}
+
 /**
  * Extract class attributes from file content with line numbers
  */
 const extractClasses = (content, classList, filePath) => {
-  const cleanedContent = removeCommentsAndCodeBlocks(content)
+  const cleanedContent = maskCommentsAndCodeBlocks(content)
+  const matches = []
 
   config.ClassRegex.forEach((regex) => {
     // Create multiline version of the regex
@@ -283,7 +369,12 @@ const extractClasses = (content, classList, filePath) => {
       const beforeMatch = cleanedContent.substring(0, match.index)
       const lineNumber = (beforeMatch.match(/\n/g) || []).length + 1
       
-      let classValue = match[1].trim()
+      const fullMatch = match[0]
+      const rawValue = match[1]
+      const valueStart = match.index + fullMatch.indexOf(rawValue)
+      const valueEnd = valueStart + rawValue.length
+      const isStatic = !rawValue.includes('${')
+      let classValue = rawValue.trim()
 
       if (regex.source.includes('`') || regex.source.includes('{')) {
         const staticParts = extractStaticClassesFromTemplate(classValue)
@@ -305,7 +396,7 @@ const extractClasses = (content, classList, filePath) => {
         index++
       }
 
-      const parts = (classString.match(/(?:\([^)]*\)|\S+)/g) || []).filter(Boolean);
+      const parts = splitClassTokens(classString)
 
       const classNames = parts
         .map((part) => {
@@ -315,14 +406,24 @@ const extractClasses = (content, classList, filePath) => {
         .filter(isValidClass)
 
       if (classNames.length > 0) {
-        classList.push({
+        const rawTokens = splitClassTokens(rawValue.trim())
+        matches.push({
           file: filePath,
           lineNumber: lineNumber,
-          classes: classNames
+          classes: classNames,
+          rawValue,
+          rawTokens,
+          valueStart,
+          valueEnd,
+          isStatic
         })
       }
     }
   })
+
+  // Preserve document order across mixed class syntaxes
+  matches.sort((a, b) => a.valueStart - b.valueStart)
+  matches.forEach((item) => classList.push(item))
 }
 
 /**

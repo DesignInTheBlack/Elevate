@@ -8,6 +8,9 @@ import { backgrounds} from './rules/backgrounds.js';
 import { cursor } from './rules/cursor.js';
 import { aspect } from './rules/aspect.js';
 import { overflow } from './rules/overflow.js';
+import { overscroll } from './rules/overscroll.js';
+import { scrollbehavior } from './rules/scrollbehavior.js';
+import { scrollsnap } from './rules/scrollsnap.js';
 import { place } from './rules/place.js';
 import { decoration } from './rules/decoration.js'; 
 import { whitespace } from './rules/whitespace.js';
@@ -29,6 +32,19 @@ import { aligni } from './rules/alignitems.js';
 import { alignc } from './rules/aligncontent.js';
 import { justi } from './rules/justifyitems.js';
 import { select } from './rules/select.js';
+import { appearance } from './rules/appearance.js';
+import { float } from './rules/float.js';
+import { clear } from './rules/clear.js';
+import { contentvisibility } from './rules/contentvisibility.js';
+import { scrollbar } from './rules/scrollbar.js';
+import { typography } from './rules/typography.js';
+import { boxdecoration } from './rules/boxdecoration.js';
+import { blendmode } from './rules/blendmode.js';
+import { isolation } from './rules/isolation.js';
+import { animation } from './rules/animation.js';
+import { table } from './rules/table.js';
+import { liststyle } from './rules/liststyle.js';
+import { affordances } from './rules/affordances.js';
 
 //Token Type Definitions
 export const elevateRules = {
@@ -52,6 +68,7 @@ export const elevateRules = {
     FlexSelfRule: flex.Self,
     FlexOrderRule: flex.Order,
     FlexBasisRule: flex.Basis,
+    FlexWrapRule: flex.Wrap,
     GridGapRule: grid.gap,
     GridRowRule: grid.row,
     GridColumnRule: grid.column,
@@ -61,6 +78,10 @@ export const elevateRules = {
     CursorRule: cursor.variety,
     AspectRule: aspect.ratios,
     OverflowRule: overflow.options,
+    OverscrollRule: overscroll.options,
+    ScrollBehaviorRule: scrollbehavior.options,
+    ScrollSnapTypeRule: scrollsnap.type,
+    ScrollSnapAlignRule: scrollsnap.align,
     PlaceRule: place.content,
     TextDecorationRule: decoration.options,
     WhiteSpaceRule: whitespace.options,
@@ -85,4 +106,34 @@ export const elevateRules = {
     ObjectFitRule: object.options,
     OverflowWrapRule: overflowwrap.options,
     SelectRule: select.options,
+    AppearanceRule: appearance.options,
+    FloatRule: float.options,
+    ClearRule: clear.options,
+    ContentVisibilityRule: contentvisibility.options,
+    ScrollbarWidthRule: scrollbar.width,
+    ScrollbarGutterRule: scrollbar.gutter,
+    FontStyleRule: typography.fontStyle,
+    FontVariantRule: typography.fontVariant,
+    FontStretchRule: typography.fontStretch,
+    TextOverflowRule: typography.textOverflow,
+    TextRenderingRule: typography.textRendering,
+    WritingModeRule: typography.writingMode,
+    DirectionRule: typography.direction,
+    UnicodeBidiRule: typography.unicodeBidi,
+    BoxDecorationRule: boxdecoration.options,
+    BlendModeRule: blendmode.options,
+    IsolationRule: isolation.options,
+    AnimationDirectionRule: animation.direction,
+    AnimationFillRule: animation.fill,
+    AnimationPlayRule: animation.play,
+    TableLayoutRule: table.layout,
+    CaptionSideRule: table.captionSide,
+    BorderCollapseRule: table.borderCollapse,
+    ListStyleTypeRule: liststyle.type,
+    ListStylePositionRule: liststyle.position,
+    SplitRatioRule: affordances.splitRatio,
+    StackDirectionRule: affordances.stackDirection,
+    CenterTextRule: affordances.centerText,
+    AffordanceMaxRule: affordances.max,
+    GridAutoMinRule: affordances.min,
 };

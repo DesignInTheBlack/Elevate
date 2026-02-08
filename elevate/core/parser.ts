@@ -11,7 +11,7 @@ import type { CstNode } from "chevrotain";
 // ║                 2. TOKEN DEFINITIONS                               ║
 // ║ Define core tokens using Chevrotain's `createToken`.               ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z0-9-]+:/ });
+const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ 
     name: "DirectProperty", 
@@ -160,52 +160,39 @@ class ParserManager {
         // Clear parsing errors and input
         parser.errors = [];
         parser.input = [];
-        
-        // Reset token consumption tracking
-        (parser as any).currIdx = 0;
-        (parser as any).tokVector = [];
-        (parser as any).tokVectorLength = 0;
-        
-        // Clear memoization cache
-        if ((parser as any).memoizedResults) {
-            (parser as any).memoizedResults = {};
-        }
-        
-        // Reset backtracking state
-        if ((parser as any).isBackTrackingStack) {
-            (parser as any).isBackTrackingStack = [];
-        }
-        
-        // Reset GAST (Grammar AST) cache if present
-        if ((parser as any).gastCache) {
-            (parser as any).gastCache = {};
-        }
-        
-        // Reset any rule invocation stacks
-        if ((parser as any).ruleInvocationStateUpdate) {
-            (parser as any).ruleInvocationStateUpdate = [];
-        }
     }
 }
 
 export const elevateCompiler = (className: string, context?: { fileName: string, lineNumber: number }): any => {
     const parser = ParserManager.getParser();
     const lexer = ParserManager.getLexer(); // Changed this line
-    const result = lexer.tokenize(className);
+    const normalizeStateBlockSpaces = (input: string) => {
+        if (!input.includes('@') || !input.includes('[') || !input.includes(']')) return input;
+        return input.replace(
+            /@([a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*)\:\[([\s\S]*?)\]/g,
+            (_match, state, body) => {
+                const normalizedBody = body.replace(/\s+/g, '_');
+                return `@${state}:[${normalizedBody}]`;
+            }
+        );
+    };
+    const parseInput = normalizeStateBlockSpaces(className);
+    const result = lexer.tokenize(parseInput);
 
     if (result.errors.length > 0) {
-        console.error("Lexing errors detected:", result.errors);
-        return;
+        const first = result.errors[0];
+        throw new Error(`Lexing error: ${first.message}`);
     }
 
+    ParserManager.resetParser(parser);
     parser.input = result.tokens;
 
     const cst = parser.PropertyDefinition();
     (cst as any).className = className;
 
     if (parser.errors.length > 0) {
-        console.error("Parsing errors detected:", parser.errors);
-        return;
+        const first = parser.errors[0];
+        throw new Error(`Parsing error: ${first.message}`);
     }
 
     const ast = toAst(cst, context);

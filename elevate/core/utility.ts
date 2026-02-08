@@ -86,6 +86,16 @@ export function toAst(cst: any, context?: { fileName: string }) {
 function handleDirectProperties(cst: any, context?: { fileName: string, lineNumber: number }) {
     const directProp = cst.children.DirectProperty[0].image;
 
+    const affordanceDirect = new Set(['stack', 'cluster', 'split', 'center', 'grid-auto']);
+    if (affordanceDirect.has(directProp)) {
+        return {
+            type: "Stateless Class",
+            className: cst.className,
+            property: directProp,
+            modifiers: []
+        };
+    }
+
     const propMap = declarationMap[directProp];
 
     if (!propMap) {
@@ -111,14 +121,89 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 // Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
 function handleContextFlags(cst: any, context?: { fileName: string, lineNumber: number }) {
     // More robust state extraction
-    const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+):/);
+    const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*):/);
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/);
     
     // Extract the state, ensuring it's the full state including hyphens
-    let state = stateMatch ? stateMatch[1] : null;
-    
-    // Extract the subterms
-    let subterms = subtermsMatch ? subtermsMatch[1].split(/_/).map(term => term.trim()) : []
+    let state = stateMatch ? stateMatch[1].split('+') : null;
+    let selectorMode: string | null = null;
+
+    const combinatorMap: Record<string, string> = {
+        desc: 'desc',
+        child: 'child',
+        sibling: 'sibling',
+        'general-sibling': 'general-sibling',
+        ancestor: 'ancestor',
+    };
+
+    if (state && state.length > 0) {
+        const combinatorIndexes = state
+            .map((token, index) => (token in combinatorMap ? index : -1))
+            .filter((index) => index !== -1);
+
+        if (combinatorIndexes.length > 1) {
+            throw new Error(
+`\n\nInvalid State Chain: Only one combinator directive is allowed${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+Troubleshooting Tips:
+1. Use a single combinator like @child+hover:[...]
+2. Chain pseudo-states with + after the combinator
+
+For more information, refer to https://elevate-docs.pages.dev\n`
+            );
+        }
+
+        if (combinatorIndexes.length === 1) {
+            if (combinatorIndexes[0] !== 0) {
+                throw new Error(
+`\n\nInvalid State Chain: Combinator directive must be first${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+Troubleshooting Tips:
+1. Put the combinator first: @child+hover:[...]
+2. Chain pseudo-states after it with +
+
+For more information, refer to https://elevate-docs.pages.dev\n`
+                );
+            }
+
+            selectorMode = combinatorMap[state[0]];
+            state = state.slice(1);
+            if (state.length === 0) {
+                state = null;
+            }
+        }
+    }
+
+    // Extract the subterms (split on spaces or underscores, but respect parentheses)
+    const splitStateTerms = (raw: string) => {
+        const tokens: string[] = [];
+        let current = '';
+        let depth = 0;
+        for (let i = 0; i < raw.length; i++) {
+            const ch = raw[i];
+            if (ch === '(') {
+                depth++;
+                current += ch;
+                continue;
+            }
+            if (ch === ')') {
+                depth = Math.max(0, depth - 1);
+                current += ch;
+                continue;
+            }
+            if (depth === 0 && (ch === '_' || /\s/.test(ch))) {
+                if (current) {
+                    tokens.push(current);
+                    current = '';
+                }
+                continue;
+            }
+            current += ch;
+        }
+        if (current) tokens.push(current);
+        return tokens;
+    };
+    let subterms = subtermsMatch ? splitStateTerms(subtermsMatch[1]).map(term => term.trim()).filter(Boolean) : []
     let newterms = subterms.map((item) => {
         item = elevateCompiler(item,context);
         return item.modifiers
@@ -129,6 +214,7 @@ function handleContextFlags(cst: any, context?: { fileName: string, lineNumber: 
         name: 'propertyDefinition',
         children: null,
         state, // Use the full state, including hyphens
+        selectorMode,
         className: cst.className,
         modifiers
     }
@@ -143,7 +229,7 @@ function handlePassThrough(cst: any, context?: { fileName: string, lineNumber: n
         const property = passThroughMatch[1];
         const modifier = passThroughMatch[2];
 
-        const modType = getModifierType(modifier, property, context);
+        const modType = getModifierType(modifier, context);
 
 
 
@@ -194,6 +280,46 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
     let modifiers = null;
     //Handle Directional Modifiers
 
+       if (property === "grid-auto") {
+        const rawModifiers = cst.children.ColonModifier || [];
+        let minValue: string | null = null;
+        let fitMode: 'auto-fit' | 'auto-fill' = 'auto-fit';
+        let gapValue: string | null = null;
+
+        rawModifiers.forEach((mod: any) => {
+            const token = mod.image.replace(":", "");
+            if (token.startsWith('min-')) {
+                minValue = getModifierValue(token, { "grid-template-columns": "GridAutoMinRule" }, context);
+                return;
+            }
+            if (token === 'fit') {
+                fitMode = 'auto-fit';
+                return;
+            }
+            if (token === 'fill') {
+                fitMode = 'auto-fill';
+                return;
+            }
+            if (token.startsWith('gap-')) {
+                gapValue = getModifierValue(token, { "gap": "GridGapRule" }, context);
+                return;
+            }
+            // Force a helpful error for unsupported modifiers
+            getModifierType(token, context);
+        });
+
+        if (!minValue) {
+            minValue = getModifierValue('min-c10', { "grid-template-columns": "GridAutoMinRule" }, context);
+        }
+
+        const template = `repeat(${fitMode}, minmax(${minValue}, 1fr))`;
+        const rules = [`grid-template-columns: ${template}`];
+        if (gapValue) {
+            rules.push(`gap: ${gapValue}`);
+        }
+        return rules;
+       }
+
        if (property === "pd" || property === "mg" || property === "inset" || property === "mg-y" || property === "pd-y" || property === "mg-x" || property === "pd-x") {
 
         modifiers =  directionExpansion(property,cst.children.ColonModifier)
@@ -226,7 +352,7 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
             modType = [directions[directionIndex]];
         } else {
             // Otherwise, determine the modifier type using the getModifierType function
-            modType = getModifierType(modifier, property, context);
+            modType = getModifierType(modifier, context);
         }
     
         // Construct the rule using the modType, property, modifier, and context
@@ -255,7 +381,6 @@ function constructRule(modType: string, property: string, modifier: string, cont
 // Determines the type of a given modifier (token) by checking known token maps and patterns.
 export function getModifierType(
     modifier: string,
-    property: string,
     context?: { fileName: string, lineNumber: number }
 ): string[] {
     const matches = [];
@@ -341,8 +466,8 @@ export function getModifierValue(modifier: string, criteria: any, context?: { fi
     if (modifierType[0] === "NumericToken") {
         return types.NumericToken.validate(modifier);
     }
-    if (isAxisSpecificModifier(modifier)) {
-        return getAxisSpecificValue(modifier);
+    if (isAxisSpecificModifier(modifier) && (modifier in types.xAxis || modifier in types.yAxis)) {
+        return getAxisSpecificValue(modifier, context);
     }
     const value = getGeneralTokenValue(modifier,criteria);
     if (value) {
@@ -357,7 +482,7 @@ function isAxisSpecificModifier(modifier: string): boolean {
 }
 
 // Retrieves the mapped CSS value for axis-specific modifiers from the xAxis or yAxis token sets.
-function getAxisSpecificValue(modifier: string): string {
+function getAxisSpecificValue(modifier: string, context?: { fileName: string, lineNumber: number }): string {
     if (modifier.startsWith('x-') && modifier in types.xAxis) {
         return types.xAxis[modifier];
     }
@@ -564,10 +689,10 @@ export function getBreakpointPriority(breakpoint: string): number {
 // ╚════════════════════════════════════════════════════════════════════╝
 
 // Writes the compiled CSS content, along with reset and contain styles, to the elevate.css output file.
-export function writeToFile(content: string) {
+export async function writeToFile(content: string) {
     const filePath = `${config.Output}/elevate.css`; // Define the file path
     // Clear or create the file
-    fs.writeFileSync(filePath, '', 'utf8'); // Ensures a clean slate
+    await fs.promises.writeFile(filePath, '', 'utf8'); // Ensures a clean slate
     //Compose Contain CSS
     let containString = '';
     Object.entries(contain).forEach(([key, value]) => {
@@ -589,36 +714,32 @@ export function writeToFile(content: string) {
         containString += newEntry;
     });
 
+    try {
+        // Read all CSS from the file paths in config.extend
+        const cssPromises = config.Extend.map(async (relativePath) => {
+            try {
+                const absolutePath = path.resolve(relativePath);
+                return await fs.promises.readFile(absolutePath, 'utf8');
+            } catch (readError) {
+                // Handle missing or unreadable files gracefully
+                console.warn(`Warning: Could not read file at ${relativePath}. Skipping.`);
+                return ''; // Return empty string for failed files
+            }
+        });
 
-    (async () => {
-        try {
-            // Read all CSS from the file paths in config.extend
-            const cssPromises = config.Extend.map(async (relativePath) => {
-                try {
-                    const absolutePath = path.resolve(relativePath);
-                    return await fs.promises.readFile(absolutePath, 'utf8');
-                } catch (readError) {
-                    // Handle missing or unreadable files gracefully
-                    console.warn(`Warning: Could not read file at ${relativePath}. Skipping.`);
-                    return ''; // Return empty string for failed files
-                }
-            });
-    
-            // Wait for all CSS to be read
-            const fetchedCSS = await Promise.all(cssPromises);
-    
-            // Combine the reset CSS, provided content, and fetched CSS
-            const combinedCSS =
-                `${cssReset}\n\n${containString}\n\n${content}\n\n${
-                    fetchedCSS.filter(Boolean).join('\n\n') // Skip empty strings
-                }`;
-    
-            // Write the combined content to the file
-            fs.writeFile(filePath, combinedCSS, () => {});
-        } catch (error) {
-            console.error('Error during file processing:', error);
-        }
-    })();
+        // Wait for all CSS to be read
+        const fetchedCSS = await Promise.all(cssPromises);
 
+        // Combine the reset CSS, provided content, and fetched CSS
+        const combinedCSS =
+            `${cssReset}\n\n${containString}\n\n${content}\n\n${
+                fetchedCSS.filter(Boolean).join('\n\n') // Skip empty strings
+            }`;
 
+        // Write the combined content to the file
+        await fs.promises.writeFile(filePath, combinedCSS, 'utf8');
+    } catch (error) {
+        console.error('Error during file processing:', error);
+    }
 }
+

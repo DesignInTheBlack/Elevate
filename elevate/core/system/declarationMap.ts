@@ -14,6 +14,12 @@ export const declarationMap = {
     inherit: { "position": "inherit" },
 
     // =============================
+    // Float & Clear
+    // =============================
+    float: { "float": "FloatRule" },
+    clear: { "clear": "ClearRule" },
+
+    // =============================
     // Display Properties
     // =============================
     block: { "display": "block" },
@@ -79,6 +85,29 @@ export const declarationMap = {
     'mg-r': { "margin-right": "SpacingToken" },
     'mg-t': { "margin-top": "SpacingToken" },
     'mg-b': { "margin-bottom": "SpacingToken" },
+
+    // =============================
+    // Logical Spacing
+    // =============================
+    'margin-inline': { "margin-inline": "SpacingToken" },
+    'margin-inline-start': { "margin-inline-start": "SpacingToken" },
+    'margin-inline-end': { "margin-inline-end": "SpacingToken" },
+    'margin-block': { "margin-block": "SpacingToken" },
+    'margin-block-start': { "margin-block-start": "SpacingToken" },
+    'margin-block-end': { "margin-block-end": "SpacingToken" },
+    'padding-inline': { "padding-inline": "SpacingToken" },
+    'padding-inline-start': { "padding-inline-start": "SpacingToken" },
+    'padding-inline-end': { "padding-inline-end": "SpacingToken" },
+    'padding-block': { "padding-block": "SpacingToken" },
+    'padding-block-start': { "padding-block-start": "SpacingToken" },
+    'padding-block-end': { "padding-block-end": "SpacingToken" },
+    'inset-inline': { "inset-inline": "SpacingToken" },
+    'inset-inline-start': { "inset-inline-start": "SpacingToken" },
+    'inset-inline-end': { "inset-inline-end": "SpacingToken" },
+    'inset-block': { "inset-block": "SpacingToken" },
+    'inset-block-start': { "inset-block-start": "SpacingToken" },
+    'inset-block-end': { "inset-block-end": "SpacingToken" },
+
     w: { "width": "SpacingToken" },
     h: { "height": "SpacingToken" },
     'min-w': { "min-width": "SpacingToken" },
@@ -161,6 +190,22 @@ export const declarationMap = {
     "overflow-wrap": "OverflowWrapRule"
     },
 
+    'font-style': { "font-style": "FontStyleRule" },
+    'font-variant': { "font-variant": "FontVariantRule" },
+    'font-stretch': { "font-stretch": "FontStretchRule" },
+    'text-indent': { "text-indent": "SpacingToken" },
+    'text-overflow': { "text-overflow": "TextOverflowRule" },
+    'text-rendering': { "text-rendering": "TextRenderingRule" },
+    'word-spacing': { "word-spacing": "SpacingToken" },
+    'tab-size': { "tab-size": "NumericToken" },
+    'writing-mode': { "writing-mode": "WritingModeRule" },
+    'direction': { "direction": "DirectionRule" },
+    'unicode-bidi': { "unicode-bidi": "UnicodeBidiRule" },
+    'line-clamp': { "line-clamp": "NumericToken" },
+    'text-decoration-color': { "text-decoration-color": "ColorToken" },
+    'text-decoration-style': { "text-decoration-style": "BorderStyleRule" },
+    'text-decoration-thickness': { "text-decoration-thickness": "SpacingToken" },
+
 
 
     // =============================
@@ -201,6 +246,16 @@ export const declarationMap = {
         "border-bottom-style": "BorderStyleRule"
     },
 
+    'border-x': { "border-inline": "PassThroughToken" },
+    'border-y': { "border-block": "PassThroughToken" },
+    'border-collapse': { "border-collapse": "BorderCollapseRule" },
+    'border-spacing': { "border-spacing": "SpacingToken" },
+    'border-image-source': { "border-image-source": "PassThroughToken" },
+    'border-image-slice': { "border-image-slice": "PassThroughToken" },
+    'border-image-width': { "border-image-width": "PassThroughToken" },
+    'border-image-outset': { "border-image-outset": "PassThroughToken" },
+    'border-image-repeat': { "border-image-repeat": "PassThroughToken" },
+
     // =============================
     // Backgrounds
     // =============================
@@ -226,6 +281,9 @@ export const declarationMap = {
         "column-gap": "GridGapXRule",
         "row-gap": "GridGapYRule"
     },
+
+    'grid-template-areas': { "grid-template-areas": "PassThroughToken" },
+    'grid-area': { "grid-area": "PassThroughToken" },
     
      'col-spans': {"grid-column-start":"SpanColumnStartRule",
                   "grid-column-end": "SpanColumnEndRule",
@@ -260,8 +318,42 @@ export const declarationMap = {
                 'justify-items': "JustifyItemsRule",  
      },
 
+    'align-self': { "align-self": "AlignItemsRule" },
+    'justify-self': { "justify-self": "JustifyItemsRule" },
+    'place-self': { "place-self": "PlaceRule" },
+    place: { "place-content": "PlaceRule" },
+
 
     //To be documented
+
+    // =============================
+    // Layout Affordances
+    // =============================
+    stack: {
+        "gap": "GridGapRule",
+        "align-items": "AlignItemsRule",
+        "justify-content": "JustifyContentRule",
+        "flex-direction": "StackDirectionRule"
+    },
+
+    cluster: {
+        "gap": "GridGapRule",
+        "align-items": "AlignItemsRule",
+        "justify-content": "JustifyContentRule",
+        "flex-wrap": "FlexWrapRule"
+    },
+
+    split: {
+        "grid-template-columns": "SplitRatioRule",
+        "gap": "GridGapRule"
+    },
+
+    center: {
+        "max-width": "AffordanceMaxRule",
+        "text-align": "CenterTextRule"
+    },
+
+    'grid-auto': {},
 
     // =============================
     // Cursor
@@ -279,11 +371,30 @@ export const declarationMap = {
     // =============================
      'content-box': { "box-sizing": "content-box" },
      'border-box': { "box-sizing": "border-box" },
+     'box-decoration-break': { "box-decoration-break": "BoxDecorationRule" },
 
     // =============================
     // Overflow
     // =============================
     'overflow': { "overflow": "OverflowRule" },
+    'overflow-x': { "overflow-x": "OverflowRule" },
+    'overflow-y': { "overflow-y": "OverflowRule" },
+    'overscroll': { "overscroll-behavior": "OverscrollRule" },
+    'overscroll-x': { "overscroll-behavior-x": "OverscrollRule" },
+    'overscroll-y': { "overscroll-behavior-y": "OverscrollRule" },
+    'scroll-behavior': { "scroll-behavior": "ScrollBehaviorRule" },
+    'scroll-snap-type': { "scroll-snap-type": "ScrollSnapTypeRule" },
+    'scroll-snap-align': { "scroll-snap-align": "ScrollSnapAlignRule" },
+    'scroll-margin': { "scroll-margin": "SpacingToken" },
+    'scroll-padding': { "scroll-padding": "SpacingToken" },
+    'scrollbar-width': { "scrollbar-width": "ScrollbarWidthRule" },
+    'scrollbar-color': { "scrollbar-color": "PassThroughToken" },
+    'scrollbar-gutter': { "scrollbar-gutter": "ScrollbarGutterRule" },
+
+    // =============================
+    // Content Visibility
+    // =============================
+    'content-visibility': { "content-visibility": "ContentVisibilityRule" },
 
     // =============================
     // Visibility
@@ -291,6 +402,15 @@ export const declarationMap = {
     'visible': { "visibility": "visible" },
     'invisible': { "visibility": "hidden" },
     'collapse': { "visibility": "collapse" },
+
+    // =============================
+    // Lists & Tables
+    // =============================
+    'list-style-type': { "list-style-type": "ListStyleTypeRule" },
+    'list-style-position': { "list-style-position": "ListStylePositionRule" },
+    'list-style-image': { "list-style-image": "PassThroughToken" },
+    'table-layout': { "table-layout": "TableLayoutRule" },
+    'caption-side': { "caption-side": "CaptionSideRule" },
 
     
     // =============================
@@ -322,7 +442,7 @@ export const declarationMap = {
     // Vertical Alignment
     // =============================
 
-    'vertical': { "vertical-align": "VerticalAlignmentRule" },
+    'vertical': { "vertical-align": "VerticalRule" },
 
     // =============================
     // Outline
@@ -355,6 +475,15 @@ export const declarationMap = {
     // =============================
 
     'transition': { "transition": "TransitionToken" },
+    'animation': { "animation": "PassThroughToken" },
+    'animation-name': { "animation-name": "PassThroughToken" },
+    'animation-duration': { "animation-duration": "PassThroughToken" },
+    'animation-timing-function': { "animation-timing-function": "PassThroughToken" },
+    'animation-delay': { "animation-delay": "PassThroughToken" },
+    'animation-iteration-count': { "animation-iteration-count": "PassThroughToken" },
+    'animation-direction': { "animation-direction": "AnimationDirectionRule" },
+    'animation-fill-mode': { "animation-fill-mode": "AnimationFillRule" },
+    'animation-play-state': { "animation-play-state": "AnimationPlayRule" },
 
     // =============================
     // Patterns
@@ -378,6 +507,14 @@ export const declarationMap = {
     // =============================
 
     'fit': { "object-fit": "ObjectFitRule" },
+    'object-position': { "object-position": "PassThroughToken" },
+
+    // =============================
+    // SVG & Media
+    // =============================
+    'fill': { "fill": "ColorToken" },
+    'stroke': { "stroke": "ColorToken" },
+    'stroke-width': { "stroke-width": "SpacingToken" },
 
     // =============================
     // Allow Empty Pseudo-Elements
@@ -390,14 +527,29 @@ export const declarationMap = {
     // =============================
 
     'select': { "user-select": "SelectRule" },
+
+    // =============================
+    // Form & UI
+    // =============================
+
+    'appearance': { "appearance": "AppearanceRule" },
+    'accent': { "accent-color": "ColorToken" },
     
 
    // =============================
-    //Transform & Filters
+   //Transform & Filters
     // =============================
     'origin': { "transform-origin": "PassThroughToken" },
     'transform': { "transform": "PassThroughToken" },
     'filter': { "filter": "PassThroughToken" },
+    'translate': { "translate": "PassThroughToken" },
+    'scale': { "scale": "PassThroughToken" },
+    'rotate': { "rotate": "PassThroughToken" },
+    'skew': { "transform": "PassThroughToken" },
+    'backdrop-filter': { "backdrop-filter": "PassThroughToken" },
+    'mix-blend-mode': { "mix-blend-mode": "BlendModeRule" },
+    'background-blend-mode': { "background-blend-mode": "BlendModeRule" },
+    'isolation': { "isolation": "IsolationRule" },
 
     // =============================
     // Allow User Overrides and Extensions

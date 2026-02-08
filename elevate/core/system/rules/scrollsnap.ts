@@ -1,0 +1,26 @@
+export const scrollsnap = {
+  type: {
+    none: 'none',
+    x: 'x',
+    y: 'y',
+    block: 'block',
+    inline: 'inline',
+    both: 'both',
+    'x-mandatory': 'x mandatory',
+    'y-mandatory': 'y mandatory',
+    'block-mandatory': 'block mandatory',
+    'inline-mandatory': 'inline mandatory',
+    'both-mandatory': 'both mandatory',
+    'x-proximity': 'x proximity',
+    'y-proximity': 'y proximity',
+    'block-proximity': 'block proximity',
+    'inline-proximity': 'inline proximity',
+    'both-proximity': 'both proximity',
+  },
+  align: {
+    none: 'none',
+    start: 'start',
+    end: 'end',
+    center: 'center',
+  },
+};

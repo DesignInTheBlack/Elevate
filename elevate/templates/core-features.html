@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Elevate Universal Feature Test</title>
+  </head>
+  <body class='pd:d8 bg-color:grey-4 text:white font:base:sans:regular'>
+    <main class='col:x-start:y-start:wrap gap:d6'>
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d2:solid:grey-2 shadow:soft'>
+        <h1 class='font:h5:bold text:white'>Elevate Universal Feature Test</h1>
+        <p class='text:grey+2 font:small format:uppercase:auto:no-wrap:word:anywhere'>
+          Baseline + formatting tokens
+        </p>
+      </section>
+
+      <section class='relative pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>1. Spacing, Position, Sizing</h2>
+        <div class='relative pd:d1:d2:d3:d4 mg-x:d2 mg-y:d3 inset:d1:d2:d3:d4 w:c3 h:d10 bg-color:grey-2'></div>
+        <div class='absolute top:d2 left:d2 z:10 bg-color:red text:white pd:d2'>Absolute + z-index</div>
+        <div class='w:c4 h:d8 bg-color:grey-2'>w/h</div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>2. Typography</h2>
+        <p class='font:base:sans:bold:wide text:indigo-1:relaxed:brief:center:underline format:uppercase:auto:no-wrap:word:anywhere'>
+          Typography chain: size, family, weight, tracking, color, leading, measure, align, decoration, format.
+        </p>
+        <p class='text:grey+2 font:small'>Supporting text</p>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>3. Flex + Child</h2>
+        <div class='row:x-between:y-center:wrap gap:d4 bg-color:grey-2 pd:d3'>
+          <div class='child:basis-d8:grow bg-color:indigo-3 pd:d2'>Child A</div>
+          <div class='child:basis-d8:grow bg-color:indigo-2 pd:d2'>Child B</div>
+          <div class='child:basis-d8:grow bg-color:indigo-1 pd:d2'>Child C</div>
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>4. Grid + Spans</h2>
+        <div class='grid:cols-3-fr:rows-2:gap-d4:colgap-d2:rowgap-d2 content:align-center:just-between items:align-center:just-center place-content:center pd:d3 bg-color:grey-2'>
+          <div class='col-spans:from-1:to-3 bg-color:blue-2 pd:d2'>Span columns</div>
+          <div class='row-spans:from-2:to-3 bg-color:blue-1 pd:d2'>Span rows</div>
+          <div class='bg-color:blue-3 pd:d2'>Cell</div>
+          <div class='bg-color:blue-4 pd:d2'>Cell</div>
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>5. Visuals</h2>
+        <div class='bd:width-d1:round-d2:solid:grey+1 outline:off-d1:round-d1:solid:indigo-1:d1 shadow:soft gradient:fadetoblack pattern:thinstripes transition:fast opacity:0.8 pd:d3'>
+          Borders, outline, shadow, gradient, pattern, transition, opacity
+        </div>
+        <div class='bg-img:(linear-gradient(90deg,_rgba(0,0,0,0.2),_rgba(255,255,255,0.2))) bg-attr:cover:center:no-repeat bg-exact:(50%_50%) pd:d3'>
+          Background pass-through
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>6. Transforms + Filters</h2>
+        <div class='transform:(translateY(4px)_scale(1.02)) origin:(top_left) filter:(blur(1px)) pd:d3 bg-color:grey-2'>
+          transform / origin / filter (pass-through)
+        </div>
+        <div class='auto-col:(minmax(0,_1fr)) auto-row:(minmax(0,_1fr)) auto-flow:(row_dense) pd:d3 bg-color:grey-2'>
+          grid auto-* pass-through
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>7. States + Pseudo Elements</h2>
+        <div class='@hover+focus-visible:[pd:d2 text:indigo-1] bg-color:grey-2 pd:d2 transition:fast'>
+          Hover + focus-visible
+        </div>
+        <div class='@hover+before:[empty text:red] bg-color:grey-2 pd:d2'>
+          Before pseudo element
+        </div>
+        <input class='@placeholder:[text:grey+2] pd:d2 bg-color:grey-2' placeholder='Placeholder state' />
+        <p class='@selection:[text:yellow]'>Selection state text</p>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>8. ctx + Combinators</h2>
+        <div class='ctx:scope pd:d2 bg-color:grey-2'>Scoped container</div>
+        <div class='@desc+hover:[bg-color:indigo-2] pd:d2 bg-color:grey-2'>Descendent combinator</div>
+        <div class='@child+hover:[bg-color:indigo-1] pd:d2 bg-color:grey-2'>Child combinator</div>
+        <div class='@sibling+hover:[bg-color:blue] pd:d2 bg-color:grey-2'>Adjacent sibling</div>
+        <div class='@general-sibling+hover:[bg-color:green] pd:d2 bg-color:grey-2'>General sibling</div>
+        <div class='@ancestor+hover:[bg-color:red] pd:d2 bg-color:grey-2'>Ancestor combinator</div>
+        <div class='ctx:end:scope'>End scope</div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>9. Breakpoints</h2>
+        <div class='/sm/ pd:d2 /md/ pd:d4 /lg/ pd:d6 bg-color:grey-2'>
+          /sm/ /md/ /lg/ breakpoint stepping
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>10. Env Aliases</h2>
+        <div class='env:card'>
+          Env definition (open)
+        </div>
+        <div class='env:card'>Env usage</div>
+        <div class='/lg/ env:card'>Env usage with breakpoint</div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>11. Scroll + Overflow</h2>
+        <div class='overflow-x:scroll overscroll:contain scroll-behavior:smooth scroll-snap-type:x-mandatory scroll-snap-align:center pd:d3 bg-color:grey-2'>
+          Scroll behavior and snap
+        </div>
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>12. Forms + UI</h2>
+        <button class='appearance:none accent:indigo cursor:pointer select:none pd:d2 bg-color:grey-2'>
+          Button UI
+        </button>
+        <input class='caret:indigo events:none resize:both vertical:middle pd:d2 bg-color:grey-2' placeholder='UI tokens' />
+      </section>
+
+      <section class='pd:d4 bg-color:grey-3 bd:width-d1:round-d1:solid:grey-2'>
+        <h2 class='font:h6:semibold'>13. Aspect + Object Fit</h2>
+        <div class='aspect:video w:c6 bg-color:grey-2'>
+          <img class='fit:cover w:c6 h:c3' alt='object-fit' />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
