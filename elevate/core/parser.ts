@@ -11,7 +11,7 @@ import type { CstNode } from "chevrotain";
 // ║                 2. TOKEN DEFINITIONS                               ║
 // ║ Define core tokens using Chevrotain's `createToken`.               ║
 // ╚════════════════════════════════════════════════════════════════════╝
-const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*:/ });
+const State = createToken({ name: "stateFlag", pattern: /@[a-zA-Z0-9_-]+(?:\+[a-zA-Z0-9_-]+)*:/ });
 const openState = createToken({ name: "openState", pattern: /\[/ });
 const DirectProperty = createToken({ 
     name: "DirectProperty", 
@@ -169,7 +169,7 @@ export const elevateCompiler = (className: string, context?: { fileName: string,
     const normalizeStateBlockSpaces = (input: string) => {
         if (!input.includes('@') || !input.includes('[') || !input.includes(']')) return input;
         return input.replace(
-            /@([a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*)\:\[([\s\S]*?)\]/g,
+            /@([a-zA-Z0-9_-]+(?:\+[a-zA-Z0-9_-]+)*)\:\[([\s\S]*?)\]/g,
             (_match, state, body) => {
                 const normalizedBody = body.replace(/\s+/g, '_');
                 return `@${state}:[${normalizedBody}]`;

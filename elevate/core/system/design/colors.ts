@@ -56,6 +56,7 @@ export const colors = {
   
     // NEUTRALS
     'black':   '#0B0B0C',
+    'transparent': 'transparent',
     'grey-4':  '#0F0F11',
     'grey-3':  '#17171A',
     'grey-2':  '#25262A',

@@ -121,17 +121,21 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 // Extracts state and subterms from stateful strings and returns a faux AST with modifiers.
 function handleContextFlags(cst: any, context?: { fileName: string, lineNumber: number }) {
     // More robust state extraction
-    const stateMatch = cst.className.match(/@([a-zA-Z0-9-]+(?:\+[a-zA-Z0-9-]+)*):/);
+    const stateMatch = cst.className.match(/@([a-zA-Z0-9_-]+(?:\+[a-zA-Z0-9_-]+)*):/);
     const subtermsMatch = cst.className.match(/\[([^\]]+)\]/);
     
     // Extract the state, ensuring it's the full state including hyphens
     let state = stateMatch ? stateMatch[1].split('+') : null;
     let selectorMode: string | null = null;
+    let selectorTarget: 'class' | 'all' = 'class';
 
     const combinatorMap: Record<string, string> = {
         desc: 'desc',
+        descendants: 'desc',
         child: 'child',
+        children: 'child',
         sibling: 'sibling',
+        siblings: 'general-sibling',
         'general-sibling': 'general-sibling',
         ancestor: 'ancestor',
     };
@@ -147,27 +151,20 @@ function handleContextFlags(cst: any, context?: { fileName: string, lineNumber: 
 
 Troubleshooting Tips:
 1. Use a single combinator like @child+hover:[...]
-2. Chain pseudo-states with + after the combinator
+2. Chain pseudo-states with +
 
 For more information, refer to https://elevate-docs.pages.dev\n`
             );
         }
 
         if (combinatorIndexes.length === 1) {
-            if (combinatorIndexes[0] !== 0) {
-                throw new Error(
-`\n\nInvalid State Chain: Combinator directive must be first${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
-
-Troubleshooting Tips:
-1. Put the combinator first: @child+hover:[...]
-2. Chain pseudo-states after it with +
-
-For more information, refer to https://elevate-docs.pages.dev\n`
-                );
+            const combinatorIndex = combinatorIndexes[0];
+            const combinatorToken = state[combinatorIndex];
+            selectorMode = combinatorMap[combinatorToken];
+            if (combinatorToken === 'children' || combinatorToken === 'descendants' || combinatorToken === 'siblings') {
+                selectorTarget = 'all';
             }
-
-            selectorMode = combinatorMap[state[0]];
-            state = state.slice(1);
+            state = state.filter((_, index) => index !== combinatorIndex);
             if (state.length === 0) {
                 state = null;
             }
@@ -215,6 +212,7 @@ For more information, refer to https://elevate-docs.pages.dev\n`
         children: null,
         state, // Use the full state, including hyphens
         selectorMode,
+        selectorTarget,
         className: cst.className,
         modifiers
     }

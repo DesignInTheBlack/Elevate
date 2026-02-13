@@ -143,9 +143,6 @@ const compileOnce = async () => {
           if (!ast) {
             throw new Error('Unable to parse token');
           }
-          if (ast.selectorMode) {
-            throw new Error('Combinator directives are not allowed inside env aliases');
-          }
         } catch (err: any) {
           throw new Error(
 `\\n\\nInvalid env definition token "${token}" in ${instance.file} on line ${instance.lineNumber}.\\n${err?.message || ''}\\n`
@@ -344,7 +341,18 @@ const compileOnce = async () => {
         scopeByFile.set(fileKey, scopeStack);
       }
 
-      classList.forEach(function (classString: string) {
+      const getFutureCtxTokens = (fromIndex: number) => {
+        const future: string[] = [];
+        for (let i = fromIndex + 1; i < classList.length; i++) {
+          const token = classList[i];
+          if (!token.startsWith('ctx:')) continue;
+          if (token === 'ctx:end' || token.startsWith('ctx:end:')) continue;
+          if (!future.includes(token)) future.push(token);
+        }
+        return future;
+      };
+
+      classList.forEach(function (classString: string, index: number) {
         if (!classString.startsWith('-') && !config.SafeList.includes(classString)) {
           if (classString.startsWith('ctx:')) {
             if (classString === 'ctx:end') {
@@ -385,7 +393,14 @@ const compileOnce = async () => {
 
           let classObject = elevateCompiler(classString, { fileName: instance.file, lineNumber: instance.lineNumber });
           classObject.breakpoint = lastBreak;
-          classObject.scope = scopeStack.length ? [...scopeStack] : null;
+          let scopeChain = scopeStack.length ? [...scopeStack] : [];
+          if (classObject.selectorMode) {
+            const futureCtx = getFutureCtxTokens(index);
+            futureCtx.forEach((token) => {
+              if (!scopeChain.includes(token)) scopeChain.push(token);
+            });
+          }
+          classObject.scope = scopeChain.length ? scopeChain : null;
 
           compiledClasses.push(classObject);
         }
@@ -412,11 +427,8 @@ const compileOnce = async () => {
         if (!classObject) {
           throw new Error(`\\n\\nInvalid env:${name} token "${token}".\\nUnable to parse token.\\n`);
         }
-        if (classObject.selectorMode) {
-          throw new Error(`\\n\\nInvalid env:${name} token "${token}".\\nCombinator directives are not allowed inside env aliases.\\n`);
-        }
         classObject.breakpoint = lastBreak || forcedBreakpoint || '';
-        classObject.scope = null;
+        classObject.scope = classObject.selectorMode ? [`env:${name}`] : null;
         classObject.className = `env:${name}`;
         compiledClasses.push(classObject);
       });
@@ -525,7 +537,9 @@ const compileOnce = async () => {
 
       const classPart = pseudoClasses.length ? `:${pseudoClasses.join(':')}` : '';
       if (pseudoElems.length > 1) {
-        throw new Error(`Invalid state chain: multiple pseudo-elements (${pseudoElems.join(', ')}).`);
+        throw new Error(
+          `Invalid state chain: multiple pseudo-elements (${pseudoElems.join(', ')}). CSS allows only one pseudo-element per selector.`
+        );
       }
       const elemPart = pseudoElems.length ? `::${pseudoElems[0]}` : '';
       return `${classPart}${elemPart}`;
@@ -595,6 +609,8 @@ const compileOnce = async () => {
       const scopeClasses = scopeChain.map((s: string) => `.${escapeClassName(s)}`);
       const scopeClass = scopeClasses.join(' ');
       const targetClass = `.${escapeClassName(item.className)}`;
+      const targetSelector =
+        item.selectorTarget === 'all' ? '*' : targetClass;
       const stateSuffix = buildStateSuffix(item.state);
 
       let selectors: string[] = [];
@@ -606,22 +622,22 @@ const compileOnce = async () => {
 
         switch (item.selectorMode) {
           case 'desc':
-            selectors = [`${scopeClass} ${targetClass}${stateSuffix}`];
+            selectors = [`${scopeClass} ${targetSelector}${stateSuffix}`];
             break;
           case 'child':
-            selectors = [`${scopeClass} > ${targetClass}${stateSuffix}`];
+            selectors = [`${scopeClass} > ${targetSelector}${stateSuffix}`];
             break;
           case 'sibling':
-            selectors = [`${scopeClass} + ${targetClass}${stateSuffix}`];
+            selectors = [`${scopeClass} + ${targetSelector}${stateSuffix}`];
             break;
           case 'general-sibling':
-            selectors = [`${scopeClass} ~ ${targetClass}${stateSuffix}`];
+            selectors = [`${scopeClass} ~ ${targetSelector}${stateSuffix}`];
             break;
           case 'ancestor':
-            selectors = [`${targetClass}${stateSuffix} ${scopeClass}`];
+            selectors = [`${scopeClass}:has(${targetSelector}${stateSuffix})`];
             break;
           default:
-            selectors = [`${scopeClass} ${targetClass}${stateSuffix}`];
+            selectors = [`${scopeClass} ${targetSelector}${stateSuffix}`];
             break;
         }
       } else {

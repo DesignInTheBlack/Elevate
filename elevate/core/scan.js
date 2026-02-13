@@ -80,7 +80,16 @@ const maskCommentsAndCodeBlocks = (text) => {
  */
 
 const VALID_CLASS = /^[A-Za-z0-9@:\/_\-\[\].()=?&%+,~!$^*'";<>|{}]+$/; 
-const STATE_BLOCK = /^@[A-Za-z0-9-]+(?:\+[A-Za-z0-9-]+)*:\[[\s\S]*\]$/;
+const STATE_BLOCK = /^@[A-Za-z0-9_-]+(?:\+[A-Za-z0-9_-]+)*:\[[\s\S]*\]$/;
+
+const hasStateBlockWhitespace = (token) => {
+  if (!STATE_BLOCK.test(token)) return false;
+  const start = token.indexOf('[');
+  const end = token.lastIndexOf(']');
+  if (start === -1 || end === -1 || end <= start) return false;
+  const body = token.slice(start + 1, end);
+  return /\s/.test(body);
+};
 
 const isValidClass = (c) => {
     const isStateBlock = STATE_BLOCK.test(c);
@@ -406,6 +415,13 @@ const extractClasses = (content, classList, filePath) => {
         .filter(isValidClass)
 
       if (classNames.length > 0) {
+        const badState = classNames.find(hasStateBlockWhitespace);
+        if (badState) {
+          throw new Error(
+            `Invalid state block with spaces in ${filePath} on line ${lineNumber}.\n` +
+            `Use underscores inside @...:[...], because HTML class attributes split on spaces.`
+          );
+        }
         const rawTokens = splitClassTokens(rawValue.trim())
         matches.push({
           file: filePath,
