@@ -240,6 +240,10 @@ padding-right: 1rem;
 padding-bottom: 1rem;
 }
 
+.text\:white {
+color: #FCFCFD;
+}
+
 .ctx\:mainSplash.transition\:ultra-slow, .ctx\:mainSplash .transition\:ultra-slow {
 transition: all 0.5s ease-in-out;
 }
@@ -372,10 +376,6 @@ display:flex;
 flex-direction:column;
 align-items: flex-start;
 justify-content: flex-start;
-}
-
-.text\:white {
-color: #FCFCFD;
 }
 
 .font\:h6\:semibold {
