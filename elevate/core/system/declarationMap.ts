@@ -144,8 +144,8 @@ export const declarationMap = {
     },
 
     'row-r': {
-        "align-items": "x",   // x maps to align-items in col
-        "justify-content": "y", // y maps to justify-content in col
+        "justify-content": "x", // row-reverse is still horizontal: x maps to justify-content
+        "align-items": "y",     // y maps to align-items
         "flex-wrap": "FlexWrapRule"
     },
 

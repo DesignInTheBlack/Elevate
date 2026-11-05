@@ -1,11 +1,12 @@
 export const Brand = {
 
+    // Prefixes must be unique across Elevate; `bg-` belongs to `pattern`
     BrandBackgroundRule: {
-    "bg-": "BrandBackgroundToken"
+        "fill-": "BrandBackgroundToken"
     },
 
     BrandCopyRule: {
-    "copy-": "BrandTextToken"
+        "copy-": "BrandTextToken"
     }
 
 }

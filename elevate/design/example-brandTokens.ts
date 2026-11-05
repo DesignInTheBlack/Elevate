@@ -1,14 +1,12 @@
 export const BrandColors = {
 
-    //Define New Token Categories
-
-    BrandBackgroundTokens: {
-    'popgreen':'#39FF14'
+    // Each key becomes its own token type
+    BrandBackgroundToken: {
+        'popgreen': '#39FF14'
     },
 
-    BrandCopyTokens: {
-    'popwhite': '#FFFFFF',
+    BrandTextToken: {
+        'popwhite': '#FFFFFF',
     }
 
-} 
-
+}

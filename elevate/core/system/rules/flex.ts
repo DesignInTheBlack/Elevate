@@ -24,8 +24,7 @@ export const flex = {
 
   Grow: {
       "no-grow": "0",
-      "grow": "1",
-      "auto": "auto"
+      "grow": "1"
   },
 
   Shrink: {
