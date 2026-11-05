@@ -1,7 +1,7 @@
 export const origin = {
     options: {
-        'border': 'border-box',
-        'content': 'content-box',
-        'padding': 'padding-box',
+        'origin-border': 'border-box',
+        'origin-content': 'content-box',
+        'origin-padding': 'padding-box',
     }
 }

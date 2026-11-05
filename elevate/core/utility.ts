@@ -619,8 +619,9 @@ function directionExpansion(property: string,modifiers: any[]): any[] {
         // Expand a single value to all four sides
         return Array(4).fill(modifiers[0]);
     } else if (modifiers.length === 2) {
-        // Expand two values: first for left/right, second for top/bottom
-        return [modifiers[0], modifiers[1], modifiers[0], modifiers[1]];
+        // Expand two values: first for left/right (x), second for top/bottom (y).
+        // Sides are declared in the order top, left, right, bottom.
+        return [modifiers[1], modifiers[0], modifiers[0], modifiers[1]];
     }
     // Default: no preprocessing if already 4 values
     return modifiers;
