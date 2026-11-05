@@ -74,6 +74,14 @@ class ElevateParser extends CstParser {
                         },
                     },
                     {
+                        // A pass-through value inside a state block, e.g. @hover:[transform:(scale(1.02))]
+                        GATE: () => $.LA(2).tokenType === PassProperty,
+                        ALT: () => {
+                            $.CONSUME2(Property);
+                            $.CONSUME(PassProperty);
+                        },
+                    },
+                    {
                         ALT: () => {
                             $.CONSUME(Property); // Matches a property
                             $.MANY2(() => {
