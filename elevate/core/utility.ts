@@ -110,11 +110,33 @@ For more information, refer to https://elevate-docs.pages.dev\n`
         );
     }
 
+    // A compound property used on its own (e.g. `text` or `bd`) has no literal
+    // declarations to write. Keep only real values, so placeholders like
+    // "ColorToken" never reach the CSS. Layout properties still get their
+    // display/direction from the compiler, and `contain` is generated globally.
+    const placeholders = new Set(['x', 'y', 'top', 'left', 'right', 'bottom', 'PassThroughToken', 'NumericToken']);
+    const literal = Object.entries(propMap).filter(
+        ([, value]) => !(String(value) in types) && !placeholders.has(String(value))
+    );
+    const standaloneOk = new Set(['row', 'col', 'row-r', 'col-r', 'grid', 'contain']);
+
+    if (literal.length === 0 && !standaloneOk.has(directProp)) {
+        throw new Error(
+`\n\nModifier Required: "${directProp}" needs a value, for example ${directProp}:<value>${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+💡 Troubleshooting Tips:
+1. Add a modifier after a colon, such as the ones listed on the property's docs page.
+2. If you meant a plain CSS class, start it with a dash (-${directProp}) so Elevate skips it.
+
+For more information, refer to https://elevate-docs.pages.dev\n`
+        );
+    }
+
     return {
         type: "Direct Class",
         className: cst.className,
         property: directProp,
-        modifiers: Object.entries(propMap).map(([prop, value]) => `${prop}: ${value}`),
+        modifiers: literal.map(([prop, value]) => `${prop}: ${value}`),
     };
 }
 
