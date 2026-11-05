@@ -3,16 +3,18 @@
 export const typography = {
     // Core font sizes - simplified to direct values
     size: {
-      tiny: '0.533rem',
-      small: '0.711rem',
+      // Readable small sizes, and headings that scale with the screen
+      tiny: '0.75rem',
+      eyebrow: '0.8125rem',
+      small: '0.875rem',
       base: '1rem',
       h6: '1.125rem',
-      h5: '1.5rem',
-      h4: '2.25rem',
-      h3: '3.375rem',
-      h2: '5.062rem',
-      h1: '7.594rem',
-      eyebrow: '0.583rem'
+      h5: '1.375rem',
+      h4: 'clamp(1.625rem, 1.4rem + 0.9vw, 2rem)',
+      h3: 'clamp(2rem, 1.6rem + 1.6vw, 2.75rem)',
+      h2: 'clamp(2.5rem, 1.8rem + 2.8vw, 3.75rem)',
+      h1: 'clamp(3rem, 2rem + 4vw, 5rem)',
+      display: 'clamp(3.5rem, 2rem + 6vw, 7rem)'
     },
     
     leading: {
@@ -27,12 +29,13 @@ export const typography = {
     },
   
     tracking: {
-      'extra-tight': '-0.02rem',
-      tight: '-0.01rem',
+      // In em, so spacing scales with the text it's applied to
+      'extra-tight': '-0.04em',
+      tight: '-0.02em',
       normal: '0',
-      wide: '0.01rem',
-      wider: '0.02rem',
-      widest: '0.04rem'
+      wide: '0.02em',
+      wider: '0.05em',
+      widest: '0.1em'
     },
   
     measure: {
@@ -46,9 +49,11 @@ export const typography = {
     },
   
     family: {
-      sans: 'Raleway',
-      mono: 'Space Mono, monospace',
-      serif: 'Merriweather, serif'
+      // System font stacks: they look native everywhere and load instantly
+      sans: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+      serif: "ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif",
+      mono: "ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
+      rounded: "ui-rounded, 'SF Pro Rounded', system-ui, sans-serif"
     },
 
     weight: {

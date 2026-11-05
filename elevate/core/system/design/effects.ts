@@ -1,21 +1,33 @@
 export const effects = {
 
-shadows: {
-'soft':'rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;',
-'physical':'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;'
-}
-,
+  shadows: {
+    'subtle': '0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1)',
+    'soft': 'rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px',
+    'lifted': '0 4px 6px -2px rgba(16, 24, 40, 0.05), 0 12px 24px -4px rgba(16, 24, 40, 0.12)',
+    'floating': '0 24px 48px -12px rgba(16, 24, 40, 0.25)',
+    'physical': 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset',
+    'inner': 'inset 0 2px 4px rgba(16, 24, 40, 0.08)',
+    'glow': '0 0 0 1px rgba(85, 96, 245, 0.25), 0 8px 32px rgba(85, 96, 245, 0.35)',
+    'none': 'none'
+  },
 
-gradients: {
-'fadetoblack':'linear-gradient(0deg, rgba(0,0,0,0.5032387955182073) 0%, rgba(255,255,255,0) 100%);'
-},
+  gradients: {
+    'fadetoblack': 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%)',
+    'fadetowhite': 'linear-gradient(0deg, rgba(252, 252, 253, 0.9) 0%, rgba(252, 252, 253, 0) 100%)',
+    'aurora': 'linear-gradient(135deg, #5560F5 0%, #9041FF 50%, #D3278A 100%)',
+    'sunset': 'linear-gradient(135deg, #EB6F1E 0%, #D3278A 55%, #9041FF 100%)',
+    'ocean': 'linear-gradient(135deg, #00AFA8 0%, #0072DC 55%, #5560F5 100%)',
+    'mint': 'linear-gradient(135deg, #66D09F 0%, #00AFA8 100%)',
+    'dusk': 'linear-gradient(160deg, #0F1047 0%, #52069E 100%)'
+  },
 
-textShadows: {
-'soft-text':  '0px 1px 2px rgba(0, 0, 0, 0.3);',
+  textShadows: {
+    'soft-text': '0px 1px 2px rgba(0, 0, 0, 0.3)',
+    'crisp-text': '0 1px 0 rgba(0, 0, 0, 0.25)',
+    'glow-text': '0 0 24px rgba(85, 96, 245, 0.6)'
+  },
 
-},
-
-transitions: {
+  transitions: {
     'ultra-fast': 'all 0.05s ease-in-out',  // For very quick changes
     'fast': 'all 0.1s ease-in-out',  // Snappy but smooth
     'medium': 'all 0.2s ease-in-out',  // Balanced speed
