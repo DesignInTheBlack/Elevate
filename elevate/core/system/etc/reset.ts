@@ -17,7 +17,6 @@ html {
 body {
   min-height: 100vh;
   line-height: 1.5;
-  transition: all 0.3s ease; /* Smooth transitions */
   scroll-behavior: smooth; /* Smooth scrolling for anchored links */
 }
 
@@ -70,8 +69,4 @@ textarea:not([rows]) {
   scroll-margin-block: 5ex;
 }
 
-/* Added universal animations for better UI feedback */
-*, *::before, *::after {
-  transition: all 0.3s ease; /* Catch-all transition */
-}
 `;
