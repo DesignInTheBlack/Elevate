@@ -1,8 +1,8 @@
 export const numeric = {
     NumericToken: {
         validate: (value: string) => {
-            // Strip any prefix like 'c-' or 'r-'
-            const cleanValue = value.split('-').pop() || value;
+            // A plain number keeps its sign (z:-1). Otherwise strip a prefix like 'order-'.
+            const cleanValue = /^-?\d*\.?\d+$/.test(value) ? value : value.split('-').pop() || value;
             
             // Explicitly convert to number first
             const num = Number(cleanValue);

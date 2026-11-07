@@ -49,9 +49,15 @@ const getEnvOpenName = (token: string): string | null => {
   return match ? match[1] : null;
 };
 
+// Escapes any class name for use in a CSS selector (like CSS.escape)
+const cssEscape = (value: string) =>
+  value.replace(/^(-?)(\d)/, (_m, dash, d) => `${dash}\\3${d} `)
+    .replace(/[^a-zA-Z0-9_\-\u0080-\uFFFF\\ ]/g, (ch) => `\\${ch}`);
+
 const isEnvToken = (token: string) => Boolean(getEnvDefineName(token) || getEnvOpenName(token));
 const isCtxToken = (token: string) => token.startsWith('ctx:');
 const isBreakpointToken = (token: string) => /^\/[a-zA-Z0-9_-]{1,5}\/$/.test(token);
+const isMarkerToken = (token: string) => /^\/[a-zA-Z0-9]{1,3}\/$/.test(token);
 
 const loadEnvRegistry = (): Record<string, string[]> => {
   try {
@@ -384,9 +390,10 @@ const compileOnce = async () => {
             return;
           }
 
-          const regex = /\/[a-zA-Z0-9]{1,3}\//;
           // ════ Mobile-First Breakpoint Processing ════
-          if (regex.test(classString)) {
+          // A marker is a whole class like /md/. Anchored, so a pass-through value
+          // such as bg-img:(url(/img/a.jpg)) is never mistaken for one.
+          if (isMarkerToken(classString)) {
             lastBreak = classString;
             return;
           }
@@ -439,6 +446,59 @@ const compileOnce = async () => {
     // ║ Apply the `structureClasses` function to each scanned class.       ║
     // ╚════════════════════════════════════════════════════════════════════╝
     scannedClasses.map(establishBreakpoints);
+
+    // ════ Responsive isolation ════
+    // Class names are global. If one element writes `col /md/ row` and another
+    // writes `row`, the plain `.row` rule would also reach the first element on
+    // small screens. So every rule for a class excludes the elements that only
+    // use that class from a later breakpoint. An element is identified by its
+    // whole set of classes, which works whatever order the browser sees them in.
+    const rankOf = (bp: string) => (bp ? getBreakpointPriority(bp) : -1);
+    const lateUses = new Map<string, { first: number; selector: string; tokens: string[] }[]>();
+    const allUses = new Map<string, { first: number; tokens: Set<string>; where: string }[]>();
+    scannedClasses.forEach((instance: any) => {
+      const list: string[] = instance.classes || [];
+      const tokens = Array.from(new Set(list));
+      const firstRank = new Map<string, number>();
+      let rank = -1;
+      list.forEach((token) => {
+        if (isMarkerToken(token)) {
+          rank = rankOf(token);
+          return;
+        }
+        if (!firstRank.has(token)) firstRank.set(token, rank);
+      });
+      const tokenSet = new Set(tokens);
+      firstRank.forEach((first, token) => {
+        const all = allUses.get(token) || [];
+        all.push({ first, tokens: tokenSet, where: `${instance.file}:${instance.lineNumber}` });
+        allUses.set(token, all);
+        if (first < 0 || !instance.isStatic) return;
+        const selector = tokens.map((t) => `.${cssEscape(t)}`).join('');
+        const late = lateUses.get(token) || [];
+        if (!late.some((u) => u.selector === selector && u.first === first)) late.push({ first, selector, tokens });
+        lateUses.set(token, late);
+      });
+    });
+    // An element that uses a class earlier, but carries every class of a
+    // later-only element, can't be told apart from it in CSS. Rare; say so.
+    lateUses.forEach((late, token) => {
+      (allUses.get(token) || []).forEach((use) => {
+        late.forEach((l) => {
+          if (use.first < l.first && l.tokens.every((t) => use.tokens.has(t))) {
+            console.warn(`Responsive ambiguity: "${token}" in ${use.where} can't be told apart from an element that only uses it from a later breakpoint. Add or change a class on one of them.`);
+          }
+        });
+      });
+    });
+    const exclusionFor = (className: string, breakpoint: string) => {
+      const late = lateUses.get(className);
+      if (!late) return '';
+      const rank = rankOf(breakpoint || '');
+      const selectors = Array.from(new Set(late.filter((u) => u.first > rank).map((u) => u.selector)));
+      // :where() adds no specificity, so rule weights are unchanged
+      return selectors.length ? `:where(:not(${selectors.join(', ')}))` : '';
+    };
     scopeByFile.forEach((stack, fileKey) => {
       if (stack.length > 0) {
         console.warn(`Unclosed ctx scopes in ${fileKey} (last open: ${stack[stack.length - 1]}).`);
@@ -470,13 +530,9 @@ const compileOnce = async () => {
     // ║ Empty breakpoints are prioritized first.                           ║
     // ╚════════════════════════════════════════════════════════════════════╝
     spinner.text = 'Organizing and sorting classes...';
-    compiledClasses.sort((a, b) => {
-      // Handle empty breakpoints (put them first)
-      if (!a.breakpoint) return -1;
-      if (!b.breakpoint) return 1;
-
-      return getBreakpointPriority(a.breakpoint) - getBreakpointPriority(b.breakpoint);
-    });
+    // Base rules first, then each breakpoint in ascending order. The sort is
+    // stable, so rules keep the order they were written in within each group.
+    compiledClasses.sort((a, b) => rankOf(a.breakpoint || '') - rankOf(b.breakpoint || ''));
 
     // Deduplicate classes
     const uniqueClasses = new Map<string, any>();
@@ -502,8 +558,7 @@ const compileOnce = async () => {
 
     // Helper function to escape special characters in class names
     await delay(100);
-    const escapeClassName = (className: string) =>
-      className.replace(/[@:\[\]()\/.,+#~=%?&!$^*<>{}|]/g, m => `\\${m}`);
+    const escapeClassName = (className: string) => cssEscape(className);
 
     spinner.text = 'Generating CSS output...';
     let breakpointSupervisor: string | null = null;
@@ -608,7 +663,7 @@ const compileOnce = async () => {
           : [];
       const scopeClasses = scopeChain.map((s: string) => `.${escapeClassName(s)}`);
       const scopeClass = scopeClasses.join(' ');
-      const targetClass = `.${escapeClassName(item.className)}`;
+      const targetClass = `.${escapeClassName(item.className)}${exclusionFor(item.className, item.breakpoint)}`;
       const targetSelector =
         item.selectorTarget === 'all' ? '*' : targetClass;
       const stateSuffix = buildStateSuffix(item.state);

@@ -342,6 +342,22 @@ function processModifiers(cst: any, context?: { fileName: string, lineNumber: nu
 
        if (property === "pd" || property === "mg" || property === "inset" || property === "mg-y" || property === "pd-y" || property === "mg-x" || property === "pd-x") {
 
+        // Sides only take spacing tokens. A bare number like pd:4 would otherwise
+        // be read as a numeric token and write invalid CSS (padding-top: 4).
+        (cst.children.ColonModifier || []).forEach((mod: any) => {
+            const value = mod.image.replace(":", "");
+            if (!(value in types.SpacingToken)) {
+                throw new Error(
+`\n\nSpacing Value Required: "${property}" takes spacing tokens, and "${value}" isn't one${context ? ` in ${context.fileName} on line ${context.lineNumber}` : ''}
+
+💡 Troubleshooting Tips:
+1. Use a spacing token, for example ${property}:d4 (1rem). Tokens run from d0 to d13, c1 to c13 and s1 to s13, plus px, 0, auto and full.
+2. To give each side its own value, list them in order: ${property}:d4:d2 (x then y) or ${property}:d1:d2:d3:d4 (top, left, right, bottom).
+
+For more information, refer to https://elevate-docs.pages.dev\n`
+                );
+            }
+        });
         modifiers =  directionExpansion(property,cst.children.ColonModifier)
 
        } 
