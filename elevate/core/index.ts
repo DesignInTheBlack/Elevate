@@ -448,56 +448,78 @@ const compileOnce = async () => {
     scannedClasses.map(establishBreakpoints);
 
     // ════ Responsive isolation ════
-    // Class names are global. If one element writes `col /md/ row` and another
-    // writes `row`, the plain `.row` rule would also reach the first element on
-    // small screens. So every rule for a class excludes the elements that only
-    // use that class from a later breakpoint. An element is identified by its
-    // whole set of classes, which works whatever order the browser sees them in.
+    // Class names are global, but breakpoints belong to elements. If one element
+    // writes `col /lg/ grid` and another writes `row /lg/ col`, the lg copy of
+    // `.col` must not reach the first element, and a plain rule
+    // must not reach elements that only use it from lg. So each rule for a
+    // class is limited to the elements that use that class at that rule's
+    // breakpoint. An element is identified by its whole set of classes, which
+    // works whatever order the browser sees them in.
     const rankOf = (bp: string) => (bp ? getBreakpointPriority(bp) : -1);
-    const lateUses = new Map<string, { first: number; selector: string; tokens: string[] }[]>();
-    const allUses = new Map<string, { first: number; tokens: Set<string>; where: string }[]>();
+    type Use = { ranks: Set<number>; selector: string; tokens: Set<string>; where: string };
+    const uses = new Map<string, Use[]>();
+    const dynamicTokens = new Set<string>();
     scannedClasses.forEach((instance: any) => {
       const list: string[] = instance.classes || [];
-      const tokens = Array.from(new Set(list));
-      const firstRank = new Map<string, number>();
+      const tokens = new Set(list);
+      const ranks = new Map<string, Set<number>>();
       let rank = -1;
       list.forEach((token) => {
         if (isMarkerToken(token)) {
           rank = rankOf(token);
           return;
         }
-        if (!firstRank.has(token)) firstRank.set(token, rank);
+        if (!ranks.has(token)) ranks.set(token, new Set());
+        ranks.get(token)!.add(rank);
       });
-      const tokenSet = new Set(tokens);
-      firstRank.forEach((first, token) => {
-        const all = allUses.get(token) || [];
-        all.push({ first, tokens: tokenSet, where: `${instance.file}:${instance.lineNumber}` });
-        allUses.set(token, all);
-        if (first < 0 || !instance.isStatic) return;
-        const selector = tokens.map((t) => `.${cssEscape(t)}`).join('');
-        const late = lateUses.get(token) || [];
-        if (!late.some((u) => u.selector === selector && u.first === first)) late.push({ first, selector, tokens });
-        lateUses.set(token, late);
-      });
-    });
-    // An element that uses a class earlier, but carries every class of a
-    // later-only element, can't be told apart from it in CSS. Rare; say so.
-    lateUses.forEach((late, token) => {
-      (allUses.get(token) || []).forEach((use) => {
-        late.forEach((l) => {
-          if (use.first < l.first && l.tokens.every((t) => use.tokens.has(t))) {
-            console.warn(`Responsive ambiguity: "${token}" in ${use.where} can't be told apart from an element that only uses it from a later breakpoint. Add or change a class on one of them.`);
-          }
-        });
+      const selector = Array.from(tokens).map((t) => `.${cssEscape(t)}`).join('');
+      ranks.forEach((r, token) => {
+        if (!instance.isStatic) {
+          dynamicTokens.add(token);
+          return;
+        }
+        const list = uses.get(token) || [];
+        // The same classes at the same breakpoints are one kind of element.
+        // The same classes at different breakpoints stay separate, and the
+        // check below reports them, since CSS can't tell them apart.
+        const key = Array.from(r).sort().join(',');
+        if (!list.some((u) => u.selector === selector && Array.from(u.ranks).sort().join(',') === key)) {
+          list.push({ ranks: new Set(r), selector, tokens, where: `${instance.file}:${instance.lineNumber}` });
+        }
+        uses.set(token, list);
       });
     });
-    const exclusionFor = (className: string, breakpoint: string) => {
-      const late = lateUses.get(className);
-      if (!late) return '';
+    const warnedAmbiguity = new Set<string>();
+    const isolationFor = (className: string, breakpoint: string) => {
+      // Envelopes carry their own breakpoints, and dynamic class strings can't be
+      // identified, so those classes keep plain, global rules.
+      if (className.startsWith('env:') || dynamicTokens.has(className)) return '';
+      const list = uses.get(className);
+      if (!list) return '';
       const rank = rankOf(breakpoint || '');
-      const selectors = Array.from(new Set(late.filter((u) => u.first > rank).map((u) => u.selector)));
-      // :where() adds no specificity, so rule weights are unchanged
-      return selectors.length ? `:where(:not(${selectors.join(', ')}))` : '';
+      const here = list.filter((u) => u.ranks.has(rank));
+      const elsewhere = list.filter((u) => !u.ranks.has(rank));
+      if (!elsewhere.length) return '';
+      // A selector made of one element's classes also matches any element that
+      // carries all of them, so check which way of writing the rule is exact.
+      const covers = (a: Use, b: Use) => Array.from(a.tokens).every((t) => b.tokens.has(t));
+      const includeIsExact = !here.some((h) => elsewhere.some((e) => covers(h, e)));
+      const excludeIsExact = !elsewhere.some((e) => here.some((h) => covers(e, h)));
+      const include = `:where(${Array.from(new Set(here.map((u) => u.selector))).join(', ')})`;
+      const exclude = `:where(:not(${Array.from(new Set(elsewhere.map((u) => u.selector))).join(', ')}))`;
+      if (!includeIsExact && !excludeIsExact) {
+        const key = `${className}@${rank}`;
+        if (!warnedAmbiguity.has(key)) {
+          warnedAmbiguity.add(key);
+          const e = elsewhere.find((x) => here.some((h) => covers(x, h)))!;
+          console.warn(`Responsive ambiguity: "${className}" in ${e.where} can't be told apart from an element that carries all of its classes but uses "${className}" at a different breakpoint. Add or change a class on one of them.`);
+        }
+      }
+      // :where() adds no specificity, so rule weights are unchanged.
+      // Prefer the exact form; between two exact forms, the shorter one.
+      if (excludeIsExact && (!includeIsExact || elsewhere.length <= here.length)) return exclude;
+      if (includeIsExact) return include;
+      return exclude;
     };
     scopeByFile.forEach((stack, fileKey) => {
       if (stack.length > 0) {
@@ -645,7 +667,7 @@ const compileOnce = async () => {
                   : item.property === 'cluster'
                     ? 'display:flex;\nflex-direction:row;\nflex-wrap:wrap;'
                     : item.property === 'split'
-                      ? 'display:grid;\ngrid-template-columns:1fr 1fr;'
+                      ? 'display:grid;\ngrid-template-columns:minmax(0,1fr) minmax(0,1fr);'
                       : item.property === 'center'
                         ? 'margin-left:auto;\nmargin-right:auto;'
                         : item.property === 'grid-auto'
@@ -663,7 +685,7 @@ const compileOnce = async () => {
           : [];
       const scopeClasses = scopeChain.map((s: string) => `.${escapeClassName(s)}`);
       const scopeClass = scopeClasses.join(' ');
-      const targetClass = `.${escapeClassName(item.className)}${exclusionFor(item.className, item.breakpoint)}`;
+      const targetClass = `.${escapeClassName(item.className)}${isolationFor(item.className, item.breakpoint)}`;
       const targetSelector =
         item.selectorTarget === 'all' ? '*' : targetClass;
       const stateSuffix = buildStateSuffix(item.state);

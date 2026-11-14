@@ -63,20 +63,21 @@ export const grid = {
  
      //
      // FULL/FLEXIBLE COLUMNS (new)
-     // Use 1fr tracks to fill all available horizontal space.
+     // Equal columns that share the width. minmax(0, 1fr) keeps them equal even
+     // when one column holds wide content, instead of letting it push the others.
      //
-     "cols-1-fr": "repeat(1,1fr)",
-     "cols-2-fr": "repeat(2,1fr)",
-     "cols-3-fr": "repeat(3,1fr)",
-     "cols-4-fr": "repeat(4,1fr)",
-     "cols-5-fr": "repeat(5,1fr)",
-     "cols-6-fr": "repeat(6,1fr)",
-     "cols-7-fr": "repeat(7,1fr)",
-     "cols-8-fr": "repeat(8,1fr)",
-     "cols-9-fr": "repeat(9,1fr)",
-     "cols-10-fr": "repeat(10,1fr)",
-     "cols-11-fr": "repeat(11,1fr)",
-     "cols-12-fr": "repeat(12,1fr)"
+     "cols-1-fr": "repeat(1,minmax(0,1fr))",
+     "cols-2-fr": "repeat(2,minmax(0,1fr))",
+     "cols-3-fr": "repeat(3,minmax(0,1fr))",
+     "cols-4-fr": "repeat(4,minmax(0,1fr))",
+     "cols-5-fr": "repeat(5,minmax(0,1fr))",
+     "cols-6-fr": "repeat(6,minmax(0,1fr))",
+     "cols-7-fr": "repeat(7,minmax(0,1fr))",
+     "cols-8-fr": "repeat(8,minmax(0,1fr))",
+     "cols-9-fr": "repeat(9,minmax(0,1fr))",
+     "cols-10-fr": "repeat(10,minmax(0,1fr))",
+     "cols-11-fr": "repeat(11,minmax(0,1fr))",
+     "cols-12-fr": "repeat(12,minmax(0,1fr))"
    }
  };
  

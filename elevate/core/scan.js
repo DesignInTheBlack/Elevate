@@ -79,7 +79,7 @@ const maskCommentsAndCodeBlocks = (text) => {
  * Validate whether a class token is safe for Elevate
  */
 
-const VALID_CLASS = /^[A-Za-z0-9@:\/_\-\[\].()=?&%+,~!$^*'";<>|{}]+$/; 
+const VALID_CLASS = /^[A-Za-z0-9@:\/_\-\[\].()=?&%+,~!$^*'";<>|{}#]+$/; 
 const STATE_BLOCK = /^@[A-Za-z0-9_-]+(?:\+[A-Za-z0-9_-]+)*:\[[\s\S]*\]$/;
 
 const hasStateBlockWhitespace = (token) => {
