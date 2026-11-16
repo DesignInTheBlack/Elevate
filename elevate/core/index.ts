@@ -1,854 +1,333 @@
 // ╔════════════════════════════════════════════════════════════════════╗
-// ║                          MODULE IMPORTS                            ║
+// ║                           COMMAND LINE                             ║
+// ║                                                                    ║
+// ║   npm run elevate                  watch and compile (default)     ║
+// ║   npm run elevate -- build         compile once                    ║
+// ║   npm run elevate -- check "<classes>"   check a class string      ║
+// ║   npm run elevate -- describe      print the design system as JSON ║
+// ║                                                                    ║
+// ║ Add --json to build or check for machine-readable output.          ║
+// ║ The compiler itself lives in engine.ts; code should use api.ts.    ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-import { elevateCompiler } from './parser.js';
-import { findClassAttributes } from './scan.js';
-import { getBreakpointPriority } from './utility.js';
-import { writeToFile } from './utility.js';
-import { getModifierValue } from './utility.js';
-import { config } from '../config/elevate.js'
+import { build, validate, describe, VERSION, config } from './api.js';
+import { normalizePath } from './engine.js';
+import { watchFolders } from './scan.js';
 import fs from 'fs';
+import path from 'path';
 import { createHash } from 'crypto';
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
 import ora from 'ora';
-import path from 'path';
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-const recentRewrites = new Map<string, number>();
-const envRegistryPath = path.resolve('elevate.env.json');
-let isCompiling = false;
-let compileQueued = false;
-const lastFileMtime = new Map<string, number>();
-const lastFileHash = new Map<string, string>();
-const debugWatch = Boolean(process.env.ELEVATE_DEBUG_WATCH);
-let suppressWatchUntil = 0;
-
-const normalizePath = (p: string) => {
-  const resolved = path.resolve(p);
-  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
-};
-
-const logDebug = (message: string) => {
-  if (!debugWatch) return;
-  try {
-    fs.appendFileSync(path.resolve('elevate.debug.log'), `${new Date().toISOString()} ${message}\n`, 'utf8');
-  } catch {
-    // ignore logging failures
-  }
-};
-
-const getEnvDefineName = (token: string): string | null => {
-  const match = token.match(/^env:([a-zA-Z0-9-]+)$/);
-  return match ? match[1] : null;
-};
-
-const getEnvOpenName = (token: string): string | null => {
-  const match = token.match(/^env:([a-zA-Z0-9-]+):open$/);
-  return match ? match[1] : null;
-};
-
-// Escapes any class name for use in a CSS selector (like CSS.escape)
-const cssEscape = (value: string) =>
-  value.replace(/^(-?)(\d)/, (_m, dash, d) => `${dash}\\3${d} `)
-    .replace(/[^a-zA-Z0-9_\-\u0080-\uFFFF\\ ]/g, (ch) => `\\${ch}`);
-
-const isEnvToken = (token: string) => Boolean(getEnvDefineName(token) || getEnvOpenName(token));
-const isCtxToken = (token: string) => token.startsWith('ctx:');
-const isBreakpointToken = (token: string) => /^\/[a-zA-Z0-9_-]{1,5}\/$/.test(token);
-const isMarkerToken = (token: string) => /^\/[a-zA-Z0-9]{1,3}\/$/.test(token);
-
-const loadEnvRegistry = (): Record<string, string[]> => {
-  try {
-    if (!fs.existsSync(envRegistryPath)) return {};
-    const raw = fs.readFileSync(envRegistryPath, 'utf8');
-    if (!raw.trim()) return {};
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object') {
-      if (parsed.aliases && typeof parsed.aliases === 'object') return parsed.aliases;
-      return parsed as Record<string, string[]>;
-    }
-    return {};
-  } catch (err) {
-    console.warn('Warning: failed to read elevate.env.json; starting with empty registry.');
-    return {};
-  }
-};
-
-const saveEnvRegistry = (registry: Record<string, string[]>) => {
-  const payload = { aliases: registry };
-  fs.writeFileSync(envRegistryPath, JSON.stringify(payload, null, 2), 'utf8');
-};
-
-const compileOnce = async () => {
-  const spinner = ora({
-    text: 'Elevating Your CSS..',
-    color: 'magentaBright',
-    spinner: 'dots'
-  }).start();
-
-  if (!config.Watch || !config.FileTypes) {
-    throw new Error('Invalid configuration: Watch directory and FileTypes must be specified');
-  }
-
-  try {
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                        1. SCAN FILES                               ║
-    // ║ Scan the files in the provided directory and retrieve class lists. ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-
-    spinner.text = 'Scanning files for Elevate classes...';
-    let scannedClasses;
-    try {
-      scannedClasses = findClassAttributes(config.Watch, config.FileTypes);
-    } catch (err: any) {
-      console.error('Failed to scan for classes:', err.message);
-      return;
-    }
-
-    if (!scannedClasses || scannedClasses.length === 0) {
-      console.warn('No classes found in the specified files.');
-    }
-
-    // -------------------------------------------------------------
-    // ENV REGISTRY PRE-PASS (definitions + open rewrites)
-    // -------------------------------------------------------------
-    const envRegistry = loadEnvRegistry();
-    let registryUpdated = false;
-
-    // Pass 1: capture env definitions
-    scannedClasses.forEach((instance: any) => {
-      const classList: string[] = instance.classes || [];
-      const envDefines = classList
-        .map((token) => getEnvDefineName(token))
-        .filter(Boolean) as string[];
-      const envOpens = classList
-        .map((token) => getEnvOpenName(token))
-        .filter(Boolean) as string[];
-      const envOpenSet = new Set(envOpens);
-      const envTargets = Array.from(new Set([...envDefines, ...envOpens]));
-
-      if (envTargets.length === 0) return;
-
-      const capturedTokens = classList.filter(
-        (token) => !isEnvToken(token) && !isCtxToken(token)
-      );
-      const nonTrivialTokens = capturedTokens.filter(
-        (token) => !isBreakpointToken(token)
-      );
-
-      // If there are no non-env, non-breakpoint tokens, treat as usage only
-      if (nonTrivialTokens.length === 0) return;
-
-      // Validate captured tokens so env aliases can't include non-Elevate tokens
-      capturedTokens.forEach((token) => {
-        if (isBreakpointToken(token) || isEnvToken(token) || isCtxToken(token)) return;
-        try {
-          const ast = elevateCompiler(token, { fileName: instance.file, lineNumber: instance.lineNumber });
-          if (!ast) {
-            throw new Error('Unable to parse token');
-          }
-        } catch (err: any) {
-          throw new Error(
-`\\n\\nInvalid env definition token "${token}" in ${instance.file} on line ${instance.lineNumber}.\\n${err?.message || ''}\\n`
-          );
-        }
-      });
-
-      envTargets.forEach((name) => {
-        const existing = envRegistry[name];
-        const next = capturedTokens;
-        if (existing) {
-          if (existing.join(' ') !== next.join(' ')) {
-            if (envOpenSet.has(name)) {
-              envRegistry[name] = next;
-              registryUpdated = true;
-            } else {
-              throw new Error(
-`\\n\\nEnv Conflict: env:${name} is defined with different tokens.\\n\\nExisting:\\n${existing.join(' ')}\\n\\nNew:\\n${next.join(' ')}\\n`
-              );
-            }
-          }
-        } else {
-          envRegistry[name] = next;
-          registryUpdated = true;
-        }
-      });
-
-      instance.envDefinition = true;
-    });
-
-    if (registryUpdated) {
-      saveEnvRegistry(envRegistry);
-    }
-
-    // Pass 2: rewrite env:Name:open and auto-condense definitions
-    const rewritesByFile = new Map<string, { start: number; end: number; replacement: string }[]>();
-    scannedClasses.forEach((instance: any) => {
-      const rawTokens = Array.isArray(instance.rawTokens)
-        ? instance.rawTokens
-        : (instance.rawValue || '').match(/(?:\([^)]*\)|\S+)/g) || [];
-      const envOpenNames = rawTokens.map((token) => getEnvOpenName(token)).filter(Boolean) as string[];
-      const envDefineNames = rawTokens.map((token) => getEnvDefineName(token)).filter(Boolean) as string[];
-
-      if (!instance.isStatic && envOpenNames.length > 0) {
-        console.warn(`Skipping env:open rewrite in dynamic class string (${instance.file}:${instance.lineNumber}).`);
-        return;
-      }
-
-      // Prefer env:open expansion when present and not already expanded
-      if (envOpenNames.length > 0) {
-        const nonEnvTokens = rawTokens.filter(
-          (token) => !isEnvToken(token) && !isCtxToken(token) && !isBreakpointToken(token)
-        );
-        if (nonEnvTokens.length === 0) {
-          const openSet = new Set(envOpenNames);
-          const expanded: string[] = [];
-          let changed = false;
-
-          rawTokens.forEach((token) => {
-            const openName = getEnvOpenName(token);
-            if (openName) {
-              const aliasTokens = envRegistry[openName];
-              if (!aliasTokens) {
-                console.warn(`env:${openName}:open has no definition; skipping rewrite.`);
-                expanded.push(token);
-                return;
-              }
-              // Keep the :open marker in the expanded list so it stays open until explicitly closed.
-              expanded.push(`env:${openName}:open`, ...aliasTokens);
-              changed = true;
-              return;
-            }
-            const defineName = getEnvDefineName(token);
-            if (defineName && openSet.has(defineName)) {
-              return;
-            }
-            expanded.push(token);
-          });
-
-          if (changed) {
-            if (typeof instance.valueStart !== 'number' || typeof instance.valueEnd !== 'number') {
-              console.warn(`Missing offsets for env:open rewrite in ${instance.file}:${instance.lineNumber}.`);
-              return;
-            }
-            const replacement = expanded.join(' ');
-            if (replacement === String(instance.rawValue || '').trim()) {
-              return;
-            }
-            const fileKey = normalizePath(instance.file);
-            const fileRewrites = rewritesByFile.get(fileKey) || [];
-            fileRewrites.push({
-              start: instance.valueStart,
-              end: instance.valueEnd,
-              replacement,
-            });
-            rewritesByFile.set(fileKey, fileRewrites);
-          }
-          return;
-        }
-        // Already expanded (user editing) or includes other tokens; skip auto-condense
-        return;
-      }
-
-      // Auto-condense definitions when no :open marker is present
-      if (envDefineNames.length === 1) {
-        const name = envDefineNames[0];
-        const capturedTokens = rawTokens.filter(
-          (token) => !isEnvToken(token) && !isCtxToken(token)
-        );
-        const nonTrivialTokens = capturedTokens.filter(
-          (token) => !isBreakpointToken(token)
-        );
-        if (nonTrivialTokens.length > 0) {
-          if (!instance.isStatic) {
-            console.warn(`Skipping env auto-condense in dynamic class string (${instance.file}:${instance.lineNumber}).`);
-            return;
-          }
-          if (typeof instance.valueStart !== 'number' || typeof instance.valueEnd !== 'number') {
-            console.warn(`Missing offsets for env auto-condense in ${instance.file}:${instance.lineNumber}.`);
-            return;
-          }
-          const replacement = `env:${name}`;
-          if (replacement === String(instance.rawValue || '').trim()) {
-            return;
-          }
-          const fileKey = normalizePath(instance.file);
-          const fileRewrites = rewritesByFile.get(fileKey) || [];
-          fileRewrites.push({
-            start: instance.valueStart,
-            end: instance.valueEnd,
-            replacement,
-          });
-          rewritesByFile.set(fileKey, fileRewrites);
-        }
-      } else if (envDefineNames.length > 1) {
-        console.warn(`Multiple env definitions in one class list (${instance.file}:${instance.lineNumber}). Skipping auto-condense.`);
-      }
-    });
-
-    if (rewritesByFile.size > 0) {
-      rewritesByFile.forEach((replacements, filePath) => {
-        const original = fs.readFileSync(filePath, 'utf8');
-        const sorted = replacements.sort((a, b) => b.start - a.start);
-        let updated = original;
-        sorted.forEach((rep) => {
-          updated = updated.slice(0, rep.start) + rep.replacement + updated.slice(rep.end);
-        });
-        fs.writeFileSync(filePath, updated, 'utf8');
-        const normalized = normalizePath(filePath);
-        recentRewrites.set(normalized, Date.now());
-        suppressWatchUntil = Date.now() + 1500;
-        try {
-          const stat = fs.statSync(filePath);
-          lastFileMtime.set(normalized, stat.mtimeMs);
-          const hash = createHash('sha1').update(updated).digest('hex');
-          lastFileHash.set(normalized, hash);
-        } catch {
-          // ignore stat/hash update
-        }
-        logDebug(`[rewrite] ${normalized} replacements=${replacements.length}`);
-      });
-      spinner.info('Env rewrite applied. Recompiling...');
-      // Re-run compile after rewrite completes
-      await delay(50);
-      compileQueued = true;
-      logDebug(`[compile] queued after rewrite files=${rewritesByFile.size}`);
-      return;
-    }
-
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                  2. INITIALIZE DATA STRUCTURES                     ║
-    // ║ Define the compiledClasses array and placeholder for types.        ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-
-    spinner.text = 'Processing class definitions...';
-    let compiledClasses: any[] = [];
-    const scopeByFile = new Map<string, string[]>();
-
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                    3. Establish Breakpoints                        ║
-    // ║ Process classes by breakpoints, using elevateCompiler.             ║
-    // ║ - Detects breakpoints                                              ║
-    // ║ - Adds them to class objects                                       ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-
-    function establishBreakpoints(instance: any) {
-      if (!instance || !instance.classes) {
-        throw new Error('Invalid class instance provided');
-      }
-      let lastBreak = '';
-      let classList = instance.classes;
-      const fileKey = normalizePath(instance.file);
-      let scopeStack = scopeByFile.get(fileKey);
-      if (!scopeStack) {
-        scopeStack = [];
-        scopeByFile.set(fileKey, scopeStack);
-      }
-
-      const getFutureCtxTokens = (fromIndex: number) => {
-        const future: string[] = [];
-        for (let i = fromIndex + 1; i < classList.length; i++) {
-          const token = classList[i];
-          if (!token.startsWith('ctx:')) continue;
-          if (token === 'ctx:end' || token.startsWith('ctx:end:')) continue;
-          if (!future.includes(token)) future.push(token);
-        }
-        return future;
-      };
-
-      classList.forEach(function (classString: string, index: number) {
-        if (!classString.startsWith('-') && !config.SafeList.includes(classString)) {
-          if (classString.startsWith('ctx:')) {
-            if (classString === 'ctx:end') {
-              if (scopeStack.length === 0) {
-                console.warn('ctx:end encountered with no open ctx scope.');
-              } else {
-                scopeStack.pop();
-              }
-              return;
-            }
-
-            if (classString.startsWith('ctx:end:')) {
-              const name = classString.slice('ctx:end:'.length);
-              const expected = `ctx:${name}`;
-              const top = scopeStack[scopeStack.length - 1];
-              if (top !== expected) {
-                console.warn(`ctx:end:${name} does not match the current scope (${top || 'none'}).`);
-              } else {
-                scopeStack.pop();
-              }
-              return;
-            }
-
-            scopeStack.push(classString);
-            return;
-          }
-
-          if (isEnvToken(classString)) {
-            return;
-          }
-
-          // ════ Mobile-First Breakpoint Processing ════
-          // A marker is a whole class like /md/. Anchored, so a pass-through value
-          // such as bg-img:(url(/img/a.jpg)) is never mistaken for one.
-          if (isMarkerToken(classString)) {
-            lastBreak = classString;
-            return;
-          }
-
-          let classObject = elevateCompiler(classString, { fileName: instance.file, lineNumber: instance.lineNumber });
-          classObject.breakpoint = lastBreak;
-          let scopeChain = scopeStack.length ? [...scopeStack] : [];
-          if (classObject.selectorMode) {
-            const futureCtx = getFutureCtxTokens(index);
-            futureCtx.forEach((token) => {
-              if (!scopeChain.includes(token)) scopeChain.push(token);
-            });
-          }
-          classObject.scope = scopeChain.length ? scopeChain : null;
-
-          compiledClasses.push(classObject);
-        }
-      });
-
-    }
-
-    function compileEnvAlias(name: string, tokens: string[], forcedBreakpoint?: string | null) {
-      let lastBreak = '';
-      tokens.forEach((token) => {
-        if (isCtxToken(token) || isEnvToken(token)) return;
-
-        if (isBreakpointToken(token)) {
-          lastBreak = token;
-          return;
-        }
-
-        let classObject;
-        try {
-          classObject = elevateCompiler(token, { fileName: `env:${name}`, lineNumber: 0 });
-        } catch (err: any) {
-          throw new Error(`\\n\\nInvalid env:${name} token "${token}".\\n${err?.message || ''}\\n`);
-        }
-        if (!classObject) {
-          throw new Error(`\\n\\nInvalid env:${name} token "${token}".\\nUnable to parse token.\\n`);
-        }
-        classObject.breakpoint = lastBreak || forcedBreakpoint || '';
-        classObject.scope = classObject.selectorMode ? [`env:${name}`] : null;
-        classObject.className = `env:${name}`;
-        compiledClasses.push(classObject);
-      });
-    }
-
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                   4. MAP SCANNED CLASSES                           ║
-    // ║ Apply the `structureClasses` function to each scanned class.       ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-    scannedClasses.map(establishBreakpoints);
-
-    // ════ Responsive isolation ════
-    // Class names are global, but breakpoints belong to elements. If one element
-    // writes `col /lg/ grid` and another writes `row /lg/ col`, the lg copy of
-    // `.col` must not reach the first element, and a plain rule
-    // must not reach elements that only use it from lg. So each rule for a
-    // class is limited to the elements that use that class at that rule's
-    // breakpoint. An element is identified by its whole set of classes, which
-    // works whatever order the browser sees them in.
-    const rankOf = (bp: string) => (bp ? getBreakpointPriority(bp) : -1);
-    type Use = { ranks: Set<number>; selector: string; tokens: Set<string>; where: string };
-    const uses = new Map<string, Use[]>();
-    const dynamicTokens = new Set<string>();
-    scannedClasses.forEach((instance: any) => {
-      const list: string[] = instance.classes || [];
-      const tokens = new Set(list);
-      const ranks = new Map<string, Set<number>>();
-      let rank = -1;
-      list.forEach((token) => {
-        if (isMarkerToken(token)) {
-          rank = rankOf(token);
-          return;
-        }
-        if (!ranks.has(token)) ranks.set(token, new Set());
-        ranks.get(token)!.add(rank);
-      });
-      const selector = Array.from(tokens).map((t) => `.${cssEscape(t)}`).join('');
-      ranks.forEach((r, token) => {
-        if (!instance.isStatic) {
-          dynamicTokens.add(token);
-          return;
-        }
-        const list = uses.get(token) || [];
-        // The same classes at the same breakpoints are one kind of element.
-        // The same classes at different breakpoints stay separate, and the
-        // check below reports them, since CSS can't tell them apart.
-        const key = Array.from(r).sort().join(',');
-        if (!list.some((u) => u.selector === selector && Array.from(u.ranks).sort().join(',') === key)) {
-          list.push({ ranks: new Set(r), selector, tokens, where: `${instance.file}:${instance.lineNumber}` });
-        }
-        uses.set(token, list);
-      });
-    });
-    const warnedAmbiguity = new Set<string>();
-    const isolationFor = (className: string, breakpoint: string) => {
-      // Envelopes carry their own breakpoints, and dynamic class strings can't be
-      // identified, so those classes keep plain, global rules.
-      if (className.startsWith('env:') || dynamicTokens.has(className)) return '';
-      const list = uses.get(className);
-      if (!list) return '';
-      const rank = rankOf(breakpoint || '');
-      const here = list.filter((u) => u.ranks.has(rank));
-      const elsewhere = list.filter((u) => !u.ranks.has(rank));
-      if (!elsewhere.length) return '';
-      // A selector made of one element's classes also matches any element that
-      // carries all of them, so check which way of writing the rule is exact.
-      const covers = (a: Use, b: Use) => Array.from(a.tokens).every((t) => b.tokens.has(t));
-      const includeIsExact = !here.some((h) => elsewhere.some((e) => covers(h, e)));
-      const excludeIsExact = !elsewhere.some((e) => here.some((h) => covers(e, h)));
-      const include = `:where(${Array.from(new Set(here.map((u) => u.selector))).join(', ')})`;
-      const exclude = `:where(:not(${Array.from(new Set(elsewhere.map((u) => u.selector))).join(', ')}))`;
-      if (!includeIsExact && !excludeIsExact) {
-        const key = `${className}@${rank}`;
-        if (!warnedAmbiguity.has(key)) {
-          warnedAmbiguity.add(key);
-          const e = elsewhere.find((x) => here.some((h) => covers(x, h)))!;
-          console.warn(`Responsive ambiguity: "${className}" in ${e.where} can't be told apart from an element that carries all of its classes but uses "${className}" at a different breakpoint. Add or change a class on one of them.`);
-        }
-      }
-      // :where() adds no specificity, so rule weights are unchanged.
-      // Prefer the exact form; between two exact forms, the shorter one.
-      if (excludeIsExact && (!includeIsExact || elsewhere.length <= here.length)) return exclude;
-      if (includeIsExact) return include;
-      return exclude;
-    };
-    scopeByFile.forEach((stack, fileKey) => {
-      if (stack.length > 0) {
-        console.warn(`Unclosed ctx scopes in ${fileKey} (last open: ${stack[stack.length - 1]}).`);
-      }
-    });
-    Object.entries(envRegistry).forEach(([name, tokens]) => {
-      compileEnvAlias(name, tokens);
-    });
-
-    // Pass 3: compile env usage with breakpoint scoping
-    scannedClasses.forEach((instance: any) => {
-      if (!instance || !instance.classes) return;
-      let lastBreak = '';
-      (instance.classes as string[]).forEach((token) => {
-        if (isBreakpointToken(token)) {
-          lastBreak = token;
-          return;
-        }
-        const envName = getEnvDefineName(token);
-        if (envName && envRegistry[envName]) {
-          compileEnvAlias(envName, envRegistry[envName], lastBreak || null);
-        }
-      });
-    });
-
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                  5. SORT COMPILED CLASSES                          ║
-    // ║ Sort classes by breakpoint priority using getBreakpointPriority.   ║
-    // ║ Empty breakpoints are prioritized first.                           ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-    spinner.text = 'Organizing and sorting classes...';
-    // Base rules first, then each breakpoint in ascending order. The sort is
-    // stable, so rules keep the order they were written in within each group.
-    compiledClasses.sort((a, b) => rankOf(a.breakpoint || '') - rankOf(b.breakpoint || ''));
-
-    // Deduplicate classes
-    const uniqueClasses = new Map<string, any>();
-    compiledClasses.forEach(item => {
-      const scopeKey = Array.isArray(item.scope) ? item.scope.join(' ') : (item.scope || '');
-      const stateKey = Array.isArray(item.state) ? item.state.join('+') : (item.state || '');
-      const selectorKey = item.selectorMode || '';
-      const propertyKey = item.property || '';
-      const modifierKey = Array.isArray(item.modifiers) ? item.modifiers.join('|') : '';
-      const key = `${item.className}${item.breakpoint || ''}${scopeKey}${stateKey}${selectorKey}${propertyKey}${modifierKey}`;
-      if (!uniqueClasses.has(key)) {
-        uniqueClasses.set(key, item);
-      }
-    });
-
-    // Convert back to array
-    compiledClasses = Array.from(uniqueClasses.values());
-
-    // ╔════════════════════════════════════════════════════════════════════╗
-    // ║                       6. OUTPUT RESULTS                            ║
-    // ║ Compile the results into a CSS file                                ║
-    // ╚════════════════════════════════════════════════════════════════════╝
-
-    // Helper function to escape special characters in class names
-    await delay(100);
-    const escapeClassName = (className: string) => cssEscape(className);
-
-    spinner.text = 'Generating CSS output...';
-    let breakpointSupervisor: string | null = null;
-    let compiledCSS = '';
-    let mediaQueryOpen = false;
-
-    const pseudoElements = new Set([
-      'placeholder',
-      'before',
-      'after',
-      'marker',
-      'selection',
-      'backdrop',
-      'file-selector-button',
-    ]);
-
-    const buildStateSuffix = (state: string | string[] | null | undefined) => {
-      if (!state) return '';
-      const chain = Array.isArray(state) ? state : String(state).split('+');
-      const pseudoClasses: string[] = [];
-      const pseudoElems: string[] = [];
-
-      chain.forEach((token) => {
-        if (!token) return;
-        if (pseudoElements.has(token)) {
-          pseudoElems.push(token);
-        } else {
-          pseudoClasses.push(token);
-        }
-      });
-
-      const classPart = pseudoClasses.length ? `:${pseudoClasses.join(':')}` : '';
-      if (pseudoElems.length > 1) {
-        throw new Error(
-          `Invalid state chain: multiple pseudo-elements (${pseudoElems.join(', ')}). CSS allows only one pseudo-element per selector.`
-        );
-      }
-      const elemPart = pseudoElems.length ? `::${pseudoElems[0]}` : '';
-      return `${classPart}${elemPart}`;
-    };
-
-    const defaultAutoGridMin = (() => {
-      try {
-        return getModifierValue('min-c10', { "grid-template-columns": "GridAutoMinRule" });
-      } catch {
-        return '10rem';
-      }
-    })();
-
-    compiledClasses.forEach((item) => {
-
-      if (item.breakpoint !== breakpointSupervisor) {
-        // Close previous media query if open
-        if (mediaQueryOpen) {
-          compiledCSS += `}\n\n`;
-          mediaQueryOpen = false;
-        }
-
-        breakpointSupervisor = item.breakpoint;
-
-        // Open new media query if breakpoint exists
-        if (breakpointSupervisor) {
-          const breakpoint = getModifierValue(item.breakpoint.replace(/\//g, ''));
-          if (!breakpoint) {
-            throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
-          }
-          const breakpointTransition = `@media only screen and (min-width:${breakpoint}) {`;
-          compiledCSS += `${breakpointTransition}\n`;
-          mediaQueryOpen = true;
-        }
-      }
-
-      const flexProperties =
-        item.property === 'row'
-          ? 'display:flex;\nflex-direction:row;'
-          : item.property === 'col'
-            ? 'display:flex;\nflex-direction:column;'
-            : item.property === 'row-r'
-              ? 'display:flex;\nflex-direction:row-reverse;'
-              : item.property === 'col-r'
-                ? 'display:flex;\nflex-direction:column-reverse;'
-                : item.property === 'stack'
-                  ? 'display:flex;\nflex-direction:column;'
-                  : item.property === 'cluster'
-                    ? 'display:flex;\nflex-direction:row;\nflex-wrap:wrap;'
-                    : item.property === 'split'
-                      ? 'display:grid;\ngrid-template-columns:minmax(0,1fr) minmax(0,1fr);'
-                      : item.property === 'center'
-                        ? 'margin-left:auto;\nmargin-right:auto;'
-                        : item.property === 'grid-auto'
-                          ? `display:grid;\ngrid-template-columns:repeat(auto-fit, minmax(${defaultAutoGridMin}, 1fr));`
-                          : item.property === 'grid'
-                            ? 'display:grid;'
-                            : '';
-
-      const modifiers = item.modifiers.map((modifier: string) => `${modifier};`).join('\n');
-
-      const scopeChain = Array.isArray(item.scope)
-        ? item.scope
-        : item.scope
-          ? [item.scope]
-          : [];
-      const scopeClasses = scopeChain.map((s: string) => `.${escapeClassName(s)}`);
-      const scopeClass = scopeClasses.join(' ');
-      const targetClass = `.${escapeClassName(item.className)}${isolationFor(item.className, item.breakpoint)}`;
-      const targetSelector =
-        item.selectorTarget === 'all' ? '*' : targetClass;
-      const stateSuffix = buildStateSuffix(item.state);
-
-      let selectors: string[] = [];
-
-      if (item.selectorMode) {
-        if (!scopeClass) {
-          throw new Error(`Combinator directive requires an active ctx scope for class "${item.className}".`);
-        }
-
-        switch (item.selectorMode) {
-          case 'desc':
-            selectors = [`${scopeClass} ${targetSelector}${stateSuffix}`];
-            break;
-          case 'child':
-            selectors = [`${scopeClass} > ${targetSelector}${stateSuffix}`];
-            break;
-          case 'sibling':
-            selectors = [`${scopeClass} + ${targetSelector}${stateSuffix}`];
-            break;
-          case 'general-sibling':
-            selectors = [`${scopeClass} ~ ${targetSelector}${stateSuffix}`];
-            break;
-          case 'ancestor':
-            selectors = [`${scopeClass}:has(${targetSelector}${stateSuffix})`];
-            break;
-          default:
-            selectors = [`${scopeClass} ${targetSelector}${stateSuffix}`];
-            break;
-        }
-      } else {
-        const lastScope = scopeClasses[scopeClasses.length - 1] || '';
-        const parentChain = scopeClasses.slice(0, -1).join(' ');
-        const compoundTarget = lastScope
-          ? `${lastScope}${targetClass}${stateSuffix}`
-          : `${targetClass}${stateSuffix}`;
-        const selfSelector = parentChain ? `${parentChain} ${compoundTarget}` : compoundTarget;
-        const descendantSelector = scopeClass
-          ? `${scopeClass} ${targetClass}${stateSuffix}`
-          : `${targetClass}${stateSuffix}`;
-
-        // make an array of the two selectors…
-        const selSet = new Set<string>();
-        selSet.add(selfSelector);
-        selSet.add(descendantSelector);
-        selectors = Array.from(selSet);
-      }
-
-      // and then join with a comma
-      compiledCSS +=
-        selectors.join(', ') +
-        ' {' +
-        (flexProperties ? `\n${flexProperties}` : '') +
-        `\n${modifiers}\n}\n\n`;
-    });
-
-    // Close the last media query if open
-    if (mediaQueryOpen) {
-      compiledCSS += `}\n`;
-    }
-
-    // Write the final CSS output
-    spinner.text = 'Writing CSS file...';
-    if (!compiledCSS) {
-      throw new Error('No CSS content generated!');
-    }
-    await writeToFile(compiledCSS);
-    // console.clear();
-    spinner.succeed('Elevate CSS Compilation Successful!');
-    logDebug('[compile] success');
-  } catch (error: any) {
-    spinner.fail(`Compilation failed: ${error.message}`);
-    logDebug(`[compile] fail ${error.message}`);
-    return;
-  }
-};
-
-const runCompile = async () => {
-  if (isCompiling) {
-    compileQueued = true;
-    logDebug('[compile] queued while compiling');
-    return;
-  }
-  isCompiling = true;
-  logDebug('[compile] start');
-  try {
-    await compileOnce();
-  } finally {
-    isCompiling = false;
-    if (compileQueued) {
-      compileQueued = false;
-      logDebug('[compile] dequeued');
-      runCompile();
-    }
-  }
-};
-
-const watcher = chokidar.watch(config.Watch, {
-  persistent: true,
-  ignoreInitial: true,
-  ignored: ['**/*.css', '**/elevate.env.json'],
-  awaitWriteFinish: {
-    stabilityThreshold: 250,
-    pollInterval: 50,
-  },
-  interval: 1000,
-  binaryInterval: 300,
-});
-
-watcher.on('ready', () => {
-  if (!debugWatch) console.clear();
-  console.log('Elevate CSS is watching for changes...');
-});
-
-watcher.on('change', (filePath: string) => {
-  if (Date.now() < suppressWatchUntil) {
-    logDebug('[watch] suppressed change event');
-    return;
-  }
-  const absPath = normalizePath(filePath);
-  const recent = recentRewrites.get(absPath);
-  if (recent && Date.now() - recent < 750) {
-    recentRewrites.delete(absPath);
-    return;
-  }
-  try {
-    const stat = fs.statSync(absPath);
-    const lastMtime = lastFileMtime.get(absPath);
-    if (lastMtime && stat.mtimeMs === lastMtime) {
-      return;
-    }
-    let hash = '';
-    try {
-      const content = fs.readFileSync(absPath, 'utf8');
-      hash = createHash('sha1').update(content).digest('hex');
-    } catch {
-      // If we can't read file content, fall back to mtime only.
-    }
-    const lastHash = lastFileHash.get(absPath);
-    if (hash && lastHash === hash) {
-      lastFileMtime.set(absPath, stat.mtimeMs);
-      return;
-    }
-    if (hash) {
-      lastFileHash.set(absPath, hash);
-    }
-    lastFileMtime.set(absPath, stat.mtimeMs);
-    if (debugWatch) {
-      console.log(`[watch] change ${absPath} mtime=${stat.mtimeMs} hash=${hash || 'n/a'}`);
-    }
-    logDebug(`[watch] change ${absPath} mtime=${stat.mtimeMs} hash=${hash || 'n/a'}`);
-  } catch {
-    // If we can't stat the file, continue and let the compiler rescan.
-  }
-  const ext = path.extname(filePath).toLowerCase().substring(1);
-  if (config.FileTypes.includes(ext)) {
-    if (!debugWatch) console.clear();
-    runCompile();
-  }
-});
-
-process.on('SIGINT', function () {
-  console.log('Elevate CSS is shutting down...');
+// Compiler errors carry their own file, line and tips, so print only the
+// message, in red, with no stack trace.
+Error.stackTraceLimit = 0;
+process.on('uncaughtException', (err) => {
+  console.log('\x1b[31m%s\x1b[0m', err.message);
   process.exit(1);
 });
+
+const args = process.argv.slice(2);
+const flags = new Set(args.filter((a) => a.startsWith('--')));
+const positional = args.filter((a) => !a.startsWith('--'));
+const command = flags.has('--version') ? 'version' : positional[0] || 'watch';
+const json = flags.has('--json');
+
+// Exit code the watcher uses to ask the supervisor for a fresh process.
+const RESTART = 75;
+
+// ════ build ════
+
+async function runBuild() {
+  const result = await build();
+  if (json) {
+    const { css, ...rest } = result;
+    process.stdout.write(JSON.stringify(rest, null, 2) + '\n');
+  } else {
+    result.warnings.forEach((w) => console.warn(w));
+    if (result.ok) console.log(`√ Elevate CSS Compilation Successful! (${path.relative(process.cwd(), result.file || '') || result.file})`);
+    else console.log('\x1b[31m%s\x1b[0m', `× Compilation failed: ${result.error}`);
+  }
+  process.exit(result.ok ? 0 : 1);
+}
+
+// ════ check ════
+
+function runCheck() {
+  const value = positional.slice(1).join(' ');
+  if (!value.trim()) {
+    console.log('Give the classes to check, in quotes: npm run elevate -- check "row gap:d4 /md/ col"');
+    process.exit(2);
+  }
+  const result = validate(value);
+  if (json) {
+    process.stdout.write(JSON.stringify(result, null, 2) + '\n');
+  } else if (result.ok) {
+    console.log(`√ ${result.classes.length} class${result.classes.length === 1 ? '' : 'es'} OK`);
+  } else {
+    result.problems.forEach((p) => console.log('\x1b[31m%s\x1b[0m', `× ${p.token}: ${p.message}`));
+  }
+  process.exit(result.ok ? 0 : 1);
+}
+
+// ════ describe ════
+
+function runDescribe() {
+  const out = args.find((a) => a.startsWith('--out='))?.slice('--out='.length);
+  const text = JSON.stringify(describe(), null, 2) + '\n';
+  if (out) {
+    fs.mkdirSync(path.dirname(path.resolve(out)), { recursive: true });
+    fs.writeFileSync(out, text, 'utf8');
+    console.log(`√ Design system written to ${out}`);
+  } else {
+    process.stdout.write(text);
+  }
+}
+
+// ════ watch: supervisor ════
+// Tokens, rules and config are loaded once per process, so a change to them
+// needs a fresh process. The supervisor runs the watcher as a child and starts
+// a new one whenever it exits with RESTART.
+
+function supervise() {
+  const script = fileURLToPath(import.meta.url);
+  let child: ReturnType<typeof spawn> | null = null;
+  let stopping = false;
+  const start = () => {
+    child = spawn(process.execPath, [...process.execArgv, script, ...args], {
+      stdio: 'inherit',
+      env: { ...process.env, ELEVATE_WORKER: '1' },
+    });
+    child.on('exit', (code, signal) => {
+      if (code === RESTART && !stopping) {
+        start();
+        return;
+      }
+      process.exit(code ?? (signal ? 0 : 1));
+    });
+  };
+  const stop = (signal: NodeJS.Signals) => {
+    stopping = true;
+    if (child && child.exitCode === null) child.kill(signal);
+    else process.exit(0);
+  };
+  process.on('SIGINT', () => stop('SIGINT'));
+  process.on('SIGTERM', () => stop('SIGTERM'));
+  start();
+}
+
+// ════ watch: worker ════
+
+function watch() {
+  const debugWatch = Boolean(process.env.ELEVATE_DEBUG_WATCH);
+  const logDebug = (message: string) => {
+    if (!debugWatch) return;
+    try {
+      fs.appendFileSync(path.resolve('elevate.debug.log'), `${new Date().toISOString()} ${message}\n`, 'utf8');
+    } catch {
+      // ignore logging failures
+    }
+  };
+
+  const elevateDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+  const watchDirs = watchFolders(config.Watch).map((d) => path.resolve(d));
+  const extendFiles = new Set(config.Extend.map((f) => normalizePath(f)));
+  const ext = (p: string) => path.extname(p).toLowerCase().substring(1);
+  const inside = (p: string, dir: string) => {
+    const rel = path.relative(normalizePath(dir), normalizePath(p));
+    return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
+  };
+  const inWatch = (p: string) => watchDirs.some((d) => inside(p, d));
+  const isTemplate = (p: string) => inWatch(p) && config.FileTypes.includes(ext(p));
+  const isExtend = (p: string) => extendFiles.has(normalizePath(p));
+  const isSystem = (p: string) =>
+    inside(p, elevateDir) && !inWatch(p) && ['ts', 'js', 'mjs', 'cjs', 'json'].includes(ext(p));
+
+  const recentRewrites = new Map<string, number>();
+  const lastFileMtime = new Map<string, number>();
+  const lastFileHash = new Map<string, string>();
+  let suppressWatchUntil = 0;
+  let isCompiling = false;
+  let compileQueued = false;
+  let restarting = false;
+
+  const compile = async () => {
+    const spinner = ora({ text: 'Elevating Your CSS..', color: 'magentaBright', spinner: 'dots' }).start();
+    const result = await build();
+    result.rewrites.forEach((r) => {
+      const normalized = normalizePath(r.file);
+      recentRewrites.set(normalized, Date.now());
+      suppressWatchUntil = Date.now() + 1500;
+      try {
+        lastFileMtime.set(normalized, fs.statSync(r.file).mtimeMs);
+        lastFileHash.set(normalized, createHash('sha1').update(r.content).digest('hex'));
+      } catch {
+        // ignore stat/hash update
+      }
+      logDebug(`[rewrite] ${normalized}`);
+    });
+    if (result.rewrites.length) spinner.info('Env rewrite applied.');
+    if (result.ok) {
+      spinner.succeed('Elevate CSS Compilation Successful!');
+      logDebug('[compile] success');
+    } else {
+      spinner.fail(`Compilation failed: ${result.error}`);
+      logDebug(`[compile] fail ${result.error}`);
+    }
+    result.warnings.forEach((w) => console.warn(w));
+  };
+
+  const runCompile = async () => {
+    if (isCompiling) {
+      compileQueued = true;
+      logDebug('[compile] queued while compiling');
+      return;
+    }
+    isCompiling = true;
+    logDebug('[compile] start');
+    try {
+      await compile();
+    } finally {
+      isCompiling = false;
+      if (compileQueued) {
+        compileQueued = false;
+        logDebug('[compile] dequeued');
+        if (!debugWatch) console.clear();
+        runCompile();
+      }
+    }
+  };
+
+  const restart = (filePath: string) => {
+    if (restarting) return;
+    restarting = true;
+    console.log(`Design system changed (${path.relative(process.cwd(), filePath)}). Restarting...`);
+    watcher.close().finally(() => process.exit(RESTART));
+  };
+
+  // True when a change event carries new content; false for duplicate events
+  // and for edits Elevate made itself.
+  const isRealChange = (filePath: string) => {
+    if (Date.now() < suppressWatchUntil) {
+      logDebug('[watch] suppressed change event');
+      return false;
+    }
+    const absPath = normalizePath(filePath);
+    const recent = recentRewrites.get(absPath);
+    if (recent && Date.now() - recent < 750) {
+      recentRewrites.delete(absPath);
+      return false;
+    }
+    try {
+      const stat = fs.statSync(absPath);
+      const lastMtime = lastFileMtime.get(absPath);
+      if (lastMtime && stat.mtimeMs === lastMtime) return false;
+      let hash = '';
+      try {
+        hash = createHash('sha1').update(fs.readFileSync(absPath, 'utf8')).digest('hex');
+      } catch {
+        // If we can't read file content, fall back to mtime only.
+      }
+      const lastHash = lastFileHash.get(absPath);
+      lastFileMtime.set(absPath, stat.mtimeMs);
+      if (hash && lastHash === hash) return false;
+      if (hash) lastFileHash.set(absPath, hash);
+      logDebug(`[watch] change ${absPath} mtime=${stat.mtimeMs} hash=${hash || 'n/a'}`);
+    } catch {
+      // If we can't stat the file, continue and let the compiler rescan.
+    }
+    return true;
+  };
+
+  const forget = (filePath: string) => {
+    const absPath = normalizePath(filePath);
+    lastFileMtime.delete(absPath);
+    lastFileHash.delete(absPath);
+  };
+
+  const recompile = () => {
+    if (!debugWatch) console.clear();
+    runCompile();
+  };
+
+  const targets = [...watchDirs, elevateDir, ...config.Extend.map((f) => path.resolve(f))].filter((p) => fs.existsSync(p));
+  watchDirs.filter((d) => !fs.existsSync(d)).forEach((d) => console.warn(`Watch folder not found: ${d}. Create it and restart Elevate.`));
+
+  const watcher = chokidar.watch(Array.from(new Set(targets)), {
+    persistent: true,
+    ignoreInitial: true,
+    ignored: (p: string) => {
+      const base = path.basename(p);
+      if (base === 'node_modules' || base === 'elevate.env.json' || base === 'elevate.debug.log') return true;
+      if (base.startsWith('.') && p !== process.cwd()) return true;
+      return p.endsWith('.css') && !isExtend(p);
+    },
+    awaitWriteFinish: {
+      stabilityThreshold: 250,
+      pollInterval: 50,
+    },
+    interval: 1000,
+    binaryInterval: 300,
+  });
+
+  watcher.on('ready', () => {
+    if (!debugWatch) console.clear();
+    console.log('Elevate CSS is watching for changes...');
+    runCompile();
+  });
+
+  watcher.on('change', (filePath: string) => {
+    if (isSystem(filePath)) return restart(filePath);
+    if (!isTemplate(filePath) && !isExtend(filePath)) return;
+    if (isRealChange(filePath)) recompile();
+  });
+
+  watcher.on('add', (filePath: string) => {
+    if (isSystem(filePath)) return restart(filePath);
+    if (!isTemplate(filePath) && !isExtend(filePath)) return;
+    if (isRealChange(filePath)) recompile();
+  });
+
+  watcher.on('unlink', (filePath: string) => {
+    forget(filePath);
+    if (isSystem(filePath)) return restart(filePath);
+    if (isTemplate(filePath) || isExtend(filePath)) recompile();
+  });
+
+  watcher.on('unlinkDir', (dirPath: string) => {
+    if (inWatch(dirPath)) recompile();
+  });
+
+  const shutdown = () => {
+    console.log('Elevate CSS is shutting down...');
+    process.exit(0);
+  };
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
+}
+
+// ════ dispatch ════
+
+switch (command) {
+  case 'watch':
+    if (process.env.ELEVATE_WORKER === '1') watch();
+    else supervise();
+    break;
+  case 'build':
+    runBuild();
+    break;
+  case 'check':
+    runCheck();
+    break;
+  case 'describe':
+    runDescribe();
+    break;
+  case 'version':
+    console.log(VERSION);
+    break;
+  default:
+    console.log(`Unknown command "${command}". Use watch, build, check or describe.`);
+    process.exit(2);
+}

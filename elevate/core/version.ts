@@ -1,0 +1,2 @@
+// The Elevate version this copy of the compiler came from.
+export const VERSION = '1.2.0';

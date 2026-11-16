@@ -39,13 +39,11 @@ import { rules } from '../config/syntax.js';
 // ║ Includes foundational setup, such as error handling and token maps.║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-Error.stackTraceLimit = 0;
-process.on('uncaughtException', (err) => {
-    console.log('\x1b[31m%s\x1b[0m', err.message); // Red color
-    process.exit(1);
-});
+// The command line sets up its own error handling (see index.ts), so importing
+// this module from code has no side effects on the process.
 
-const types = {
+// Every token map and rule map, by type name. Exported for describe().
+export const types = {
 
     ...designSystem,
     ...elevateRules,
@@ -725,11 +723,9 @@ export function getBreakpointPriority(breakpoint: string): number {
 // ║        Handles final CSS content output to a file.                 ║
 // ╚════════════════════════════════════════════════════════════════════╝
 
-// Writes the compiled CSS content, along with reset and contain styles, to the elevate.css output file.
-export async function writeToFile(content: string) {
-    const filePath = `${config.Output}/elevate.css`; // Define the file path
-    // Clear or create the file
-    await fs.promises.writeFile(filePath, '', 'utf8'); // Ensures a clean slate
+// Adds the reset, the contain rules and any Extend files around the compiled rules.
+export async function assembleCSS(content: string): Promise<{ css: string; warnings: string[] }> {
+    const warnings: string[] = [];
     //Compose Contain CSS
     let containString = '';
     Object.entries(contain).forEach(([key, value]) => {
@@ -751,32 +747,42 @@ export async function writeToFile(content: string) {
         containString += newEntry;
     });
 
-    try {
-        // Read all CSS from the file paths in config.extend
-        const cssPromises = config.Extend.map(async (relativePath) => {
-            try {
-                const absolutePath = path.resolve(relativePath);
-                return await fs.promises.readFile(absolutePath, 'utf8');
-            } catch (readError) {
-                // Handle missing or unreadable files gracefully
-                console.warn(`Warning: Could not read file at ${relativePath}. Skipping.`);
-                return ''; // Return empty string for failed files
-            }
-        });
+    // Read all CSS from the file paths in config.extend
+    const fetchedCSS = await Promise.all(config.Extend.map(async (relativePath) => {
+        try {
+            return await fs.promises.readFile(path.resolve(relativePath), 'utf8');
+        } catch {
+            // Handle missing or unreadable files gracefully
+            warnings.push(`Could not read the Extend file ${relativePath}. Skipping it.`);
+            return '';
+        }
+    }));
 
-        // Wait for all CSS to be read
-        const fetchedCSS = await Promise.all(cssPromises);
-
-        // Combine the reset CSS, provided content, and fetched CSS
-        const combinedCSS =
-            `${cssReset}\n\n${containString}\n\n${content}\n\n${
-                fetchedCSS.filter(Boolean).join('\n\n') // Skip empty strings
-            }`;
-
-        // Write the combined content to the file
-        await fs.promises.writeFile(filePath, combinedCSS, 'utf8');
-    } catch (error) {
-        console.error('Error during file processing:', error);
-    }
+    // Combine the reset CSS, provided content, and fetched CSS
+    const css =
+        `${cssReset}\n\n${containString}\n\n${content}\n\n${
+            fetchedCSS.filter(Boolean).join('\n\n') // Skip empty strings
+        }`;
+    return { css, warnings };
 }
 
+// The path of the compiled stylesheet.
+export function outputFile(): string {
+    return path.resolve(config.Output, 'elevate.css');
+}
+
+// Writes the finished stylesheet in one step, so tools watching it never see a
+// half-written or empty file.
+export async function writeCSS(css: string): Promise<string> {
+    const filePath = outputFile();
+    await fs.promises.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.promises.writeFile(filePath, css, 'utf8');
+    return filePath;
+}
+
+// Writes the compiled CSS content, along with reset and contain styles, to the elevate.css output file.
+export async function writeToFile(content: string) {
+    const { css, warnings } = await assembleCSS(content);
+    warnings.forEach((w) => console.warn(`Warning: ${w}`));
+    await writeCSS(css);
+}

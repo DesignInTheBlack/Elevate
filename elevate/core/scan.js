@@ -321,7 +321,7 @@ const extractClassesFromTemplateExpression = (expression) => {
   return found.filter(Boolean);
 };
 
-const splitClassTokens = (raw) => {
+export const splitClassTokens = (raw) => {
   const tokens = []
   let current = ''
   let depth = 0
@@ -362,6 +362,38 @@ const splitClassTokens = (raw) => {
 }
 
 /**
+ * Split one class attribute value into Elevate tokens. State blocks such as
+ * @hover:[a_b] stay whole. Tokens that can't be class names are returned in
+ * `rejected` so callers can report them.
+ */
+export const parseClassValue = (classValue) => {
+  const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g
+  const states = []
+  const placeholders = []
+  let index = 0
+  let stateMatch
+  let classString = classValue
+
+  while ((stateMatch = statePattern.exec(classValue)) !== null) {
+    const placeholder = `__STATE${index}__`
+    states.push(stateMatch[0])
+    placeholders.push(placeholder)
+    classString = classString.replace(stateMatch[0], placeholder)
+    index++
+  }
+
+  const parts = splitClassTokens(classString).map((part) => {
+    const i = placeholders.indexOf(part)
+    return i !== -1 ? states[i] : part
+  })
+
+  return {
+    classes: parts.filter(isValidClass),
+    rejected: parts.filter((part) => !isValidClass(part)),
+  }
+}
+
+/**
  * Extract class attributes from file content with line numbers
  */
 const extractClasses = (content, classList, filePath) => {
@@ -390,29 +422,7 @@ const extractClasses = (content, classList, filePath) => {
         classValue = staticParts.join(' ')
       }
 
-      const statePattern = /@[^\:\s]+\:\[[^\]]+\]/g
-      const states = []
-      const placeholders = []
-      let index = 0
-      let stateMatch
-      let classString = classValue
-
-      while ((stateMatch = statePattern.exec(classValue)) !== null) {
-        const placeholder = `__STATE${index}__`
-        states.push(stateMatch[0])
-        placeholders.push(placeholder)
-        classString = classString.replace(stateMatch[0], placeholder)
-        index++
-      }
-
-      const parts = splitClassTokens(classString)
-
-      const classNames = parts
-        .map((part) => {
-          const i = placeholders.indexOf(part)
-          return i !== -1 ? states[i] : part
-        })
-        .filter(isValidClass)
+      const classNames = parseClassValue(classValue).classes
 
       if (classNames.length > 0) {
         const badState = classNames.find(hasStateBlockWhitespace);
@@ -443,11 +453,44 @@ const extractClasses = (content, classList, filePath) => {
 }
 
 /**
- * Entrypoint for scanning
+ * Scan a string of source, as if it were a file at `filePath`.
  */
-export function findClassAttributes(startDir = process.cwd(), fileTypes = config.FileTypes) {
+export function scanSource(content, filePath = '(source)') {
+  const classList = []
+  extractClasses(content, classList, filePath)
+  return classList
+}
+
+/**
+ * Normalise the Watch option, which may be one folder or a list of folders.
+ */
+export function watchFolders(watch = config.Watch) {
+  return (Array.isArray(watch) ? watch : [watch]).filter(Boolean)
+}
+
+/**
+ * Scan every watched folder. Errors are thrown, so a bad class attribute
+ * stops the build with its file and line instead of compiling nothing.
+ * Folders that don't exist yet are skipped and reported through `warn`.
+ */
+export function scanFolders(watch = config.Watch, fileTypes = config.FileTypes, warn = console.warn) {
+  const classList = []
+  watchFolders(watch).forEach((dir) => {
+    if (!fs.existsSync(dir)) {
+      warn(`Watch folder not found: ${dir}. Skipping it.`)
+      return
+    }
+    searchFiles(dir, fileTypes, classList)
+  })
+  return classList
+}
+
+/**
+ * Entrypoint for scanning (kept for existing callers)
+ */
+export function findClassAttributes(startDir = config.Watch, fileTypes = config.FileTypes) {
   try {
-    return searchFiles(startDir, fileTypes)
+    return scanFolders(startDir, fileTypes)
   } catch (err) {
     console.error('Error traversing files:', err.message)
     return []
