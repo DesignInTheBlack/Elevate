@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { exec, spawn } from "child_process";
+import { spawn } from "child_process";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -21,20 +21,8 @@ const installScript = path.resolve(__dirname, "./install.js");
 const projectCommands = new Set(["watch", "build", "check", "describe"]);
 
 if (command === "prepare") {
-  console.log("Running the prepare command...");
-
-  // Execute the install.js script
-  exec(`node ${installScript}`, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing prepare: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`Prepare stderr: ${stderr}`);
-      return;
-    }
-    console.log(`Prepare stdout:\n${stdout}`);
-  });
+  const child = spawn(process.execPath, [installScript], { stdio: "inherit" });
+  child.on("exit", (code) => process.exit(code ?? 1));
 
 } else if (projectCommands.has(command)) {
   const entry = path.resolve(process.cwd(), "elevate/core/index.ts");

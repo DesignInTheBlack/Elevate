@@ -32,6 +32,14 @@ npm run elevate
 `prepare` scaffolds the `elevate/` directory into your project and adds the `elevate` script to your `package.json`.
 `npm run elevate` compiles once, then watches your templates and recompiles on every save. Changing a token, rule or setting restarts it automatically.
 
+## Upgrading
+```bash
+npm install elevate-framework@latest
+npx elevate-framework prepare
+```
+
+Running `prepare` again replaces only `elevate/core/`, the compiler. Your config, tokens, rules and templates stay as they are, and the old `core` is saved in `.elevate-backup/` first.
+
 ## Commands
 - `npm run elevate`: compile, then watch
 - `npm run elevate -- build`: compile once and exit (non-zero on error, for CI and hosts)
