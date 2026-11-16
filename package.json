@@ -7,7 +7,7 @@
     "node": ">=18"
   },
   "bin": {
-    "elevate": "./bin/cli.js"
+    "elevate": "bin/cli.js"
   },
   "scripts": {
     "elevate": "tsx elevate/core/index.ts",
