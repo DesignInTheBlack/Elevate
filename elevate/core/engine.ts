@@ -472,19 +472,31 @@ export function generateCSS(
       const excludeIsExact = !elsewhere.some((e) => here.some((h) => covers(e, h)));
       const include = `:where(${Array.from(new Set(here.map((u) => u.selector))).join(', ')})`;
       const exclude = `:where(:not(${Array.from(new Set(elsewhere.map((u) => u.selector))).join(', ')}))`;
-      if (!includeIsExact && !excludeIsExact) {
+      // :where() adds no specificity, so rule weights are unchanged.
+      // Prefer an exact form; between two exact forms, the shorter one.
+      if (excludeIsExact && (!includeIsExact || elsewhere.length <= here.length)) return exclude;
+      if (includeIsExact) return include;
+      // Neither short form is exact: some element here is a smaller set of
+      // classes than one elsewhere, and the other way round. So name each
+      // element here by its classes, minus every element elsewhere that
+      // carries all of them and more.
+      const same = (a: Use, b: Use) => a.tokens.size === b.tokens.size && covers(a, b);
+      const precise = here.map((h) => {
+        const larger = elsewhere.filter((e) => covers(h, e) && !same(h, e)).map((e) => e.selector);
+        return larger.length ? `${h.selector}:not(${Array.from(new Set(larger)).join(', ')})` : h.selector;
+      });
+      // Only the very same classes at different breakpoints, which takes two
+      // elements that write them in a different order, can't be separated.
+      const twin = here.find((h) => elsewhere.some((e) => same(h, e)));
+      if (twin) {
         const key = `${className}@${rank}`;
         if (!warnedAmbiguity.has(key)) {
           warnedAmbiguity.add(key);
-          const e = elsewhere.find((x) => here.some((h) => covers(x, h)))!;
-          warn(`Responsive ambiguity: "${className}" in ${e.where} can't be told apart from an element that carries all of its classes but uses "${className}" at a different breakpoint. Add or change a class on one of them.`);
+          const other = elsewhere.find((e) => same(twin, e))!;
+          warn(`Responsive ambiguity: the elements in ${twin.where} and ${other.where} have exactly the same classes, but use "${className}" at different breakpoints, so CSS can't tell them apart. Add or change a class on one of them.`);
         }
       }
-      // :where() adds no specificity, so rule weights are unchanged.
-      // Prefer the exact form; between two exact forms, the shorter one.
-      if (excludeIsExact && (!includeIsExact || elsewhere.length <= here.length)) return exclude;
-      if (includeIsExact) return include;
-      return exclude;
+      return `:where(${Array.from(new Set(precise)).join(', ')})`;
     };
     scopeByFile.forEach((stack, fileKey) => {
       if (stack.length > 0) {

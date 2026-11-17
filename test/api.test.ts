@@ -135,3 +135,28 @@ test('visually-hidden takes an element off the screen and leaves it for screen r
   assert.match(rule, /clip-path:\s*inset\(50%\)/);
   assert.match(rule, /white-space:\s*nowrap/);
 });
+
+test('elements that carry all of each other\'s classes at different breakpoints are still told apart', async () => {
+  // Four grids. Three columns start at laptops on two of them and at tablets
+  // on the other two, and each pair has one whose classes are all on a grid
+  // in the other pair. Neither "only these" nor "all but those" is exact.
+  const grids = [
+    'grid:cols-1-fr gap:d4 /lg/ grid:cols-3-fr',
+    'grid:cols-1-fr gap:d4 /md/ grid:cols-2-fr /lg/ grid:cols-3-fr',
+    'grid:cols-1-fr gap:d4 /md/ grid:cols-3-fr',
+    'grid:cols-1-fr gap:d4 /md/ grid:cols-3-fr /lg/ grid:cols-4-fr',
+  ];
+  const result = await build({ write: false, files: false, extra: grids });
+  assert.equal(result.ok, true, result.error);
+  assert.deepEqual(result.warnings.filter((w) => /ambiguity/.test(w)), []);
+  const rules = result.css.split('\n').filter((l) => l.startsWith('.grid\\:cols-3-fr'));
+  assert.equal(rules.length, 2, 'one rule for tablets and one for laptops');
+  // Each names its own elements, less the larger ones that carry their classes.
+  rules.forEach((rule) => assert.match(rule, /:where\(.*:not\(/));
+});
+
+test('exactly the same classes at different breakpoints are still reported, with both places', async () => {
+  const result = await build({ write: false, files: false, extra: ['row gap:d2 /md/ col', 'col gap:d2 /md/ row'] });
+  assert.equal(result.ok, true, result.error);
+  assert.match(result.warnings.join('\n'), /Responsive ambiguity: the elements in .* and .* have exactly the same classes/);
+});
