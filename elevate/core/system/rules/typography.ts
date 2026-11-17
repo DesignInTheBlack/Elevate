@@ -13,6 +13,17 @@ export const typography = {
     unicase: 'unicase',
     'titling-caps': 'titling-caps'
   },
+  // Figures: tabular for columns of numbers, oldstyle for running text.
+  fontNumeric: {
+    normal: 'normal',
+    'tabular-nums': 'tabular-nums',
+    'proportional-nums': 'proportional-nums',
+    'lining-nums': 'lining-nums',
+    'oldstyle-nums': 'oldstyle-nums',
+    'slashed-zero': 'slashed-zero',
+    'diagonal-fractions': 'diagonal-fractions',
+    ordinal: 'ordinal'
+  },
   fontStretch: {
     'ultra-condensed': 'ultra-condensed',
     'extra-condensed': 'extra-condensed',

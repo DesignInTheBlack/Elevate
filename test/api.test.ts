@@ -81,3 +81,21 @@ test('describe lists breakpoints, tokens, rules and what each property accepts',
   // JSON-safe: survives a round trip unchanged
   assert.deepEqual(JSON.parse(JSON.stringify(d)), d);
 });
+
+test('attribute states follow aria-current, aria-expanded and open', async () => {
+  const css = await compile('text:grey @current:[text:black]', 'hidden @expanded:[block]', 'opacity:0 @open:[opacity:1]');
+  assert.match(css, /\[aria-current\]:not\(\[aria-current="false"\]\)/);
+  assert.match(css, /\[aria-expanded="true"\]/);
+  assert.match(css, /\[open\]/);
+  assert.equal(validate('@current:[text:black] @pressed:[bg-color:black]').ok, true);
+});
+
+test('font-numeric sets the style of figures', async () => {
+  const css = await compile('font-numeric:tabular-nums');
+  assert.match(css, /font-variant-numeric:\s*tabular-nums/);
+});
+
+test('the hidden attribute beats display classes', async () => {
+  const css = await compile('row');
+  assert.match(css, /\[hidden\]:not\(\[hidden='until-found'\]\)\s*\{\s*display:\s*none !important;/);
+});

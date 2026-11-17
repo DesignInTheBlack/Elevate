@@ -115,6 +115,7 @@ export const elevateRules = {
     FontStyleRule: typography.fontStyle,
     FontVariantRule: typography.fontVariant,
     FontStretchRule: typography.fontStretch,
+    FontNumericRule: typography.fontNumeric,
     TextOverflowRule: typography.textOverflow,
     TextRenderingRule: typography.textRendering,
     WritingModeRule: typography.writingMode,

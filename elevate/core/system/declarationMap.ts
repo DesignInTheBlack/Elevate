@@ -193,6 +193,7 @@ export const declarationMap = {
     'font-style': { "font-style": "FontStyleRule" },
     'font-variant': { "font-variant": "FontVariantRule" },
     'font-stretch': { "font-stretch": "FontStretchRule" },
+    'font-numeric': { "font-variant-numeric": "FontNumericRule" },
     'text-indent': { "text-indent": "SpacingToken" },
     'text-overflow': { "text-overflow": "TextOverflowRule" },
     'text-rendering': { "text-rendering": "TextRenderingRule" },

@@ -548,15 +548,29 @@ export function generateCSS(
       'file-selector-button',
     ]);
 
+    // States that follow an element's ARIA or open state, so a script sets
+    // aria-current or aria-expanded and the styles follow, without touching
+    // classes: @current:[text:ink], @expanded:[rotate:180].
+    const ATTRIBUTE_STATES: Record<string, string> = {
+      current: '[aria-current]:not([aria-current="false"])',
+      expanded: '[aria-expanded="true"]',
+      selected: '[aria-selected="true"]',
+      pressed: '[aria-pressed="true"]',
+      open: '[open]',
+    };
+
     const buildStateSuffix = (state: string | string[] | null | undefined) => {
       if (!state) return '';
       const chain = Array.isArray(state) ? state : String(state).split('+');
       const pseudoClasses: string[] = [];
       const pseudoElems: string[] = [];
 
+      const attributes: string[] = [];
       chain.forEach((token) => {
         if (!token) return;
-        if (pseudoElements.has(token)) {
+        if (ATTRIBUTE_STATES[token]) {
+          attributes.push(ATTRIBUTE_STATES[token]);
+        } else if (pseudoElements.has(token)) {
           pseudoElems.push(token);
         } else {
           pseudoClasses.push(token);
@@ -570,7 +584,7 @@ export function generateCSS(
         );
       }
       const elemPart = pseudoElems.length ? `::${pseudoElems[0]}` : '';
-      return `${classPart}${elemPart}`;
+      return `${attributes.join('')}${classPart}${elemPart}`;
     };
 
     const defaultAutoGridMin = (() => {

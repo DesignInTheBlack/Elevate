@@ -14,6 +14,13 @@ html {
   padding: 0;
 }
 
+/* The hidden attribute always hides, even on an element with a display class
+   like row or grid, so scripts can show and hide things without swapping
+   classes. */
+[hidden]:not([hidden='until-found']) {
+  display: none !important;
+}
+
 body {
   min-height: 100vh;
   line-height: 1.5;
