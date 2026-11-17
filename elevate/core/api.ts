@@ -13,10 +13,9 @@ import { config } from '../config/elevate.js';
 import { designSystem } from '../config/design.js';
 import { rules as customRules } from '../config/syntax.js';
 import { elevateCompiler } from './parser.js';
-import { types, writeCSS, outputFile, getBreakpointPriority } from './utility.js';
+import { types, writeCSS, outputFile, getBreakpointPriority, siteBreakpoints } from './utility.js';
 import { parseClassValue, scanFolders, watchFolders } from './scan.js';
 import { declarationMap } from './system/declarationMap.js';
-import { breakpoints } from './system/design/breakpoints.js';
 import { elevateRules } from './system/elevateRules.js';
 import {
   compileProject,
@@ -67,7 +66,7 @@ export type ValidateResult = {
   problems: ClassProblem[];
 };
 
-const isMarker = (t: string) => /^\/[a-zA-Z0-9]{1,3}\/$/.test(t);
+const isMarker = (t: string) => /^\/[a-zA-Z0-9_-]{1,12}\/$/.test(t);
 
 // Pulls the first real sentence out of a compiler message, without the
 // heading word, the "in file on line" part or the tips.
@@ -97,7 +96,7 @@ export function validate(value: string): ValidateResult {
     if (token.startsWith('ctx:') || token.startsWith('env:')) return;
     if (isMarker(token)) {
       if (getBreakpointPriority(token) < 0) {
-        const names = Object.keys(breakpoints).join(', ');
+        const names = siteBreakpoints.map((b) => b.name).join(', ');
         const message = `"${token}" is not a breakpoint. Use one of: ${names}.`;
         problems.push({ token, message, detail: message });
       }
@@ -229,8 +228,7 @@ export function describe(): DesignSystemDescription {
 
   return {
     elevate: VERSION,
-    breakpoints: Object.entries(breakpoints as Record<string, string>)
-      .map(([name, minWidth]) => ({ name, minWidth })),
+    breakpoints: siteBreakpoints.map((b) => ({ ...b })),
     tokens,
     rules,
     properties,

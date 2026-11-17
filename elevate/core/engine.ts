@@ -5,7 +5,7 @@
 // ╚════════════════════════════════════════════════════════════════════╝
 
 import { elevateCompiler } from './parser.js';
-import { getBreakpointPriority, getModifierValue, assembleCSS } from './utility.js';
+import { getBreakpointPriority, getBreakpointWidth, getModifierValue, assembleCSS } from './utility.js';
 import { scanFolders, parseClassValue, splitClassTokens } from './scan.js';
 import { config } from '../config/elevate.js';
 import fs from 'fs';
@@ -52,8 +52,8 @@ const cssEscape = (value: string) =>
 
 const isEnvToken = (token: string) => Boolean(getEnvDefineName(token) || getEnvOpenName(token));
 const isCtxToken = (token: string) => token.startsWith('ctx:');
-const isBreakpointToken = (token: string) => /^\/[a-zA-Z0-9_-]{1,5}\/$/.test(token);
-const isMarkerToken = (token: string) => /^\/[a-zA-Z0-9]{1,3}\/$/.test(token);
+const isBreakpointToken = (token: string) => /^\/[a-zA-Z0-9_-]{1,12}\/$/.test(token);
+const isMarkerToken = (token: string) => /^\/[a-zA-Z0-9_-]{1,12}\/$/.test(token);
 
 export const loadEnvRegistry = (warn: Warn = console.warn): Record<string, string[]> => {
   try {
@@ -608,7 +608,7 @@ export function generateCSS(
 
         // Open new media query if breakpoint exists
         if (breakpointSupervisor) {
-          const breakpoint = getModifierValue(item.breakpoint.replace(/\//g, ''));
+          const breakpoint = getBreakpointWidth(item.breakpoint);
           if (!breakpoint) {
             throw new Error(`Invalid breakpoint value: ${item.breakpoint}`);
           }

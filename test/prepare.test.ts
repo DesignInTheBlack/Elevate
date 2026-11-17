@@ -42,3 +42,26 @@ test('prepare installs, then upgrades without touching the project', (t) => {
   assert.match(prepare(dir), /already installed/);
   assert.equal(fs.readdirSync(path.join(dir, '.elevate-backup')).length, 1);
 });
+
+test('a project can rename, move, add and remove breakpoints in config/design.ts', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'elevate-bp-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(dir, 'package.json'), '{"name":"site"}');
+  prepare(dir);
+  const design = path.join(dir, 'elevate', 'config', 'design.ts');
+  // Written out of order on purpose: Elevate puts them in width order.
+  fs.writeFileSync(design, fs.readFileSync(design, 'utf8').replace(/BreakPointToken: breakpoints,/, "BreakPointToken: { desktop: '75rem', tablet: '700px', md: '50rem' },"));
+  const script = path.join(dir, 'check.mts');
+  fs.writeFileSync(script, `
+import { build, validate, describe } from './elevate/core/api.ts';
+const r = await build({ write: false, files: false, extra: ['row /desktop/ col', 'pd:d2 /tablet/ pd:d4 /md/ pd:d6', 'contain'] });
+console.log(JSON.stringify({ ok: r.ok, error: r.error, css: r.css, bps: describe().breakpoints, bad: validate('row /lg/ col').problems.map((p) => p.message) }));
+`);
+  const out = JSON.parse((fs.symlinkSync(path.join(repo, 'node_modules'), path.join(dir, 'node_modules')), execFileSync(process.execPath, ['--import', 'tsx', script], { cwd: dir })).toString().trim().split('\n').pop()!);
+  assert.equal(out.ok, true, out.error);
+  assert.deepEqual(out.bps.map((b: any) => b.name), ['tablet', 'md', 'desktop']);
+  const at = (w: string) => out.css.lastIndexOf(`@media only screen and (min-width:${w})`);
+  assert.ok(at('700px') > 0 && at('700px') < at('50rem') && at('50rem') < at('75rem'), 'media queries in width order');
+  assert.doesNotMatch(out.css, /min-width:64rem/, 'removed breakpoints are gone, contain included');
+  assert.match(out.bad[0], /not a breakpoint\. Use one of: tablet, md, desktop/);
+});

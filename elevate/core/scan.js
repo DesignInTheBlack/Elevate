@@ -110,7 +110,7 @@ const isValidClass = (c) => {
     ) return false
   
     // Allow slash-wrapped breakpoints like /lg/
-    const isSlashWrapped = /^\/[a-zA-Z0-9_-]{1,5}\/$/.test(c)
+    const isSlashWrapped = /^\/[a-zA-Z0-9_-]{1,12}\/$/.test(c)
     if (c.startsWith('/') || c.endsWith('/')) {
       return isSlashWrapped
     }
