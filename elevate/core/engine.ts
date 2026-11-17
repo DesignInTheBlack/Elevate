@@ -348,6 +348,17 @@ export function generateCSS(
           // A marker is a whole class like /md/. Anchored, so a pass-through value
           // such as bg-img:(url(/img/a.jpg)) is never mistaken for one.
           if (isMarkerToken(classString)) {
+            // Mobile first: a marker applies to every class after it, so the
+            // sizes read smallest to largest. One that goes backwards usually
+            // means a class has landed in the wrong group.
+            const rank = getBreakpointPriority(classString);
+            const before = lastBreak ? getBreakpointPriority(lastBreak) : -1;
+            if (lastBreak && rank >= 0 && rank <= before) {
+              const where = instance.file ? ` in ${instance.file} on line ${instance.lineNumber}` : '';
+              warn(rank === before
+                ? `Breakpoint written twice: ${classString} appears more than once in one class list${where}. Put its classes together after a single ${classString}.`
+                : `Breakpoints out of order: ${classString} comes after ${lastBreak} in one class list${where}. A marker applies to every class after it, so write the sizes smallest first and keep each size's classes behind its own marker.`);
+            }
             lastBreak = classString;
             return;
           }

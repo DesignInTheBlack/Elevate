@@ -99,3 +99,14 @@ test('the hidden attribute beats display classes', async () => {
   const css = await compile('row');
   assert.match(css, /\[hidden\]:not\(\[hidden='until-found'\]\)\s*\{\s*display:\s*none !important;/);
 });
+
+test('breakpoints written out of order, or twice, are warned about with the file and line', async () => {
+  const fine = await build({ write: false, files: false, extra: ['pd:d2 /md/ pd:d4 /lg/ pd:d6'] });
+  assert.deepEqual(fine.warnings.filter((w) => /Breakpoint/.test(w)), []);
+  const back = await build({ write: false, files: false, extra: ['pd:d2 /lg/ pd:d6 /md/ pd:d4'] });
+  assert.equal(back.ok, true);
+  assert.match(back.warnings.join('\n'), /Breakpoints out of order: \/md\/ comes after \/lg\/ in one class list/);
+  assert.match(back.warnings.join('\n'), /smallest first/);
+  const twice = await build({ write: false, files: false, extra: ['pd:d2 /md/ pd:d4 /md/ gap:d4'] });
+  assert.match(twice.warnings.join('\n'), /Breakpoint written twice: \/md\/ appears more than once/);
+});
