@@ -650,7 +650,9 @@ export function generateCSS(
                           ? `display:grid;\ngrid-template-columns:repeat(auto-fit, minmax(${defaultAutoGridMin}, 1fr));`
                           : item.property === 'grid'
                             ? 'display:grid;'
-                            : '';
+                            : item.property === 'line-clamp'
+                              ? 'display:-webkit-box;\n-webkit-box-orient:vertical;\noverflow:hidden;'
+                              : '';
 
       const modifiers = item.modifiers.map((modifier: string) => `${modifier};`).join('\n');
 

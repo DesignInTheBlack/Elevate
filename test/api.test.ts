@@ -118,3 +118,20 @@ test("a script's own ${…} value inside class quotes is left out, and the class
   const mixed = scanSource('const a = `<p class="row gap:d2 ${extra}">x</p>`;', 'a.js');
   assert.deepEqual(mixed.flatMap((m: { classes: string[] }) => m.classes), ['row', 'gap:d2']);
 });
+
+test('line-clamp writes everything a browser needs to cut text off at a line count', async () => {
+  const css = await compile('line-clamp:2');
+  const rule = css.match(/\.line-clamp\\:2\s*\{[^}]*\}/)?.[0] ?? '';
+  assert.match(rule, /display:\s*-webkit-box/);
+  assert.match(rule, /-webkit-box-orient:\s*vertical/);
+  assert.match(rule, /-webkit-line-clamp:\s*2/);
+  assert.match(rule, /overflow:\s*hidden/);
+});
+
+test('visually-hidden takes an element off the screen and leaves it for screen readers', async () => {
+  const css = await compile('visually-hidden');
+  const rule = css.match(/\.visually-hidden\s*\{[^}]*\}/)?.[0] ?? '';
+  assert.match(rule, /position:\s*absolute/);
+  assert.match(rule, /clip-path:\s*inset\(50%\)/);
+  assert.match(rule, /white-space:\s*nowrap/);
+});

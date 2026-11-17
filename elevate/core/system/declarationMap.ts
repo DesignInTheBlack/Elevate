@@ -42,6 +42,18 @@ export const declarationMap = {
     contents: { "display": "contents" },
     "list-item": { "display": "list-item" },
     hidden: { "display": "none" },
+    // Off the screen, still read aloud by screen readers.
+    "visually-hidden": {
+        "position": "absolute",
+        "width": "1px",
+        "height": "1px",
+        "margin": "-1px",
+        "padding": "0",
+        "overflow": "hidden",
+        "clip-path": "inset(50%)",
+        "white-space": "nowrap",
+        "border": "0"
+    },
 
     // =============================
     // Z-Index
@@ -202,7 +214,9 @@ export const declarationMap = {
     'writing-mode': { "writing-mode": "WritingModeRule" },
     'direction': { "direction": "DirectionRule" },
     'unicode-bidi': { "unicode-bidi": "UnicodeBidiRule" },
-    'line-clamp': { "line-clamp": "NumericToken" },
+    // The engine adds the box, direction and overflow that a browser needs
+    // before it will cut text off at a line count.
+    'line-clamp': { "-webkit-line-clamp": "NumericToken" },
     'text-decoration-color': { "text-decoration-color": "ColorToken" },
     'text-decoration-style': { "text-decoration-style": "BorderStyleRule" },
     'text-decoration-thickness': { "text-decoration-thickness": "SpacingToken" },
