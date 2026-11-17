@@ -417,7 +417,8 @@ const extractClasses = (content, classList, filePath) => {
       const isStatic = !rawValue.includes('${')
       let classValue = rawValue.trim()
 
-      if (regex.source.includes('`') || regex.source.includes('{')) {
+      // A ${…} inside the quotes is the script's own value, not a class.
+      if (!isStatic || regex.source.includes('`') || regex.source.includes('{')) {
         const staticParts = extractStaticClassesFromTemplate(classValue)
         classValue = staticParts.join(' ')
       }

@@ -110,3 +110,11 @@ test('breakpoints written out of order, or twice, are warned about with the file
   const twice = await build({ write: false, files: false, extra: ['pd:d2 /md/ pd:d4 /md/ gap:d4'] });
   assert.match(twice.warnings.join('\n'), /Breakpoint written twice: \/md\/ appears more than once/);
 });
+
+test("a script's own ${…} value inside class quotes is left out, and the classes beside it stay", async () => {
+  const { scanSource } = await import('../elevate/core/scan.js');
+  const only = scanSource('const a = `<p class="${look}">x</p>`;', 'a.js');
+  assert.deepEqual(only.flatMap((m: { classes: string[] }) => m.classes), []);
+  const mixed = scanSource('const a = `<p class="row gap:d2 ${extra}">x</p>`;', 'a.js');
+  assert.deepEqual(mixed.flatMap((m: { classes: string[] }) => m.classes), ['row', 'gap:d2']);
+});
