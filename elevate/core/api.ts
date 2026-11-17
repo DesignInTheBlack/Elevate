@@ -74,7 +74,7 @@ const isMarker = (t: string) => /^\/[a-zA-Z0-9]{1,3}\/$/.test(t);
 const summarize = (message: string) => {
   const first = message.trim().split('\n').find((l) => l.trim()) || message;
   return first
-    .replace(/^[A-Za-z ]+:\s+(?=[A-Z"])/, '')
+    .replace(/^[A-Za-z /-]+:\s+(?=[A-Z"])/, '')
     .replace(/ in \S+ on line \d+/, '')
     .trim();
 };
