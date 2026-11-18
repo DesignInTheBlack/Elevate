@@ -413,7 +413,23 @@ function constructRule(modType: string, property: string, modifier: string, cont
 // ╚════════════════════════════════════════════════════════════════════╝
 
 // Determines the type of a given modifier (token) by checking known token maps and patterns.
+// The answer depends only on the modifier and the token maps, which don't
+// change after loading, so each modifier is worked out once. (Builds call this
+// for every modifier of every class at every screen size.)
+const modifierTypes = new Map<string, string[]>();
+
 export function getModifierType(
+    modifier: string,
+    context?: { fileName: string, lineNumber: number }
+): string[] {
+    const known = modifierTypes.get(modifier);
+    if (known) return [...known];
+    const found = findModifierType(modifier, context);
+    modifierTypes.set(modifier, found);
+    return [...found];
+}
+
+function findModifierType(
     modifier: string,
     context?: { fileName: string, lineNumber: number }
 ): string[] {
@@ -533,7 +549,19 @@ For more information, refer to https://elevate-docs.pages.dev\n`
 }
 
 // Attempts to find a given modifier in the general token maps and returns its corresponding value if found.
+// Like getModifierType, the answer depends only on the modifier and which token
+// types the property accepts, so each pair is looked up once.
+const generalValues = new Map<string, string | null | undefined>();
+
 function getGeneralTokenValue(modifier: string, context: Record<string, string>): string | null {
+    const key = context ? `${modifier}\u0001${JSON.stringify(Object.values(context))}` : `${modifier}\u0001`;
+    if (generalValues.has(key)) return generalValues.get(key) as string | null;
+    const value = findGeneralTokenValue(modifier, context);
+    generalValues.set(key, value);
+    return value;
+}
+
+function findGeneralTokenValue(modifier: string, context: Record<string, string>): string | null {
 
     if (context) {
 
