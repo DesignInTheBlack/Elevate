@@ -160,3 +160,22 @@ test('exactly the same classes at different breakpoints are still reported, with
   assert.equal(result.ok, true, result.error);
   assert.match(result.warnings.join('\n'), /Responsive ambiguity: the elements in .* and .* have exactly the same classes/);
 });
+
+test('a name two kinds of token share goes to the one the rest of the class leaves free', async () => {
+  // "none" is both a line height and a text decoration. With hug as the line
+  // height, none can only mean the decoration.
+  const css = await compile('text:hug:none');
+  const rule = css.match(/\.text\\:hug\\:none\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(rule, /line-height:\s*1\.2/);
+  assert.match(rule, /text-decoration(-line)?:\s*none/);
+  assert.doesNotMatch(rule, /line-height:\s*1;/);
+});
+
+test('a name two kinds of token share keeps its usual meaning when nothing else decides', async () => {
+  // On its own, "none" is the line height, as it always has been.
+  const css = await compile('text:none');
+  const rule = css.match(/\.text\\:none\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(rule, /line-height:\s*1;/);
+  assert.doesNotMatch(rule, /text-decoration/);
+});
+

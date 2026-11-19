@@ -69,6 +69,10 @@ Beyond Getting Started:
 - [Writing Elevate - Backgrounds](https://elevate-docs.pages.dev/css/backgrounds/)
 - [Writing Elevate - Text](https://elevate-docs.pages.dev/css/text/)
 
+For AI assistants: [llms.txt](https://elevate-docs.pages.dev/llms.txt) is a short guide to writing Elevate, and [llms-full.txt](https://elevate-docs.pages.dev/llms-full.txt) holds every property, token and error. Point an assistant at them before it writes classes.
+
+Elevate also styles [Verso](https://github.com/DesignInTheBlack/verso), a website builder where the page is the editor.
+
 ## Community
 - [Discord](https://discord.gg/T3X2vBYA)
 - [GitHub](https://github.com/DesignInTheBlack/Elevate)

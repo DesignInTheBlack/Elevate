@@ -364,6 +364,11 @@ For more information, refer to https://elevate-docs.pages.dev\n`
         }
 
 
+    // Which declaration each value sets. Worked out for the whole class at once,
+    // so a name used by two kinds of token (a size and a typeface both called
+    // "display", say) goes to the one no other value in the class has taken.
+    const claims = isDirectional(property) ? null : claimDeclarations(property, modifiers, context);
+
     // Map and construct rules for each modifier
     return modifiers.map((mod: any, index: number) => {
         // Replace the colon in the mod.image string to get the modifier
@@ -387,12 +392,72 @@ For more information, refer to https://elevate-docs.pages.dev\n`
         } else {
             // Otherwise, determine the modifier type using the getModifierType function
             modType = getModifierType(modifier, context);
+            const claim = claims?.[index];
+            if (claim) return claim;
         }
     
         // Construct the rule using the modType, property, modifier, and context
         return constructRule(modType, property, modifier, context);
     });
     
+}
+
+function isDirectional(property: string): boolean {
+    return ['pd', 'mg', 'inset', 'mg-y', 'pd-y', 'mg-x', 'pd-x', 'grid-auto'].includes(property);
+}
+
+// For a class with several values, like font:display:hero:bold, works out which
+// declaration each value sets. A value that only one declaration accepts takes
+// it first; a value several accept (because two kinds of token share its name)
+// takes whichever is left. Returns, per value, the finished rule when that
+// changed the answer, or null to leave the value to the usual lookup.
+function claimDeclarations(
+    property: string,
+    modifiers: any[],
+    context?: { fileName: string, lineNumber: number }
+): (string | null)[] | null {
+    const declarations = declarationMap[property] as Record<string, string> | undefined;
+    if (!declarations || !modifiers || modifiers.length < 2) return null;
+    const names = modifiers.map((mod: any) => mod.image.replace(":", ""));
+
+    // The declarations each value could set, as getRuleName would match them.
+    // Listed in the order getRuleName tries them, so the first is what a value
+    // gets when nothing else in the class bears on it.
+    const options = names.map((name: string) => {
+        const found: string[] = [];
+        for (const k of getModifierType(name, context)) {
+            for (const [declaration, kind] of Object.entries(declarations)) {
+                if (k.startsWith(kind) && !found.includes(declaration)) found.push(declaration);
+            }
+        }
+        return found;
+    });
+
+    const chosen: (string | null)[] = options.map((o) => (o.length === 1 ? o[0] : null));
+    let changed = true;
+    while (changed) {
+        changed = false;
+        options.forEach((o, i) => {
+            if (chosen[i] || o.length < 2) return;
+            const left = o.filter((d) => !chosen.includes(d));
+            if (left.length === 1) { chosen[i] = left[0]; changed = true; }
+        });
+    }
+
+    // Values that still have a choice take the first declaration left, in order.
+    options.forEach((o, i) => {
+        if (!chosen[i] && o.length > 1) chosen[i] = o.find((d) => !chosen.includes(d)) ?? o[0];
+    });
+
+    return names.map((name: string, i: number) => {
+        // Only step in where the class changed the answer; otherwise the usual
+        // lookup gives exactly what it always has.
+        if (options[i].length < 2 || !chosen[i] || chosen[i] === options[i][0]) return null;
+        const kind = declarations[chosen[i] as string];
+        const type = Object.keys(types).find((t) => t.startsWith(kind) && name in (types as any)[t]);
+        if (!type) return null;
+        return `${chosen[i]}: ${(types as any)[type][name]}`;
+    });
 }
 
 // Constructs a single CSS rule line by combining a property and a resolved modifier value.
