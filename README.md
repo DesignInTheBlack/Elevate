@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="https://elevate-docs.pages.dev/_astro/dark.DxR7SM2r.svg" alt="Elevate CSS logo" width="140" />
-</p>
 
 <h1 align="center">Utility-First. Design-Driven.</h1>
 
